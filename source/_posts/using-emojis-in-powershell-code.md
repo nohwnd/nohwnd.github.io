@@ -1,6 +1,9 @@
 ---
 title: Using emojis in PowerShell code
-tags: 'powershell, fun, emoji'
+tags: 
+ - powershell
+ - fun
+ - emoji
 date: 2017-12-09 00:24:08
 ---
 

@@ -1,7 +1,11 @@
 ---
 title: Axiomatic assertions
 date: 2017-12-20 09:00:00
-tags: powershell, testing, assertions, pester
+tags:
+ - powershell
+ - testing
+ - assertions
+ - pester
 ---
 
 Writing a test framework is a lot of fun, and presents some unique challenges to overcome. One of them is testing your assertions. I am writing my own set of [assertions for Pester](https://github.com/nohwnd/Assert) and I also used the same ideas to test some of the `Should` assertions in Pester.

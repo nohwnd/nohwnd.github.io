@@ -1,7 +1,11 @@
 ---
 title: Lowering IO Priority of PowerShell Process
 date: 2015-03-06
-tags: powershell, priority, process
+tags: 
+ - powershell 
+ - priority
+ - process
+ - pinvoke
 ---
 
 This week brought quite a few challenges. One of them was a question asked by a friend:

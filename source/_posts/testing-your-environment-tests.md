@@ -1,7 +1,10 @@
 ---
 title: "Environment testing with Pester: Testing your tests"
 date: 2017-12-07 20:30:54
-tags: pester, testing, environment validation
+tags: 
+ - pester
+ - testing 
+ - environment validation
 ---
 
 This always starts of as a joke:

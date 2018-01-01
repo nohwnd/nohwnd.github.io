@@ -1,7 +1,10 @@
 ---
 title: Test PowerShell Scripts End-to-end With Pester
 date: 2015-01-10
-tags: powershell, pester, testing
+tags: 
+    - powershell
+    - pester
+    - testing
 ---
 
 ## End-to-end test of simple script

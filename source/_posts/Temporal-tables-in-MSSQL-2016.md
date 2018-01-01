@@ -1,6 +1,8 @@
 ---
 title: Temporal tables in MSSQL 2016
-tags: 'SQL, EntityFramework, short'
+tags: 
+ - sql
+ - entityframework
 date: 2016-03-27 15:35:12
 ---
 

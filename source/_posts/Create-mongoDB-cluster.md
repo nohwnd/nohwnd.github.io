@@ -1,6 +1,8 @@
 ---
 title: Create mongoDB cluster
-tags: 'nosql, mongo'
+tags: 
+- nosql
+- mongo
 date: 2016-03-27 15:34:57
 ---
 

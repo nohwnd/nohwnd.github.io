@@ -1,7 +1,12 @@
 ---
 title: Pester - Using Because in tests
 date: 2017-12-19 06:33:32
-tags: pester, testing, powershell, best practice, assertion
+tags: 
+ - pester
+ - testing
+ - powershell
+ - best practice
+ - assertion
 ---
 
 This weekend I added custom failure reasons into Pester. This feature I know and love from [Fluent Assertions](http://fluentassertions.com/), so let me show you how I would use it in Pester.

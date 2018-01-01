@@ -1,7 +1,11 @@
 ---
 title: Why do we test?
 date: 2015-04-29 17:26:34
-tags: pester, powershell, testing, tdd
+tags: 
+ - pester
+ - powershell
+ - testing
+ - tdd
 ---
 
 Lately we are getting some great questions on our [Pester issue page](https://github.com/pester/Pester/issues), I am reposting soem of my answers as blog posts, because I hope they are worth reading. You can access the [original question here](https://github.com/pester/Pester/issues/317).

@@ -1,7 +1,10 @@
 ---
 title: Pester - Using Should -Throw
 date: 2017-12-19 18:19:44
-tags:
+tags: 
+ - powershell
+ - testing
+ - pester
 ---
 
 This weekend I added type filter and `-PassThru` to `Should -Throw`. Let's see how are they useful.
