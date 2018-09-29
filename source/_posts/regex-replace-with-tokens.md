@@ -53,3 +53,5 @@ public string Value { get; set; }
 All we then need to do is sorround the properties with a class defintion.
 
 This is just a simple example, here is a full video showing other examples, and how exactly you do this: [youtube 29:20](https://youtu.be/3rPKg97ru1E?t=29m20s) with some more hardcore example: [youtube 47:39](https://youtu.be/3rPKg97ru1E?t=47m39s).
+
+
