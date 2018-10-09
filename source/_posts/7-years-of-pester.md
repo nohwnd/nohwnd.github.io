@@ -1,6 +1,7 @@
 ---
 title: 7 years of Pester
 date: 2018-01-01 12:36:53
+type: external link
 tags: 
  - powershell
  - pester

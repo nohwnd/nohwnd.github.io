@@ -4,20 +4,24 @@
         <h1>
             <%- item.title %>
         </h1>
+
+        <% if (item.type) { %>
+        <p><%= item.type %></p>
+        <% } %>
     </a>
 </header>
 <p><%- item.excerpt || item.content %></p>
-<% if(item.excerpt) { %>
-<p>
-    <a href="<%- config.root %><%- item.path %>">
-        <%= theme.excerpt_link %>
-    </a>
-</p>
-<% } %>
 <footer>
     <time datetime="<%= item.date.format(config.date_format) %>">
         <%= item.date.format(config.date_format) %>
     </time>
-    <span>ullamco, laboris, nisi</span>
+    <span>
+    <% item.tags.each(function(tag){ %>
+        <a href="<%- config.root %><%- tag.path %>">
+            <%= tag.name %>
+        </a>
+    <% }); %>
+    
+    </span>
 </footer>
 </article>

@@ -1,6 +1,6 @@
-<div>
-    <% page.posts.each(function(item){ %> 
+
+    <% page.posts.each(function(item){ %>
         <%- partial('_partial/article-excerpt', {item: item}) %>
     <% }); %>
-</div>
+    <%- partial('_partial/pagination') %>
 
