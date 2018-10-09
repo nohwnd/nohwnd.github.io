@@ -18,7 +18,7 @@
     <span>
     <% item.tags.each(function(tag){ %>
         <a href="<%- config.root %><%- tag.path %>">
-            <%= tag.name %>
+            <%= tag.name + "," %>
         </a>
     <% }); %>
     

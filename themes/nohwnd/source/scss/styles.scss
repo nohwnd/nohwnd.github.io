@@ -1,4 +1,4 @@
-$font-weight-black: 700;
+$font-weight-black: 900;
 $font-weight-bold: 500;
 $font-weight-light: 100;
 $accent-color: #46cdcf;
@@ -31,7 +31,6 @@ a:active,
 a:visited,
 a:hover {
   text-decoration: none;
-  text-transform: uppercase;
 }
 
 body {
@@ -65,7 +64,6 @@ body {
       > a {
         margin: 70px;
         text-transform: uppercase;
-        font-size: 3rem;
         font-size: 30px;
         color: $menu-color;
         letter-spacing: 4px;
@@ -75,57 +73,70 @@ body {
     }
   }
 
-    > article {
-      margin: 150px 230px;
+  > article {
+    margin: 150px 230px;
 
-      header {
-        > a,
-        a:active,
-        a:visited,
-        a:hover {
-          color: black;
-          > h1 {
-            border-right: 8px black solid;
-          }
+    header {
+      > a,
+      a:active,
+      a:visited,
+      a:hover {
+        color: black;
 
-          > div {
-            background: black;
-          }
-          > p {
-            margin-top: -2rem;
-            font-size: 10px;
-            font-size: 1rem;
-            font-weight: $font-weight-black;
-            letter-spacing: 3px;
-            letter-spacing: 0.3rem;
-            text-transform: uppercase;
-          }
+        > h1 {
+          border-right: 8px black solid;
+          font-weight: $font-weight-black;
         }
-      }
 
-      > p {
-        font-family: Roboto;
-        font-size: 20px;
-        font-size: 2em;
-      }
-
-      footer {
-        font-size: 18px;
-        font-size: 1.8rem;
-        font-weight: $font-weight-black;
-        letter-spacing: 2px;
-        letter-spacing: 0.2rem;
-        text-transform: uppercase;
-        color: $accent-color;
-
-        span {
-          float: right;
+        > div {
+          background: black;
         }
-        time {
-          float: left;
+        > p {
+          margin-top: -2rem;
+          font-size: 10px;
+          font-size: 1rem;
+          font-weight: $font-weight-black;
+          letter-spacing: 3px;
+          letter-spacing: 0.3rem;
+          text-transform: uppercase;
         }
       }
     }
+
+    > p {
+      font-family: Roboto;
+      font-size: 20px;
+      font-size: 2em;
+
+      > a,
+      a:active,
+      a:visited,
+      a:hover {
+        background: black;
+        color: white;
+        border-bottom: solid black 3px
+      }
+    }
+
+
+
+    footer {
+      font-size: 18px;
+      font-size: 1.8rem;
+      font-weight: $font-weight-black;
+      letter-spacing: 2px;
+      letter-spacing: 0.2rem;
+      text-transform: uppercase;
+      color: $accent-color;
+
+      span {
+        float: right;
+      }
+      time {
+        float: left;
+      }
+    }
+  }
 
   > footer {
     position: fixed;
