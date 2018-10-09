@@ -20,6 +20,8 @@ Class-defined DSC resources in Windows Management Framework 5.0 Preview
 
 Writing a custom DSC resource with PowerShell classes
 
+<!-- more -->
+
 ### Writing the first test
 
 I will be using the example code from the last article to go outside-in with Pester, and to pretend that I am actually writing the code myself.

@@ -9,6 +9,8 @@ tags:
 
 Seven years ago, on the first day of 2011 the [first commit](https://github.com/pester/Pester/commit/a1d6a0e01f58375175ed090647ab8245a049f1a6) to Pester repository was done by [Scott Muc](https://twitter.com/ScottMuc). Little did he know that this minimal implementation of a testing framework, he committed still a bit drunk from the previous evening, will grow into the number one PowerShell testing framework it is today.
 
+<!-- more -->
+
 At that time the implementation was extremely simple and used fluent syntax for the assertions. Here is the first of the original examples that came with the first commit:
 
 ```powershell

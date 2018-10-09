@@ -1,3 +1,10 @@
+menu:
+  articles: /
+  presentations: /presentations
+  about: /about
+  
+
+
 node_sass:
   debug: false
   outputStyle: nested

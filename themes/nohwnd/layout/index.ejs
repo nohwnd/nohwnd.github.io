@@ -1,39 +1,6 @@
 <div>
-    <article>
-        <header>
-            <a href=""><h1>Understanding, a coin with two sides</h1></a>
-        </header>
-        <p>tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <footer>
-            <time datetime=2016-09-21>21 September</time>
-            <span>ullamco, laboris, nisi</span>
-        </footer>
-    </article>
-
-    <article>
-        <header>
-            <a href=""><h1>Blog name explained</h1></a>
-            <p>external link</p>
-        </header>
-        <p>tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <footer>
-            <time datetime=2016-09-21>21 September</time>
-            <span>ullamco, laboris, nisi</span>
-        </footer>
-    </article>
-
-    <article>
-        <header>
-            <a href=""><h1>ESSENTIAL DEVELOPER APPS FOR YOUR BRAND NEW MAC</h1></a>
-        </header>
-        <p>tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <footer>
-            <time datetime=2016-09-21>21 September</time>
-            <span>ullamco, laboris, nisi</span>
-        </footer>
-    </article>
+    <% page.posts.each(function(item){ %> 
+        <%- partial('_partial/article-excerpt', {item: item}) %>
+    <% }); %>
 </div>
 

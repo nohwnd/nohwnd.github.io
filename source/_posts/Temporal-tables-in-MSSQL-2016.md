@@ -10,6 +10,8 @@ The new version of MS SQL server offers a lot of new cool features. One of them 
 
 As the name suggests, this feature enables versioning for data in table, it does quite simply by creating a second table that holds the historic state of each row, as well as information about the timespan in which the row was valid. 
 
+<!-- more -->
+
 For more information see [this great overview on MSDN](https://msdn.microsoft.com/en-us/library/dn935015.aspx). 
 
 The sad truth is that there is no support for versioned tables in EF 6, and no sings of it being prepared. For EF Core, there is at least an [issue marked as enhancement](https://github.com/aspnet/EntityFramework/issues/4693) so hopefully someone will jump on it and sooner or later we will be able to do: `_context.Orders.AsOf(1.Months().Ago().LastDayOfMonth())`.

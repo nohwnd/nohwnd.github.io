@@ -1,0 +1,23 @@
+<article>
+<header>
+    <a href="<%- config.root %><%- item.path %>">
+        <h1>
+            <%- item.title %>
+        </h1>
+    </a>
+</header>
+<p><%- item.excerpt || item.content %></p>
+<% if(item.excerpt) { %>
+<p>
+    <a href="<%- config.root %><%- item.path %>">
+        <%= theme.excerpt_link %>
+    </a>
+</p>
+<% } %>
+<footer>
+    <time datetime="<%= item.date.format(config.date_format) %>">
+        <%= item.date.format(config.date_format) %>
+    </time>
+    <span>ullamco, laboris, nisi</span>
+</footer>
+</article>

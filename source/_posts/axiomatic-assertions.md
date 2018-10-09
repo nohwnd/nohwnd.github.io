@@ -10,6 +10,8 @@ tags:
 
 Writing a test framework is a lot of fun, and presents some unique challenges to overcome. One of them is testing your assertions. I am writing my own set of [assertions for Pester](https://github.com/nohwnd/Assert) and I also used the same ideas to test some of the `Should` assertions in Pester.
 
+<!-- more -->
+
 ## Axiom
 
 Proving that your assertions are correct, is a major stumbling point that you have to overcome right at the start of writing your assertion suite. To prove that your assertions are correct you need to write tests for them. To write those tests you need tested assertions. To prove that those assertions are correct you need to write tests for them. To write those tests you need tested assertions. To prove that those assertions are correct you need to write tests for them. To write those tests you need tested assertions. To prove that those assertions are correct you need to write tests for them...And so on, ad-infinitum.

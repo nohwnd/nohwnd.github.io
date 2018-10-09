@@ -17,6 +17,8 @@ This weekend I added custom failure reasons into Pester. This feature I know and
 
 The new feature adds an optional `-Because` parameter to all `Should` assertions. The parameter allows you to specify a reason that will be shown when assertion fails, like so:
 
+<!-- more -->
+
 ```powershell
 Describe 'Health check' {
     # mock is here only to make the example work

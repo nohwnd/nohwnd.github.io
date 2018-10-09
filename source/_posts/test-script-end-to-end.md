@@ -23,6 +23,8 @@ function Get-Something
 Get-Something
 ```
 
+<!-- more -->
+
 This script defines a function and then calls it. This is pretty normal approach if you want your script to actually do something, instead of being just a library of functions.
 
 But see what happens if we decide to test this script using Pester:

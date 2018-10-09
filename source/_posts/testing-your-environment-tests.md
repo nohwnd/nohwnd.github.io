@@ -15,6 +15,8 @@ And people are often surprised that I in fact *do* test my tests.
 
 With Pester there are two different ways of testing that both look very similar, but are in fact very different.
 
+<!-- more -->
+
 ## Unit testing
 
 The first way of testing is unit testing. This is the testing as we traditionally know it. We have a function and our goal is using tests to prove that the function works correctly. An example of such function would be this function that reverses a string:

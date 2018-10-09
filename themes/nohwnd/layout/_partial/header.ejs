@@ -4,8 +4,8 @@
         <h1>Jakub Jareš</h1>
         <div>
             <nav>
-                <a>Blog</a>
-                <a>Projects</a>
-                <a>About</a>
+            <% for (var i in theme.menu){ %> 
+                <a href="<%- url_for(theme.menu[i]) %>"><%= i %></a>"            
+            <% } %>
             </nav>
 </header>

@@ -12,6 +12,8 @@ Lately we are getting some great questions on our [Pester issue page](https://gi
 
 We test because we need a simple set of boundaries that define a more complicated system. Coming up with simple tests and gradually refining them to define more complex systems is easy for us humans. Definitely easier than defining a complex system in a single swoop.
 
+<!-- more -->
+
 Saying that `1 + 1 = 2` is simple, we want it to be true because that is how we think the system should behave, and we can express what we want with a simple test:
 
 ```powershell

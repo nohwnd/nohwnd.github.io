@@ -14,6 +14,8 @@ I thought this was fun, and tweeted this:
 
 {% asset_img orig.jpeg "Original tweet" %}
 
+<!-- more -->
+
 That code uses capabilities of PowerShell that has been there since I started using it. We can use the smiley face as the function name because it is a valid unicode character and is not a restricted character. And then we can use it the same emoji again as the parameter to the function. All we need to do is wrap the variable name in `${}`. This sequence of characters is recognized by PowerShell as an escape sequence and allows us to define the variable name as any sequence of unicode characters, except for the closing curly brace. This is mainly meant for interoperability with code that does not follow PowerShell rules, but why not use it to have a bit of fun.
 
 Another example of emojis in code is this hello world example:

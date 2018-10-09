@@ -15,6 +15,9 @@ This weekend I added type filter and `-PassThru` to `Should -Throw`. Let's see h
 
 Filtering exceptions on type is one of the most basic capabilities of any assertion that deals with exceptions, yet we were missing it till now. But there it is now:
 
+
+<!-- more -->
+
 ```powershell
 Describe "Get-Computer" {
     # function is here only to make the example work

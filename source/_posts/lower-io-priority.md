@@ -20,6 +20,8 @@ This seemed like a simple question to answer: Just lower the priority of the Pow
 
 The only problem is, that it does not work.
 
+<!-- more -->
+
 That piece of code actually lowers the priority of the process. But this priority only applies to compute-bound tasks. In other words, this option is great if we don’t want the CPU to run on 100 %, but it won’t help us much with disk operations.
 To confirm that you can run the following code on Idle priority and view the PowerShell.exe in Task Manager.
 
