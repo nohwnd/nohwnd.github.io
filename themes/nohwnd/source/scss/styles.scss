@@ -6,7 +6,7 @@ $secondary-accent-color: #458890;
 $menu-color: white;
 
 html {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 62.5%;
   display: flex;
   justify-content: center;
@@ -25,10 +25,6 @@ h1 {
   letter-spacing: 0.4rem;
   font-weight: $font-weight-black;
   text-transform: uppercase;
-}
-
-code {
-  font-family: 'Fira Mono', sans-serif;
 }
 
 a,
@@ -86,7 +82,7 @@ a:hover {
     a:visited,
     a:hover {
       text-decoration: none;
-      color:black;
+      color: black;
       div {
         display: flex;
         flex-flow: row;
@@ -94,18 +90,25 @@ a:hover {
         align-items: center;
         justify-content: space-between;
         border-right: solid black 8px;
-      
+        overflow: hidden;
         padding: 6px 0px 6px 0px;
-        // border-right: solid 8px black;  
+        // border-right: solid 8px black;
         h1 {
-          color:black;
+          color: black;
           font-weight: $font-weight-black;
           display: inline;
+          margin-block-start: 0em;
+          margin-block-end: 0em;
+        }
+
+        &:hover .read-more {
+          transition: 0.8s;
+          right: 0;
         }
       }
 
       > p {
-        margin-top: -2rem;
+        margin-top: -0.5rem;
         font-size: 10px;
         font-size: 1rem;
         font-weight: $font-weight-black;
@@ -115,63 +118,59 @@ a:hover {
       }
 
       .read-more {
-        position: relative;
-        overflow: hidden;
-        left: 100px;
         font-size: 1.3rem;
-        opacity: 0;
-      
+        opacity: 100;
+
         border: solid black 4px;
         background: black;
         color: #fff;
-        font-weight: 900;
+        font-weight: $font-weight-black;
         text-transform: uppercase;
         font-family: Lato;
-        
-        a, a:hover, a:active, a:visited {
+
+        a,
+        a:hover,
+        a:active,
+        a:visited {
           text-decoration: none;
           color: white;
           text-transform: uppercase;
           font-weight: 700;
-          font-family: 'Lato';
+          font-family: "Lato";
         }
-      }
 
-      .ani { 
-        position: absolute;
-        left: -100px;
-        transition: 1s;
-      }
-
-      .article-header:hover .ani {
-        transition: 1s;
-        left: 0;
+        position: relative;
+        right: -100px;
+        transition: 0.2s;
       }
     }
-
   }
 
   > div {
     font-family: Roboto, sans-serif;
     font-size: 2em;
 
-    a,
-    a:active,
-    a:visited,
-    {
-      background: black;
-      color: white;
-      border: solid black 1px;
-    }
+    p {
+      > a,
+      a:active,
+      a:visited {
+        background: black;
+        color: white;
+        border: solid black 1px;
+      }
 
-    a:hover,
-    {
-      background: $accent-color;
-      color: white;
-      border: solid $accent-color 1px;
+      > a:hover {
+        background: $accent-color;
+        color: white;
+        border: solid $accent-color 1px;
+      }
     }
-
-    
+    code,
+    pre {
+      font-family: "Fira Mono", sans-serif;
+      background: lightgray;
+      border: solid 1px lightgray;
+    }
   }
 
   footer {
@@ -182,15 +181,15 @@ a:hover {
     letter-spacing: 0.2rem;
     text-transform: uppercase;
     color: $accent-color;
-    
+
     a,
     a:active,
     a:visited,
     a:hover {
-      color: $accent-color
+      color: $accent-color;
     }
     a:hover {
-      color: $secondary-accent-color
+      color: $secondary-accent-color;
     }
     span {
       float: right;
@@ -220,6 +219,7 @@ a:hover {
   letter-spacing: 4px;
   letter-spacing: 0.4rem;
   font-weight: $font-weight-bold;
+  text-transform: uppercase;
 
   a,
   a:active,
