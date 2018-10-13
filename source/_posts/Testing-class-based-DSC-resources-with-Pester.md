@@ -6,6 +6,8 @@ tags:
  - pester
  - dsc
  - testing
+categories:
+ - article
 ---
 
 _I am using PowerShell version 5.0.10018.0 for the examples. This version of PowerShell ships with the WMF February 2015 Preview package that you can download here._

@@ -5,6 +5,8 @@ tags:
  - talk
  - c#
  - .net
+categories:
+ - talk
 ---
 
 Talk from CN Group - SMART about Reflection in .NET, going from the basics to more advanced topics in a very simple manner.

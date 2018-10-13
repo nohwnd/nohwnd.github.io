@@ -14,6 +14,8 @@ tags:
  - kata
  - fizzBuzz
  - pits of success
+categories:
+ - article
 ---
 
 They say a picture is worth a thousand words. I would say that a great talk is worth ten times more than that. Especially if you are a beginner looking for their way into a new topic. One such topic is functional programming, with its endofunctors, lambda calculus and set theory.

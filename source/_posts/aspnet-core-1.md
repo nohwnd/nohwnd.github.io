@@ -5,6 +5,8 @@ tags:
  - talk
  - cz
  - docker
+categories:
+ - article
 ---
 
 A workshop and a talk from CN Group - INDEED Hands-On & SMART explaining how to use ASP.NET Core 1.0.

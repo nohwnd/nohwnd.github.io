@@ -6,6 +6,8 @@ tags:
  - .net
  - C#
  - cz
+categories:
+ - talk
 ---
 
 Talk from CN Group - SMART describing what is the Fody plugin and how to use it to generate code for repetitive tasks, like automatic implementation of `INotifyPropertyChanged`. Talk is in Czech. 

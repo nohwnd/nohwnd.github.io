@@ -5,6 +5,8 @@ tags:
  - powershell
  - testing
  - pester
+categories:
+ - article
 ---
 
 This weekend I added type filter and `-PassThru` to `Should -Throw`. Let's see how are they useful.

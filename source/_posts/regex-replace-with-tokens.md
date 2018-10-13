@@ -7,6 +7,8 @@ tags:
  - VS
  - VS Code
  - npp
+categories:
+ - article
 ---
 
 Regular expressions with capturing groups are super useful for text replacements, and Visual Studio, VS Code, and notepad++ all support them. They can prevent you from doing a lot of boring work, such as:
