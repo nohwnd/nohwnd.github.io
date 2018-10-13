@@ -45,23 +45,26 @@ a:hover {
   align-content: center;
   align-items: center;
 
-  > div {
+  >div>a {
+
     display: flex;
     flex-flow: column;
     align-items: center;
-  }
-  svg {
-    height: 75px;
-    width: 75px;
-  }
-  h1 {
-    margin-bottom: 100px;
-    text-align: center;
-    color: $menu-color;
+
+    svg {
+      height: 75px;
+      width: 75px;
+    }
+
+    h1 {
+      margin-bottom: 100px;
+      text-align: center;
+      color: $menu-color;
+    }
   }
 
   nav {
-    > a {
+    >a {
       margin: 70px;
       text-transform: uppercase;
       font-size: 30px;
@@ -77,12 +80,14 @@ a:hover {
   margin: 150px 230px;
 
   header {
-    > a,
+
+    >a,
     a:active,
     a:visited,
     a:hover {
       text-decoration: none;
       color: black;
+
       div {
         display: flex;
         flex-flow: row;
@@ -92,6 +97,7 @@ a:hover {
         border-right: solid black 8px;
         overflow: hidden;
         padding: 6px 0px 6px 0px;
+
         // border-right: solid 8px black;
         h1 {
           color: black;
@@ -107,7 +113,7 @@ a:hover {
         }
       }
 
-      > p {
+      >p {
         margin-top: -0.5rem;
         font-size: 10px;
         font-size: 1rem;
@@ -121,7 +127,7 @@ a:hover {
         font-size: 1.3rem;
         opacity: 100;
 
-        border: solid black 4px;
+        border: solid black 6px;
         background: black;
         color: #fff;
         font-weight: $font-weight-black;
@@ -146,12 +152,13 @@ a:hover {
     }
   }
 
-  > div {
+  >div {
     font-family: Roboto, sans-serif;
     font-size: 2em;
 
     p {
-      > a,
+
+      >a,
       a:active,
       a:visited {
         background: black;
@@ -159,12 +166,13 @@ a:hover {
         border: solid black 1px;
       }
 
-      > a:hover {
+      >a:hover {
         background: $accent-color;
         color: white;
         border: solid $accent-color 1px;
       }
     }
+
     code,
     pre {
       font-family: "Fira Mono", sans-serif;
@@ -188,12 +196,15 @@ a:hover {
     a:hover {
       color: $accent-color;
     }
+
     a:hover {
       color: $secondary-accent-color;
     }
+
     span {
       float: right;
     }
+
     time {
       float: left;
     }

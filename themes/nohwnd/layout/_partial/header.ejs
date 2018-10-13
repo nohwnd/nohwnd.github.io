@@ -1,11 +1,14 @@
 <header class="main-page-header">
     <div>
-        <%- partial('logo') %>
-        <h1>Jakub Jareš</h1>
+        <a href="<%- config.root %>">
+            <%- partial('logo') %>
+            <h1>Jakub Jareš</h1>
+        </a>
         <div>
             <nav>
-            <% for (var i in theme.menu){ %> 
-                <a href="<%- url_for(theme.menu[i]) %>"><%= i %></a>"            
-            <% } %>
+                <% for (var i in theme.menu) { %>
+                <a href="<%- url_for(theme.menu[i]) %>">
+                    <%= i %></a>"
+                <% } %>
             </nav>
 </header>
