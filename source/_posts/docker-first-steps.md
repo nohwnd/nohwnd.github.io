@@ -11,4 +11,6 @@ categories:
 
 Talk from CN Group - SMART showing how to start with Docker in a step by step manner. Talk is in czech.
 
+<!-- more -->
+
 [![Docker first steps](http://img.youtube.com/vi/ehqxmtVUPQs/0.jpg)](https://www.youtube.com/watch?v=ehqxmtVUPQs "Docker first steps")

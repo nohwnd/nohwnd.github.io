@@ -20,6 +20,8 @@ categories:
 
 They say a picture is worth a thousand words. I would say that a great talk is worth ten times more than that. Especially if you are a beginner looking for their way into a new topic. One such topic is functional programming, with its endofunctors, lambda calculus and set theory.
 
+<!-- more -->
+
 Luckily you don’t have to have a PhD in mathematics to approach functional programming, because we selected few talks to get you started. These range from a total beginner to slightly advanced, but all of them explain their topics in a very approachable language. So don’t worry and dig in!
 
 An inspiring talk from a beginner to beginners. Anjana Vakil describes the basic concepts of functional programming on sandwiches. Don’t worry if you don’t specialize in JS, the talk is quite general, and a great start for everyone.

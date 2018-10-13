@@ -5,7 +5,6 @@
 
 
 <div class="list">
-<% console.log(page) %>
 <% site.categories.findOne({name: category}).posts.each(function(item){ %>
 <div class="list-item">
 <%- partial('_partial/article-excerpt', {item: item}) %>

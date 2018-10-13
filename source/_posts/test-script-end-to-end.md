@@ -15,6 +15,8 @@ With Pester it is really easy to test a single PowerShell function or a library 
 
 Let’s say we have a script like this one:
 
+<!-- more -->
+
 ```powershell
 # file GetSomethingScript.ps1
 function Get-Something

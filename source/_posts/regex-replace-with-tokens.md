@@ -13,6 +13,8 @@ categories:
 
 Regular expressions with capturing groups are super useful for text replacements, and Visual Studio, VS Code, and notepad++ all support them. They can prevent you from doing a lot of boring work, such as:
 
+<!-- more -->
+
 - converting lists of items into classes
 - writing the same copy code, just with the sides switched
 - correcting code conventions manually
