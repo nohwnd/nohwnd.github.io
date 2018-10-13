@@ -1,4 +1,10 @@
+<header class="main-page-header">
+<%- partial('_partial/header') %>
+</header>
+
+
 <% page.posts.each(function(item){ %>
 <%- partial('_partial/article-excerpt', {item: item}) %>
 <% }); %>
 <%- partial('_partial/pagination') %>
+<%- partial('_partial/footer') %>

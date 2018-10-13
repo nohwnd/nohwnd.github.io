@@ -1,0 +1,45 @@
+<div class="bg">
+    <header class="article-header">
+        <div class="menu">
+            <a href="<%- config.root %>">
+                <div>
+                    <%- partial('_partial/logo') %>
+                    <h1>Jakub<br />Jareš</h1>
+                </div>
+            </a>
+            <nav>
+                <% for (var i in theme.menu) { %>
+                <a href="<%- url_for(theme.menu[i]) %>">
+                    <%= i %></a>
+                <% } %>
+            </nav>
+        </div>
+        <div class="title">
+            <h1>
+                <%- page.title %>
+            </h1>
+            <div>
+                <% page.tags.each(function(tag){ %>
+                <a href="<%- config.root %><%- tag.path %>">
+                   <p><%= tag.name %></p>
+                </a>
+                <% }); %>
+            </div>
+        </div>
+    </header>
+</div>
+<div class="article">
+
+    <p>
+        <%= page.date.format(config.date_format) %>
+        <% if(page.author) { %>
+        by
+        <%- page.author %>
+        <% } %>
+    </p>
+    <%- page.content %>
+    <hr />
+
+</div>
+
+<%- partial('_partial/footer') %>
