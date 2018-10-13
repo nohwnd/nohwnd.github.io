@@ -4,6 +4,8 @@ tags:
  - sql
  - entityframework
 date: 2016-03-27 15:35:12
+categories:
+ - article
 ---
 
 The new version of MS SQL server offers a lot of new cool features. One of them is called system-versioned temporal tables. 

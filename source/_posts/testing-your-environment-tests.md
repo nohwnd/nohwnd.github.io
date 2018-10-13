@@ -5,6 +5,8 @@ tags:
  - pester
  - testing 
  - environment validation
+categories:
+ - article
 ---
 
 This always starts of as a joke:

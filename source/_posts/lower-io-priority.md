@@ -6,6 +6,8 @@ tags:
  - priority
  - process
  - pinvoke
+categories:
+ - article
 ---
 
 This week brought quite a few challenges. One of them was a question asked by a friend:

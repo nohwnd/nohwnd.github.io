@@ -4,4 +4,5 @@ title: {{ title }}
 date: {{ date }}
 categories:
   - talk
+tags:
 ---

@@ -1,6 +1,3 @@
 -----
 layout: about
 -----
-
-
-<%- body ->

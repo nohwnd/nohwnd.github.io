@@ -4,6 +4,8 @@ tags:
  - powershell
  - fun
  - emoji
+categories:
+ - article
 date: 2017-12-09 00:24:08
 ---
 

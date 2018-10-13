@@ -5,6 +5,8 @@ tags:
     - powershell
     - pester
     - testing
+categories:
+ - article
 ---
 
 ## End-to-end test of simple script

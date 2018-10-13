@@ -7,6 +7,8 @@ tags:
  - powershell
  - best practice
  - assertion
+categories:
+ - article
 ---
 
 This weekend I added custom failure reasons into Pester. This feature I know and love from [Fluent Assertions](http://fluentassertions.com/), so let me show you how I would use it in Pester.
