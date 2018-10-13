@@ -1,6 +1,6 @@
 menu:
   articles: /
-  presentations: /presentations
+  talks: /talks
   about: /about
   
 
@@ -10,3 +10,5 @@ node_sass:
   outputStyle: nested
   precision: 5
   sourceComments: false
+
+google_analytics: UA-111716940-1

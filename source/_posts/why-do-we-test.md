@@ -6,6 +6,8 @@ tags:
  - powershell
  - testing
  - tdd
+categories:
+ - article
 ---
 
 Lately we are getting some great questions on our [Pester issue page](https://github.com/pester/Pester/issues), I am reposting soem of my answers as blog posts, because I hope they are worth reading. You can access the [original question here](https://github.com/pester/Pester/issues/317).

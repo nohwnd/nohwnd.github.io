@@ -1,7 +1,7 @@
 ---
+layout: talk
 title: {{ title }}
 date: {{ date }}
-tags:
 categories:
-  - article
+  - talk
 ---
