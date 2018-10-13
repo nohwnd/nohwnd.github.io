@@ -35,18 +35,21 @@ a:hover {
 }
 
 .main-page-header {
-  background-color: $accent-color;
-  background: linear-gradient(0deg, #7ce8e9 0%, #149799 100%);
-  background-image: url("./../img/home_bg.png");
+  // background: url("../img/bridge.jpg") center center no-repeat;
+  // background: linear-gradient(to bottom, transparent 0%, #458890 100%), url("../img/bridge.jpg") center center no-repeat;
+
+  background: linear-gradient(to bottom,rgba(124,232,233, 0.8), rgba(20,151,153, 0.3)), url("../img/bridge.jpg") center center no-repeat;
+  
+  
+  background-size: cover;
   height: 38.4rem;
   display: flex;
-  flex-flow: column;
+  flex-flow: row;
   justify-content: space-around;
   align-content: center;
   align-items: center;
 
-  >div>a {
-
+  > div > a {
     display: flex;
     flex-flow: column;
     align-items: center;
@@ -64,7 +67,7 @@ a:hover {
   }
 
   nav {
-    >a {
+    > a {
       margin: 70px;
       text-transform: uppercase;
       font-size: 30px;
@@ -80,8 +83,7 @@ a:hover {
   margin: 150px 230px;
 
   header {
-
-    >a,
+    > a,
     a:active,
     a:visited,
     a:hover {
@@ -113,7 +115,7 @@ a:hover {
         }
       }
 
-      >p {
+      > p {
         margin-top: -0.5rem;
         font-size: 10px;
         font-size: 1rem;
@@ -152,13 +154,12 @@ a:hover {
     }
   }
 
-  >div {
+  > div {
     font-family: Roboto, sans-serif;
     font-size: 2em;
 
     p {
-
-      >a,
+      > a,
       a:active,
       a:visited {
         background: black;
@@ -166,7 +167,7 @@ a:hover {
         border: solid black 1px;
       }
 
-      >a:hover {
+      > a:hover {
         background: $accent-color;
         color: white;
         border: solid $accent-color 1px;
