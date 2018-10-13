@@ -3,4 +3,10 @@
         <%- partial('_partial/article-excerpt', {item: item}) %>
     <% }); %>
     <%- partial('_partial/pagination') %>
+    <script>
+    $('.article-header').on('mouseenter', function(){
+  console.log('hover')
+  $('.read-more').toggleClass('ani');
+    });
+</script>
 

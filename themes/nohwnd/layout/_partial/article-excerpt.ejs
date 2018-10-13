@@ -1,16 +1,18 @@
-<article>
-<header>
+<article class="article">
+<header class='article-header'>
     <a href="<%- config.root %><%- item.path %>">
-        <h1>
-            <%- item.title %>
-        </h1>
-
+        <div>
+            <h1>
+                <%- item.title %>
+            </h1>
+            <span class="read-more">Read more</span>
+        </div>
         <% if (item.type) { %>
         <p><%= item.type %></p>
         <% } %>
     </a>
 </header>
-<p><%- item.excerpt || item.content %></p>
+<div><%- item.excerpt || item.content %></div>
 <footer>
     <time datetime="<%= item.date.format(config.date_format) %>">
         <%= item.date.format(config.date_format) %>
