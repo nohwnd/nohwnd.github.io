@@ -10,7 +10,7 @@
         <% } %>
     </a>
 </header>
-<div><%- item.excerpt || item.content %></div>
+<div class="article-content"><%- item.excerpt || item.content %></div>
 <footer>
     <time datetime="<%= item.date.format(config.date_format) %>">
         <%= item.date.format(config.date_format) %>

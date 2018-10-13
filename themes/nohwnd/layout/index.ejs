@@ -1,10 +1,15 @@
 <header class="main-page-header">
+<div class="main-page-header-filler"></div>
 <%- partial('_partial/header') %>
 </header>
 
 
+<div class="list">
 <% page.posts.each(function(item){ %>
+<div class="list-item">
 <%- partial('_partial/article-excerpt', {item: item}) %>
+</div>
 <% }); %>
 <%- partial('_partial/pagination') %>
+</div>
 <%- partial('_partial/footer') %>

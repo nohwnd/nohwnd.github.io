@@ -1,5 +1,6 @@
-<div class="bg">
+
     <header class="article-header">
+    <div class="main-page-header-filler"></div>
         <div class="menu">
             <a href="<%- config.root %>">
                 <div>
@@ -21,15 +22,21 @@
             <div>
                 <% page.tags.each(function(tag){ %>
                 <a href="<%- config.root %><%- tag.path %>">
-                   <p><%= tag.name %></p>
+                    <p>
+                        <%= tag.name %>
+                    </p>
                 </a>
                 <% }); %>
             </div>
         </div>
     </header>
-</div>
+
 <div class="article">
 
+    <div class="article-content">
+        <%- page.content %>
+    </div>
+    
     <p>
         <%= page.date.format(config.date_format) %>
         <% if(page.author) { %>
@@ -37,9 +44,5 @@
         <%- page.author %>
         <% } %>
     </p>
-    <%- page.content %>
-    <hr />
-
 </div>
-
 <%- partial('_partial/footer') %>
