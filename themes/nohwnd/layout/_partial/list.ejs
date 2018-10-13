@@ -5,7 +5,9 @@
 
 
 <div class="list">
-<% site.categories.findOne({name: category}).posts.each(function(item){ %>
+
+<% site.categories.findOne({name: category}).posts
+    .sort('date',1).reverse().each(function(item){ %>
 <div class="list-item">
 <%- partial('_partial/article-excerpt', {item: item}) %>
 </div>
