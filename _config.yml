@@ -37,11 +37,6 @@ render_drafts: false
 post_asset_folder: true
 relative_link: false
 future: true
-highlight:
-  enable: true
-  line_number: true
-  auto_detect: false
-  tab_replace:
   
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -80,3 +75,12 @@ deploy:
   type: git
   repo: https://github.com/nohwnd/nohwnd.github.io.git
   branch: master
+
+marked:
+  gfm: true
+  pedantic: false
+  sanitize: false
+  tables: true
+  breaks: true
+  smartLists: true
+  smartypants: true

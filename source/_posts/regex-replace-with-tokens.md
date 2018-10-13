@@ -15,6 +15,10 @@ Regular expressions with capturing groups are super useful for text replacements
 
 <!-- more -->
 
+```csharp
+public string Name {get;set; }
+```
+
 - converting lists of items into classes
 - writing the same copy code, just with the sides switched
 - correcting code conventions manually
