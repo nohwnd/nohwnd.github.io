@@ -37,7 +37,7 @@ render_drafts: false
 post_asset_folder: true
 relative_link: false
 future: true
-  
+
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
@@ -46,7 +46,7 @@ index_generator:
   path: ''
   per_page: 1000
   order_by: -date
-  
+
 # Category & Tag
 default_category: uncategorized
 category_map:
@@ -76,11 +76,5 @@ deploy:
   repo: https://github.com/nohwnd/nohwnd.github.io.git
   branch: master
 
-marked:
-  gfm: true
-  pedantic: false
-  sanitize: false
-  tables: true
-  breaks: true
-  smartLists: true
-  smartypants: true
+highlight:
+  enable: false

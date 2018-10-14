@@ -6,10 +6,10 @@
     <meta charset="UTF-8">
     <title>jakubjares.com</title>
     <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="/path/to/styles/default.css">
-    <script src="/path/to/highlight.pack.js"></script>
+    <%- css('highlight/styles/default') %>
+    <%- js('highlight/highlight.pack.js') %>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <%- css('scss/styles') %>
     <%- partial('_partial/google-analytics') %>
 </head>
