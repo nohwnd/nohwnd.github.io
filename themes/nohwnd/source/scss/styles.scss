@@ -20,9 +20,6 @@ body {
   margin: 0 !important;
   padding: 0 !important;
   max-width: 80rem;
-
-
-
 }
 
 h1 {
@@ -50,8 +47,7 @@ a:hover {
   align-items: center;
   margin-bottom: 20px;
 
-  >a {
-
+  > a {
     display: flex;
     flex-flow: column;
     align-items: center;
@@ -62,13 +58,12 @@ a:hover {
     }
 
     h1 {
-
       text-align: center;
       color: $menu-color;
     }
   }
 
-  >nav {
+  > nav {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -76,7 +71,6 @@ a:hover {
     justify-content: space-between;
 
     a {
-
       text-transform: uppercase;
       font-size: 30px;
       color: $menu-color;
@@ -105,16 +99,15 @@ a:hover {
 
   justify-content: space-between;
   height: 30rem;
-  font-family: 'Lato';
+  font-family: "Lato";
   color: white;
   margin-bottom: 20px;
 
   h1 {
     letter-spacing: 5px;
-
   }
 
-  >div.menu {
+  > div.menu {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -122,7 +115,7 @@ a:hover {
     justify-content: space-between;
     margin-top: 20px;
 
-    >a>div {
+    > a > div {
       justify-content: flex-start;
       justify-items: flex-start;
       display: flex;
@@ -143,7 +136,6 @@ a:hover {
     }
 
     nav {
-
       a,
       a:hover,
       a:active,
@@ -156,19 +148,17 @@ a:hover {
         font-size: 1.8rem;
         font-style: italic;
         letter-spacing: 2px;
-
       }
     }
   }
 
-  >div.title {
-
+  > div.title {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
 
-    >div {
+    > div {
       display: flex;
       flex-direction: row;
       align-items: flex-end;
@@ -192,11 +182,9 @@ a:hover {
       &:before {
         position: relative;
         left: 1px;
-        content: '#';
+        content: "#";
       }
     }
-
-
 
     h1 {
       display: flex;
@@ -207,7 +195,7 @@ a:hover {
 
       &:before {
         background-color: white;
-        content: '\a0';
+        content: "\a0";
         flex-grow: 1;
         height: 4px;
         width: 15%;
@@ -227,22 +215,15 @@ a:hover {
   flex-direction: column;
   align-content: center;
   align-items: center;
-
 }
-
 
 .list-item {
   margin-bottom: 50px;
-
 }
 
-
 .article {
-
-
   header {
-
-    >a,
+    > a,
     a:active,
     a:visited,
     a:hover {
@@ -274,7 +255,7 @@ a:hover {
         }
       }
 
-      >p {
+      > p {
         margin-top: -0.5rem;
         font-size: 10px;
         font-size: 1rem;
@@ -313,7 +294,6 @@ a:hover {
     }
   }
 
-  
   .article-content {
     font-family: Roboto, sans-serif;
     font-size: 2em;
@@ -321,7 +301,7 @@ a:hover {
     p {
       margin-top: 0px;
 
-      >a,
+      > a,
       a:active,
       a:visited {
         background: black;
@@ -329,7 +309,7 @@ a:hover {
         border: solid black 1px;
       }
 
-      >a:hover {
+      > a:hover {
         background: $accent-color;
         color: white;
         border: solid $accent-color 1px;
@@ -342,6 +322,43 @@ a:hover {
     }
   }
 
+  .article-footer {
+      text-transform: uppercase;
+      font-family: Lato;
+      font-size: 14px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      //text-align: left;
+      letter-spacing: 3px;
+      margin-top: 60px;
+      margin-bottom: 40px;
+
+      &:before {
+        background-color: black;
+        content: "\a0";
+        flex-grow: 1;
+        height: 4px;
+        width: 30%;
+      }
+
+      &:before { 
+        margin-bottom: 20px;
+      }
+
+      p {
+        font-weight: $font-weight-light;
+        margin: 0px;
+        
+      }
+
+      time {
+        font-weight: $font-weight-black;
+        font-style: italic;
+      }
+      
+  }
 
   footer {
     font-size: 18px;
@@ -374,7 +391,6 @@ a:hover {
 }
 
 .footer {
-
   height: 5rem;
   width: 100%;
   background: $accent-color;
@@ -402,8 +418,8 @@ a:hover {
   }
 }
 
-.footer-filler { 
-  background:$accent-color;
+.footer-filler {
+  background: $accent-color;
   width: 100%;
   height: 50px;
   position: absolute;
@@ -411,7 +427,7 @@ a:hover {
   z-index: -1;
 }
 
-.main-page-header-filler { 
+.main-page-header-filler {
   background-color: $accent-color;
   background: linear-gradient(0deg, #7ce8e9 0%, #149799 100%);
   background-image: url("./../img/home_bg.png");

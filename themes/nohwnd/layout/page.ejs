@@ -1,46 +1,43 @@
-
-    <header class="article-header">
+<header class="article-header">
     <div class="main-page-header-filler"></div>
-        <div class="menu">
-            <a href="<%- config.root %>">
-                <div>
-                    <%- partial('_partial/logo') %>
-                    <h1>Jakub<br />Jareš</h1>
-                </div>
-            </a>
-            <nav>
-                <% for (var i in theme.menu) { %>
-                <a href="<%- url_for(theme.menu[i]) %>">
-                    <%= i %></a>
-                <% } %>
-            </nav>
-        </div>
-        <div class="title">
-            <h1>
-                <%- page.title %>
-            </h1>
+    <div class="menu">
+        <a href="<%- config.root %>">
             <div>
-                <% page.tags.each(function(tag){ %>
-                <a href="<%- config.root %><%- tag.path %>">
-                    <p><%= tag.name %></p>
-                </a>
-                <% }); %>
+                <%- partial('_partial/logo') %>
+                <h1>Jakub<br />Jareš</h1>
             </div>
+        </a>
+        <nav>
+            <% for (var i in theme.menu) { %>
+            <a href="<%- url_for(theme.menu[i]) %>">
+                <%= i %></a>
+            <% } %>
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            <%- page.title %>
+        </h1>
+        <div>
+            <% page.tags.each(function(tag){ %>
+            <a href="<%- config.root %><%- tag.path %>">
+                <p><%= tag.name %></p>
+            </a>
+            <% }); %>
         </div>
-    </header>
+    </div>
+</header>
 
 <div class="article">
 
     <div class="article-content">
         <%- page.content %>
     </div>
-    
-    <p>
-        <%= page.date.format(config.date_format) %>
-        <% if(page.author) { %>
-        by
-        <%- page.author %>
-        <% } %>
-    </p>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="<% page.date.format('YYYY-MM-DD') %>">
+            <%= page.date.format('DD MMMM YYYY') %>
+        </time>
+    </div>
 </div>
 <%- partial('_partial/footer') %>
