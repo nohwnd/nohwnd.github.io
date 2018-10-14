@@ -201,9 +201,9 @@ a:hover {
     h1 {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      text-align: center;
-      letter-spacing: 5px;
+      justify-content: flex-start;
+      text-align: left;
+      letter-spacing: 3px;
 
       &:before {
         background-color: white;

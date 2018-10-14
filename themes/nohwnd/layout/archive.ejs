@@ -1,4 +1,16 @@
-<% page.posts.each(function(item){ %>
-<%- partial('_partial/article-archive', {item: item}) %>
+<header class="main-page-header">
+<div class="main-page-header-filler"></div>
+<%- partial('_partial/header') %>
+</header>
+
+
+<div class="list">
+
+<% site.tags.findOne({name: page.tag}).posts
+    .sort('date',1).reverse().each(function(item){ %>
+<div class="list-item">
+<%- partial('_partial/article-excerpt', {item: item}) %>
+</div>
 <% }); %>
-<%- partial('_partial/pagination') %>
+</div>
+<%- partial('_partial/footer') %>

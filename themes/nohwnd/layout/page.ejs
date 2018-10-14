@@ -22,9 +22,7 @@
             <div>
                 <% page.tags.each(function(tag){ %>
                 <a href="<%- config.root %><%- tag.path %>">
-                    <p>
-                        <%= tag.name %>
-                    </p>
+                    <p><%= tag.name %></p>
                 </a>
                 <% }); %>
             </div>
