@@ -1,4 +1,4 @@
 ---
 layout: talks
-title: tslks
+title: talks
 ---
