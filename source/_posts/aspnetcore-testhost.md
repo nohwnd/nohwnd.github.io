@@ -13,6 +13,8 @@ categories:
  
 Last week I started a project in F#. In the F# project we are using [Giraffe](https://github.com/giraffe-fsharp/Giraffe) for the backend and we are testing it with [Microsoft.AspNetCore.TestHost](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-2.2). This test host allows your ASP.NET Core app to run and be queried, just like it normally would, but with one instance per test and with doing everything in memory. This is great for integration tests, because with a very simple setup you can test your routing, validation, permissions, http return codes, serialization and so on. A lot of stuff that your might otherwise find difficult to test. 
 
+<!-- more -->
+
 A typical setup in C# would look like this: 
 
 ```csharp
