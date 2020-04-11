@@ -44,13 +44,13 @@ Describe "Linux acceptance" -Tag "Acceptance" -Skip:(!$IsLinux) {
     }
 
     It "linux test" { 
-        # your tests code
+        # your test code
     }
 }
 
 Describe "Windows acceptance" -Tag "Acceptance" -Skip:(!$IsWindows) {
     It "windows test" { 
-        # your tests code
+        # your test code
     }
 }
 ```
@@ -84,13 +84,13 @@ Describe "Linux acceptance" -Tag "Acceptance" -Skip:(!$IsLinux) {
     Start-Sleep -Seconds 1
 
     It "linux test" { 
-        # your tests code
+        # your test code
     }
 }
 
 Describe "Windows acceptance" -Tag "Acceptance" -Skip:(!$IsWindows) {
     It "windows test" { 
-        # your tests code
+        # your test code
     }
 }
 ```
