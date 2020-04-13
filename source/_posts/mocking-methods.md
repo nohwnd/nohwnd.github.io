@@ -204,3 +204,5 @@ All of this combined gives us the big example above, which allows us to mock the
 ## Summary 
 
 Mocking methods in PowerShell is quite easy once you get the flow of it. It relies on shadowing methods by our own script methods. Next time we will look at how to capture the parameters that were passed in. 
+
+> 🌵 A question was asked why am I using `BeforeEach` to setup the mock instead `BeforeAll`. And that is because we share a live reference to an object. Having a single reference to the mock from multiple tests, would make the tests depend on each other, and would make it pretty much the same as if we used script scoped variables in the first place. This way it is slightly slower, but more correct.
