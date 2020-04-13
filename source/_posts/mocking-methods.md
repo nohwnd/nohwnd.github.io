@@ -62,7 +62,9 @@ Describe "Start notepad and kill it" {
         # . C:\scripts\myscript.ps1
         function Update-NotepadDependencies {
             $processname = 'notepad.exe'
-            $process = Get-WmiObject -Query "select * from win32_process where name='notepad.exe'"
+            $process = Get-WmiObject `
+                -Query "select * from win32_process where name='notepad.exe'"
+
             if ($process) {
                 $result = $process.Terminate()
                 if ($result.ReturnValue -eq 0) {
@@ -99,7 +101,8 @@ Describe "Start notepad and kill it" {
             }
             
             # add .Terminate() method to the fake wmiObject
-            $mockWmiObject | Add-Member -MemberType ScriptMethod -Name Terminate -Value $mockTerminateMethod
+            $mockWmiObject | 
+                Add-Member -MemberType ScriptMethod -Name Terminate -Value $mockTerminateMethod
 
 
             # the Get-WmiObject will return the mock object we made above
@@ -113,7 +116,9 @@ Describe "Start notepad and kill it" {
 
             Assert-MockCalled `
                 -CommandName Get-WmiObject `
-                -ParameterFilter { $Query -eq "select * from win32_process where name='notepad.exe'" } `
+                -ParameterFilter { 
+                    $Query -eq "select * from win32_process where name='notepad.exe'" 
+                } `
                 -Exactly 1
         }
 
@@ -131,6 +136,8 @@ Describe "Start notepad and kill it" {
     }
 }
 ```
+
+## Explanation
 
 Explaining this rather involved example is best done backwards. So let's start from the `Mock` of `Get-WmiObject`. As we've seen the the first snippet, when the real `Get-WmiObject` is called, it returns a process object. In our mock we also return an object:
 
