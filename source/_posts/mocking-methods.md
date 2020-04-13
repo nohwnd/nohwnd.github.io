@@ -1,4 +1,3 @@
-
 ---
 title: Mocking methods in Pester
 date: 2020-04-13 10:54:00
@@ -10,7 +9,7 @@ categories:
  - article
 ---
 
-Mocking functions in Pester is easy, you just specify `Mock -CommandName f -MockWith { "mock" }` and you are done. But how do you mock a method on an object?
+Mocking functions in Pester is easy, you just use `Mock` and you are done. But how do you mock a method on an object?
 
 <!-- more -->
 
