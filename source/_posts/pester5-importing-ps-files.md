@@ -32,7 +32,7 @@ Describe "Get-Emoji" {
 
 Running this script will throw the following exception: 
 
-```
+```shell
 Starting test discovery in 1 files.
 Discovering tests in C:\tests\Get-Emoji.Tests.ps1.
 Found 1 tests. 66ms
@@ -103,9 +103,9 @@ in function: --
 
 ## Functions form their own scope don't they?
 
-You might be wondering how come that your script is actually dot-sourced in the correct scope when you are the problem is that you are running in a function. And functions make their own scope. And you would be right to wonder. 
+You might be wondering how come that your script is actually dot-sourced in the correct scope when the problem is that you are running in a function. And functions make their own scope. And you would be right to wonder. 
 
-`BeforeAll` relies on the fact that modules have their own session state, and that script also has its own session state. The scopes in both are tracked independetly, which allows me to take your ScriptBlock and dot-source it into the correct scope. And because you already dot-sourced into that scriptblock your functions and variables will end up in the correct scope place. 
+`BeforeAll` relies on the fact that modules have their own session state, and that script also has its own session state. The scopes in both are tracked independetly, which allows me to take your ScriptBlock and dot-source it into the correct scope. And because you already dot-sourced into that scriptblock your functions and variables will end up in the correct scope. 
 
 Here a quick example of what happens internally:
 

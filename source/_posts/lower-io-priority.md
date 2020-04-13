@@ -57,7 +57,7 @@ Now I wonder, how do I lower the priority for I/O bound operations? My first was
 
 Which yields:
 
-```
+```shell
 Normal
 Idle
 High

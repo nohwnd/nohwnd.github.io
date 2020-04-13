@@ -82,7 +82,7 @@ If you re-call the RED-GREEN-REFACTOR cycle of TDD, you know that now we should 
 
 And indeed the test fails horribly.
 
-```
+```shell
 At C:\Projects\TestFileDscResources\MyDscResources\MyDscResource.Tests.ps1:6 char:13
 +             Import-DSCResource -module 'MyDscResource'
 +             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -150,6 +150,7 @@ And the resource is implemented like this:
     ModuleVersion = '1.0'
 }
 ```
+
 ```powershell
 #file: MyDscResource.psm1
 [DscResource()]
@@ -171,7 +172,8 @@ class FileResource
     [void] Set() {}
 }
 ```
-```
+
+```shell
 Describing Test resource
  [-] Adds a file correctly 454ms
    Expected: {C:\Users\nohwnd\AppData\[...]\test.txt} to exist
@@ -239,7 +241,8 @@ $code = Get-Content "C:\Users\nohwnd\Documents\WindowsPowerShell\Modules\MyDscRe
 Invoke-Expression $code
 [FileResource]::new()
 ```
-```
+
+```shell
 Unable to find type [FileResource]. Make sure that the assembly that contains this type is loaded.
 At line:2 char:1
 + [FileResource]::new()

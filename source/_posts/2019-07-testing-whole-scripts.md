@@ -39,7 +39,7 @@ Describe "Get-Avocado" {
 }
 ```
 
-```log
+```shell
 # output
 
 🥑 <---  this should not be here, and comes from 
@@ -74,7 +74,7 @@ Describe "Get-Avocado" {
 }
 ```
 
-```log
+```shell
 # output
 
    <--- no extra output here
@@ -98,7 +98,7 @@ Describe "Get-Avocado" {
     }
 }
 ```
-```log
+```shell
 # output
 
    <--- no extra output here

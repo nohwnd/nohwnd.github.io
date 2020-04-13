@@ -57,7 +57,7 @@ Describe "Windows acceptance" -Tag "Acceptance" -Skip:(!$IsWindows) {
 
 When we specify `-ExcludeTagFilter 'Acceptance'`, there will be no tests to run, and Pester returns almost immediately:
 
-```
+```shell
 PS C:\tests> Invoke-Pester  -ExcludeTagFilter "Acceptance"
 
 
@@ -97,7 +97,7 @@ Describe "Windows acceptance" -Tag "Acceptance" -Skip:(!$IsWindows) {
 
 Excluding all tests in this file will take **more than 2 seconds** to complete:
 
-```
+```shell
 PS C:\tests> Invoke-Pester  -ExcludeTagFilter "Acceptance"
 
 Starting test discovery in 1 files.
@@ -151,7 +151,7 @@ Write-Host "Run start" -ForegroundColor Cyan
 
 If you run it in a console you will see this output: 
 
-```
+```shell
 Discovery start
 -> Describe function executed
 -> Describe scriptblock was executed

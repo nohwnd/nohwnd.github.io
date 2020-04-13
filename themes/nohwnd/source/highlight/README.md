@@ -128,7 +128,7 @@ it can be added manually:
 **On Almond.** You need to use the optimizer to give the module a name. For
 example:
 
-```
+```shell
 r.js -o name=hljs paths.hljs=/path/to/highlight out=highlight.js
 ```
 
