@@ -28,7 +28,7 @@ public string Name {get;set; }
 
 We have this CSV file header and want to make it a full C# class.
 
-```
+```shell
 Id Name Value ...20 more properties...
 ```
 
@@ -36,13 +36,13 @@ We could add a new line after every word, and then write in the property definit
 
 OR we can just replace every word with the correct definition, with the captured word in the middle. Something like this:
 
-```
+```shell
 public string <the word> { get; set; }<new line>
 ```
 
 Expressing this in regular expression replacement looks like this:
 
-```
+```shell
 find:     (\w+)
 replace:  public string $1 { get; set; }\n`
 ```

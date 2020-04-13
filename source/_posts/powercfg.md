@@ -28,7 +28,7 @@ powercfg.exe -SETACVALUEINDEX `
 
 Using Guids is great for compatibility, but awful for readability. So if you are on Windows 7 or newer use aliases instead. You can list all the aliases by `powercfg.exe -aliases` which is missing from the help for some reason.
 
-```text
+```shell
 a1841308-3541-4fab-bc81-f71556f20b4a  SCHEME_MAX
 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  SCHEME_MIN
 381b4222-f694-41f0-9685-ff5bb260df2e  SCHEME_BALANCED
