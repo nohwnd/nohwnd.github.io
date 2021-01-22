@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css">
+    
+<script src="/highlight/highlight.pack.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Pester - Using Should -Throw
+        </h1>
+        <div>
+            
+            <a href="/tags/powershell/">
+                <p>powershell</p>
+            </a>
+            
+            <a href="/tags/pester/">
+                <p>pester</p>
+            </a>
+            
+            <a href="/tags/testing/">
+                <p>testing</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>This weekend I added type filter and <code>-PassThru</code> to <code>Should -Throw</code>. Let’s see how are they useful.</p>
+<blockquote>
+<p>🔥 This feature is not released yet, get pre-release <a target="_blank" rel="noopener" href="https://www.powershellgallery.com/packages/Pester/4.2.0-alpha3">version 4.2.0-alpha3</a> to use it.</p>
+</blockquote>
+<h2 id="Type-filter"><a href="#Type-filter" class="headerlink" title="Type filter"></a>Type filter</h2><p>Filtering exceptions on type is one of the most basic capabilities of any assertion that deals with exceptions, yet we were missing it till now. But there it is now:</p>
+<a id="more"></a>
+
+<pre><code class="powershell">Describe &quot;Get-Computer&quot; &#123;
+    # function is here only to make the example work
+    function Get-Computer &#123; throw [NotImplementedException]&#39;&#39; &#125;
+
+    It &#39;throws argument exception when given $null&#39; &#123;
+        &#123; Get-Computer `$null &#125; |
+            Should -Throw -ExceptionType ([ArgumentException])
+    &#125;
+&#125;
+
+# outputs
+# Describing Get-Computer
+#   [-] throws argument exception when given $null 35ms
+#     Expected an exception, with type &#123;System.ArgumentException&#125;
+#     to be thrown, but the exception type was
+#     &#39;&#123;System.NotImplementedException&#125;&#39;.</code></pre>
+<p>The type filter matches the exception type and any of it’s subtypes. This means that throwing <code>ArgumentException</code> or <code>ArgumentNullException</code> would make the previous test pass. This might be surprising to you, but catching the least specific exception from the same family makes your tests less brittle, and hence easier to change.</p>
+<h2 id="Better-error-messages"><a href="#Better-error-messages" class="headerlink" title="Better error messages"></a>Better error messages</h2><p>The error messages got better, because now you see which filters were not matched, instead of all the filters that you applied, like this:</p>
+<pre><code class="powershell">Describe &quot;Get-Computer&quot; &#123;
+    # function is here only to make the example work
+    function Get-Computer &#123;
+        throw [ArgumentNullException]&#39;Value was null.&#39; &#125;
+
+    It &#39;throws argument exception when given $null&#39; &#123;
+        &#123; Get-Computer `$null &#125; |
+            Should -Throw `
+                -ExceptionType ([ArgumentException]) `
+                -ErrorId &#39;SpecificErrorId&#39;
+    &#125;
+&#125;
+
+# outputs
+# Describing Get-Computer
+#   [-] throws argument exception when given $null 76ms
+#     Expected an exception, with type &#123;System.ArgumentException&#125;,
+#     with FullyQualifiedErrorId &#39;SpecificErrorId&#39; to be thrown,
+#     but the FullyQualifiedErrorId was &#39;Value cannot be null.</code></pre>
+<h2 id="Should-Not-Throw-changed-behavior"><a href="#Should-Not-Throw-changed-behavior" class="headerlink" title="Should -Not -Throw changed behavior"></a>Should -Not -Throw changed behavior</h2><p><code>Should -Not -Throw</code> the ugly sister of <code>Should -Throw</code>, was swallowing errors when a filter was defined and the thrown exception was not met. This did not make sense, the premise of <code>Should -Not -Throw</code> is that an exception was <em>not</em> thrown. So when any exception is thrown the assertion should fail, no matter what filter you specify. The recommended practice is simply not using it, because every line is an implicit should not throw.</p>
+<h2 id="PassThru"><a href="#PassThru" class="headerlink" title="PassThru"></a>PassThru</h2><p>There is a new parameter for that allows you to pass the caught error object so you can examine it further. This is useful when you are interested in the inner exception, or when you catch an aggregate exception and need to extract some info from it.</p>
+<pre><code class="powershell">$sb = &#123; throw (New-Object Exception -ArgumentList &quot;ex1&quot;,
+                (New-Object Exception -ArgumentList &quot;inner1&quot;,
+                    (New-Object Exception -ArgumentList &quot;inner2&quot;))) &#125;
+
+
+$err = $sb | Should -Throw -PassThru
+$err.Exception.InnerException.InnerException.Message |
+    Should -Be &quot;File not found.&quot;
+
+# outputs
+# Expected strings to be the same, but they were different.
+# Expected length: 15
+# Actual length:   6
+# Strings differ at index 0.
+# Expected: &#123;File not found.&#125;
+# But was:  &#123;inner2&#125;
+# -----------^</code></pre>
+<p>Here we are interested in the message of the inner-inner exception. So we capture the object, and then use <code>Should -Be</code> to further examine it.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p><code>Should -Throw</code> got better, so try to use it and help the project by reporting how it works on twitter, powershell slack or our repo. Also checkout other cool features, like <code>-Because</code> or <code>-HaveCount</code>. For full listing see the <a target="_blank" rel="noopener" href="https://github.com/pester/Pester/blob/master/CHANGELOG.md">our changelog</a>.</p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            19 December 2017
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a target="_blank" rel="noopener" href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a target="_blank" rel="noopener" href="https://github.com/nohwnd">github</a>&bull;
+    <a target="_blank" rel="noopener" href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css">
+    
+<script src="/highlight/highlight.pack.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Powercfg.exe tips & tricks
+        </h1>
+        <div>
+            
+            <a href="/tags/windows/">
+                <p>windows</p>
+            </a>
+            
+            <a href="/tags/power-management/">
+                <p>power management</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>Yesterday I had to write a script to do some initial setup on Windows and one of the steps was configuring power settings. I remembered that there were few useful options, but googling them did not help me. Luckily I found the pieces in an old script I wrote. So here are few tips for using <code>powercfg.exe</code></p>
+<a id="more"></a>
+
+
+<h2 id="Use-Guid-aliases"><a href="#Use-Guid-aliases" class="headerlink" title="Use Guid aliases"></a>Use Guid aliases</h2><p>In many online resources you find commands like these:</p>
+<pre><code class="batch">powercfg.exe -SETACVALUEINDEX `
+    &#39;381b4222-f694-41f0-9685-ff5bb260df2e&#39; `
+    &#39;238c9fa8-0aad-41ed-83f4-97be242c8f20&#39; `
+    &#39;29f6c1db-86da-48c5-9fdb-f2b67b1f44da&#39; `
+    3600</code></pre>
+<p>Using Guids is great for compatibility, but awful for readability. So if you are on Windows 7 or newer use aliases instead. You can list all the aliases by <code>powercfg.exe -aliases</code> which is missing from the help for some reason.</p>
+<pre><code class="shell">a1841308-3541-4fab-bc81-f71556f20b4a  SCHEME_MAX
+8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  SCHEME_MIN
+381b4222-f694-41f0-9685-ff5bb260df2e  SCHEME_BALANCED
+e73a048d-bf27-4f12-9731-8b2076e8891f  SUB_BATTERY
+637ea02f-bbcb-4015-8e2c-a1c7b9c0b546    BATACTIONCRIT
+d8742dcb-3e6a-4b3c-b3fe-374623cdcf06    BATACTIONLOW
+5dbb7c9f-38e9-40d2-9749-4f8a0e9f640f    BATFLAGSCRIT
+...</code></pre>
+<p>It gives you are very nice hierarchical table, but it’s a bit difficult to guess what exactly the alias means. A better way to lookup the information is by <code>powercfg.exe -query</code>, especially if you reduce the output to only show the alias and the line before it: </p>
+<pre><code class="powershell">powercfg.exe -query | Select-String &#39;GUID Alias&#39; -context 1,0
+
+## output
+#   Power Scheme GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (Balanced)
+# &gt;   GUID Alias: SCHEME_BALANCED
+#     Subgroup GUID: 0012ee47-9041-4b5d-9b77-535fba8b1442  (Hard disk)
+# &gt;     GUID Alias: SUB_DISK
+#       Power Setting GUID: 6738e2c4-e8a5-4a42-b16a-e040e769756e  (Turn off hard disk after)
+# &gt;       GUID Alias: DISKIDLE
+#     Subgroup GUID: 238c9fa8-0aad-41ed-83f4-97be242c8f20  (Sleep)
+# &gt;     GUID Alias: SUB_SLEEP
+# ...</code></pre>
+<p>Inspecting the full output we can easily figure out that the command above translates to:</p>
+<pre><code class="POWERSHELL">powercfg.exe -SETACVALUEINDEX SCHEME_BALANCED SUB_SLEEP STANDBYIDLE 3600</code></pre>
+<p>Which is a valid <code>powercfg.exe</code> command and can easily be understood as “On Balanced scheme, when connected to electric outlet, sleep after 1 hour of idleness.”.</p>
+<h2 id="Use-schema-aliases"><a href="#Use-schema-aliases" class="headerlink" title="Use schema aliases"></a>Use schema aliases</h2><p>In the previous command we used <code>SCHEME_BALANCED</code> to change built-in Balanced scheme. And there are also <code>SCHEME_MIN</code> for the Maximum performance, and <code>SCHEME_MAX</code> for Power saver scheme. The alias names are a bit backwards, because MIN stands for minimum power saved -&gt; Maximum performance, and vice versa for MAX.</p>
+<p>The three aliases above are easy to discover, because they are listed on the top of the <code>-alaises</code> table, but there are two more that are extremely useful: </p>
+<p><code>SCHEME_ALL</code> pointing to all schemes. This one saves you ton of work when you try to make some settings consistent over all available schemes.</p>
+<p><code>SCHEME_CURRENT</code> pointing to the currently active scheme. This one is extremely useful when applying changes that require re-activation of the scheme. In that case you can simply do <code>powercfg.exe -setactive SCHEME_CURRENT</code>. It looks like non-sense, but without it some of the settings won’t work.</p>
+<p>These two aliases you can discover by using <code>-aliasesh</code> parameter which lists all aliases, including aliases for hidden settings.</p>
+<h2 id="Inspect-hidden-settings"><a href="#Inspect-hidden-settings" class="headerlink" title="Inspect hidden settings"></a>Inspect hidden settings</h2><p>The tool can change way more then it seems. There is probably a good reason to hide most of the options by default, but listing them could be more obvious. Listing all the settings can be done by using an undocumented <code>-qh</code> switch (no <code>-queryh</code> does not work), which on my system yields 137 options vs. 31 options for the normal query.</p>
+<pre><code class="powershell">powercfg.exe -qh | 
+    Select-String &quot;Power Setting Guid&quot; | 
+    Measure-Object | Select -Expand Count
+
+powercfg.exe -query |
+    Select-String &quot;Power Setting Guid&quot; |
+    Measure-Object | Select -Expand Count</code></pre>
+<p>Most of the settings you should not fiddle with, but for example setting the time to turn off display on lock screen from the default 1 minute to 10 seconds can be done like this:</p>
+<pre><code class="powershell">powercfg.exe -setacvalueindex SCHEME_CURRENT SUB_VIDEO VIDEOCONLOCK 10
+
+# this won&#39;t work without activating the currently active scheme
+# (weird I know)
+powercfg.exe -setactive SCHEME_CURRENT</code></pre>
+<p>Making the settings visible is possible via <code>-attributes</code>, but the settings apply even when hidden so I am not sure why you would need to do it:</p>
+<pre><code class="powershell"># show hidden setting 
+ powercfg.exe -attributes SUB_VIDEO VIDEOCONLOCK -ATTRIB_HIDE
+
+# hide setting
+ powercfg.exe -attributes SUB_VIDEO VIDEOCONLOCK +ATTRIB_HIDE</code></pre>
+<h2 id="Reset-to-default"><a href="#Reset-to-default" class="headerlink" title="Reset to default"></a>Reset to default</h2><p>It is always a good idea to make backup when fiddling with important system settings, but if you didn’t and now you want to revert all your changes, simply call <code>powercfg.exe -restoredefaultschemes</code> to put everything to it’s initial state.</p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            08 November 2018
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a target="_blank" rel="noopener" href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a target="_blank" rel="noopener" href="https://github.com/nohwnd">github</a>&bull;
+    <a target="_blank" rel="noopener" href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

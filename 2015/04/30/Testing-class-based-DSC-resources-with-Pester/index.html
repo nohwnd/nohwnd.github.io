@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css">
+    
+<script src="/highlight/highlight.pack.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Testing class based DSC resources with Pester
+        </h1>
+        <div>
+            
+            <a href="/tags/powershell/">
+                <p>powershell</p>
+            </a>
+            
+            <a href="/tags/pester/">
+                <p>pester</p>
+            </a>
+            
+            <a href="/tags/testing/">
+                <p>testing</p>
+            </a>
+            
+            <a href="/tags/dsc/">
+                <p>dsc</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p><em>I am using PowerShell version 5.0.10018.0 for the examples. This version of PowerShell ships with the WMF February 2015 Preview package that you can download here.</em></p>
+<p>I was asked if there are any resources on testing class based DSC resources. And to be honest I am not sure. We shortly discussed the possibilities on the PS MVP mailing list, but I am still not sure what are the possibilities. So why not discover them while learning something more about the topic.</p>
+<p>Luckily there are quite a few great resources on how to actually create a class based DSC resource, and what you need to do that. Some of them are:</p>
+<p>Creating a Class based DSC Resource using PowerShell</p>
+<p>Class-defined DSC resources in Windows Management Framework 5.0 Preview</p>
+<p>Writing a custom DSC resource with PowerShell classes</p>
+<a id="more"></a>
+
+<h3 id="Writing-the-first-test"><a href="#Writing-the-first-test" class="headerlink" title="Writing the first test"></a>Writing the first test</h3><p>I will be using the example code from the last article to go outside-in with Pester, and to pretend that I am actually writing the code myself.</p>
+<p>At the bottom of the Microsoft article you find an example of how the finished resource is used. This example is an ideal candidate for our first integration test. This integration test will describe the basic functionality of the resource</p>
+<p>The test looks like this:</p>
+<pre><code class="powershell">Describe &#39;Test resource&#39; &#123;
+    It &#39;Adds a file correctly&#39; &#123;
+        # -- Arrange
+        Configuration Test
+        &#123;
+            Import-DSCResource -module &#39;MyDscResource&#39;
+            FileResource file
+            &#123;
+                Path = &quot;TestDrive:\test.txt&quot;
+                Ensure = &quot;Present&quot;
+
+                SourcePath = &quot;TestDrive:\Source\test.txt&quot;
+            &#125;
+        &#125;
+
+        New-Item -ItemType Directory -Name Source -Path TestDrive:\
+        Set-Content -Path TestDrive:\Source\test.txt -Value &quot;some string&quot;
+
+        New-Item -ItemType Directory -Name Output -Path TestDrive:\
+
+        # -- Act
+        Test -OutputPath TestDrive:\Output
+        Start-DscConfiguration -Verbose -Wait TestDrive:\Output
+
+        # -- Assert
+        &quot;TestDrive:\test.txt&quot; | should Exist
+    &#125;
+&#125;</code></pre>
+<p>I had to slightly change the code shown in the article, but that’s expected because we are using preview version of the technology. The test has three parts: Arrange, Act and Assert.</p>
+<p>In the Arrange part I most importantly define the DSC configuration using the <code>FileResource</code> resource. The configuration defines that: “I desire the file TestDrive:\test.txt to be present”.</p>
+<p>The configuration also defines the <code>SourcePath</code>, which is where the original file is placed. For the test I just use the TestDrive to store the file.</p>
+<p>I also create all the needed files and folders in the Arrange part of the test.</p>
+<p>In the Act phase I start by generating the configuration MOF file by calling it by it’s name: <code>Test</code>. And then continue to exercise the system-under-test (SUT) by actually invoking the DSC configuration.</p>
+<p>In the last part, Assert, I check if the desired action was really performed. That is, if the file <code>test.txt</code> is in the root of the <code>TestDrive:\</code>.</p>
+<p>This should do for our first test. So let’s run it and see if it fails.</p>
+<h3 id="Running-the-first-test"><a href="#Running-the-first-test" class="headerlink" title="Running the first test"></a>Running the first test</h3><p>If you re-call the RED-GREEN-REFACTOR cycle of TDD, you know that now we should let the test run, and make sure it fails (RED). So let’s press F5 to do just that.</p>
+<p>And indeed the test fails horribly.</p>
+<pre><code class="shell">At C:\Projects\TestFileDscResources\MyDscResources\MyDscResource.Tests.ps1:6 char:13
++             Import-DSCResource -module &#39;MyDscResource&#39;
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unable to load module &#39;MyDscResource&#39;: module not found.
+At C:\Projects\TestFileDscResources\MyDscResources\MyDscResource.Tests.ps1:7 char:13
++             FileResource file
++             ~~~~~~~~~~~~
+Undefined DSC resource &#39;FileResource&#39;. Use Import-DSCResource to import the resource.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ModuleNotFoundDuringParse</code></pre>
+<p>If you now assume that we saw the test fail and we can proceed to implement the correct behavior, you should know that this is not the case. The test failed, but it did not fail in the correct way. It must fail in the assertion to count as a proper fail.</p>
+<p>To get to the point where the test fails correctly we can just follow the error messages, and oh boy there are many. The first few error messages suggested that there is no <code>FileResource</code> available in the module directory. There were also few Access Denied error messages. And the <code>TestDrive:\</code> also could not be found, because the configuration is done by a Windows service running as the SYSTEM account. I also had problems with remoting not being setup correctly.</p>
+<p>So in the end I ended doing this:</p>
+<ul>
+<li>Placing <code>MyDscResource.psm1</code> and <code>MyDscResource.psd1</code> in <code>C:\Program Files\WindowsPowerShell\Modules\MyDscResource</code> (file contents are listed below)</li>
+<li>Setting my public network to private network</li>
+<li>Enabling PowerShell remoting by running Enable-PSRemoting -Force</li>
+<li>Running the tests AsAdministrator</li>
+<li>Using $TestDrive (real path to the temporary folder) instead of the TestDrive PSDrive</li>
+</ul>
+<p>So the test ended up looking like this:</p>
+<pre><code class="powershell">Describe &#39;Test resource&#39; &#123;
+    It &#39;Adds a file correctly&#39; &#123;
+        # -- Arrange
+        Configuration Test
+        &#123;
+            Import-DSCResource -module &#39;MyDscResource&#39;
+            FileResource file
+            &#123;
+                Path = &quot;$testDrive\test.txt&quot;
+                Ensure = &quot;Present&quot;
+
+                SourcePath = &quot;$testDrive\Source\test.txt&quot;
+            &#125;
+        &#125;
+
+        New-Item -ItemType Directory -Name Source -Path $testDrive
+        Set-Content -Path &quot;$testDrive\Source\test.txt&quot; -Value &quot;some string&quot;
+
+        New-Item -ItemType Directory -Name Output -Path $testDrive
+
+        # -- Act
+        Test -OutputPath &quot;$testDrive\Output&quot;
+        Start-DscConfiguration -Verbose -Force -Wait &quot;$testDrive\Output&quot;
+
+        # -- Assert
+        &quot;$testDrive\test.txt&quot; | should Exist
+    &#125;
+&#125;</code></pre>
+<p>And the resource is implemented like this:</p>
+<pre><code class="powershell">#file MyDscResource.psd1
+@&#123;
+    RootModule = &#39;MyDscResource.psm1&#39;
+
+    DscResourcesToExport = &#39;FileResource&#39;
+
+    ModuleVersion = &#39;1.0&#39;
+&#125;</code></pre>
+<pre><code class="powershell">#file: MyDscResource.psm1
+[DscResource()]
+class FileResource
+&#123;
+    [DscProperty(Key)]
+    [string]$Path
+
+    [DscProperty(Mandatory)]
+    [string]$SourcePath
+
+    [DscProperty(Mandatory)]
+    [string] $Ensure #not using the Ensure type yet
+
+    [bool] Test() &#123; return $false &#125;
+
+    [FileResource] Get() &#123; return $null &#125;
+
+    [void] Set() &#123;&#125;
+&#125;</code></pre>
+<pre><code class="shell">Describing Test resource
+ [-] Adds a file correctly 454ms
+   Expected: &#123;C:\Users\nohwnd\AppData\[...]\test.txt&#125; to exist
+   at line: 26 in C:\Users\nohwnd\Desktop\MyDscResource.Tests.ps1
+   26:         &quot;$testDrive\test.txt&quot; | should Exist</code></pre>
+<p>Uff!</p>
+<h3 id="Making-the-first-test-green"><a href="#Making-the-first-test-green" class="headerlink" title="Making the first test green"></a>Making the first test green</h3><p>So now that we have all the infrastructure setup satisfying the test is really simple. All you need to do is to create the <code>$testDrive\test.txt</code> file. So let’s change the <code>Set()</code> method to do that.</p>
+<pre><code class="powershell">#file: MyDscResource.psm1[DscResource()]
+class FileResource
+&#123;
+    [DscProperty(Key)]
+    [string]$Path
+
+    [DscProperty(Mandatory)]
+    [string]$SourcePath
+
+    [DscProperty(Mandatory)]
+    [string] $Ensure
+
+    [bool] Test() &#123; return $false &#125;
+
+    [FileResource] Get() &#123; return $null &#125;
+
+    [void] Set() &#123;
+
+        New-Item -Force -ItemType File $this.Path # &lt;---
+
+    &#125;
+&#125;</code></pre>
+<p>Running the test now should, satisfy the assert condition. But depending on how fast you were to run the test, you did or did not get the same failure message as before. But if you keep running the tests it will fix itself and the test will become GREEN. So there must be some kind of timeout/threshold after which the module is reloaded… Uff again.</p>
+<p>This does not look like a feasible path to test our DSC resources.</p>
+<h3 id="Giving-up"><a href="#Giving-up" class="headerlink" title="Giving up"></a>Giving up</h3><p>Giving up on actually running the resource I found there is this new cmdlet called <code>Invoke-DscResource</code> which does exactly what we need, it let’s us call the Set, Get and Test methods of the resource. But unfortunately I can’t get it to work with class based DSC resources. I always get “resource not found” exception.</p>
+<p>Another option would be to simply import the class, instantiate it and call the methods without using the <code>Invoke-DscResource</code> cmdlet. But for some reason that does not work also. Unless the class is defined in the same file (not even in a script block) I can’t instantiate it. All of this fails:</p>
+<pre><code class="powershell">Import-Module &quot;C:\Users\nohwnd\Documents\WindowsPowerShell\Modules\MyDscResource\MyDscResource.psd1&quot;
+[FileResource]::new()
+
+$sb = [scriptblock]::Create( &quot;class c &#123;&#125;&quot;)
+&amp;$sb
+
+[c]::new()
+
+
+$code = Get-Content &quot;C:\Users\nohwnd\Documents\WindowsPowerShell\Modules\MyDscResource\MyDscResource.psm1&quot; | Out-String
+$sb = [scriptblock]::Create( $code )
+&amp;$sb
+
+[FileResource]::new()
+
+#remember the old days? https://johanleino.wordpress.com/2013/09/25/pester-how-to-unit-test-your-powershell-modules/
+$code = Get-Content &quot;C:\Users\nohwnd\Documents\WindowsPowerShell\Modules\MyDscResource\MyDscResource.psm1&quot; | Out-String
+Invoke-Expression $code
+[FileResource]::new()</code></pre>
+<pre><code class="shell">Unable to find type [FileResource]. Make sure that the assembly that contains this type is loaded.
+At line:2 char:1
++ [FileResource]::new()
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (FileResource:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+
+
+Unable to find type [c]. Make sure that the assembly that contains this type is loaded.
+At line:5 char:1
++ [c]::new()
++ ~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (c:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+
+Unable to find type [FileResource]. Make sure that the assembly that contains this type is loaded.
+At line:12 char:1
++ [FileResource]::new()
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (FileResource:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+
+Unable to find type [FileResource]. Make sure that the assembly that contains this type is loaded.
+At line:17 char:1
++ [FileResource]::new()
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (FileResource:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound</code></pre>
+<p>So at the moment I don’t know how to test the class based resources, but there is new WMF preview published just few hours ago, so maybe this will change soon.</p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            30 April 2015
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a target="_blank" rel="noopener" href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a target="_blank" rel="noopener" href="https://github.com/nohwnd">github</a>&bull;
+    <a target="_blank" rel="noopener" href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>
