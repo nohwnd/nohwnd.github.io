@@ -5,6 +5,7 @@ tags:
  - talk
  - cz
  - docker
+ - .net
 categories:
  - talk
 ---

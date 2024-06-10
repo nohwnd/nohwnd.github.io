@@ -14,3 +14,5 @@ Talk from PSDayUK 2019 held Birmingham. In this talk I show the various techniqu
 <!-- more -->
 
 [![Cover your legacy scripts with tests](http://img.youtube.com/vi/8GWqkGvV3H4/0.jpg)](https://www.youtube.com/watch?v=8GWqkGvV3H4 "Cover your legacy scripts with tests")
+
+<https://www.youtube.com/watch?v=8GWqkGvV3H4>

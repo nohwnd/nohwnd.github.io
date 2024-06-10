@@ -213,8 +213,8 @@ a:hover {
 .list {
   display: flex;
   flex-direction: column;
-  align-content: center;
-  align-items: center;
+  align-content: flex-start;
+  align-items: flex-start;
 }
 
 .list-item {
@@ -318,7 +318,7 @@ a:hover {
 
     // code,
     pre {
-      font-family: "Fira Mono", monospace;
+      font-family: "Source Code Pro", monospace;
     }
   }
 
