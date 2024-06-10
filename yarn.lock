@@ -1022,15 +1022,10 @@ hexo-log@^4.0.1:
   dependencies:
     picocolors "^1.0.0"
 
-hexo-pagination@3.0.0:
+hexo-pagination@3.0.0, hexo-pagination@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/hexo-pagination/-/hexo-pagination-3.0.0.tgz#b98b050bbddff25ae646e3d00ad607ac6ae77ea7"
   integrity sha512-8oo1iozloZo7TojPVYg4IxL3SJKCBdSJ908fTlIxIK7TWJIKdYnQlW31+12DBJ0NhVZA/lZisPObGF08wT8fKw==
-
-hexo-pagination@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/hexo-pagination/-/hexo-pagination-1.0.0.tgz#c9c0ca3665267b9e9d0a89fc3edcaf3276907dc1"
-  integrity sha512-miEVFgxchPr2qNWxw0JWpJ9R/Yaf7HjHBZVjvCCcqfbsLyYtCvIfJDxcEwz1sDOC/fLzYPqNnhUI73uNxBHRSA==
 
 hexo-renderer-ejs@^2.0.0:
   version "2.0.0"
