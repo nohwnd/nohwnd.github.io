@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Environment testing with Pester: Testing your tests
+        </h1>
+        <div>
+            
+            <a href="/tags/pester/">
+                <p>pester</p>
+            </a>
+            
+            <a href="/tags/testing/">
+                <p>testing</p>
+            </a>
+            
+            <a href="/tags/environment-validation/">
+                <p>environment validation</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>This always starts of as a joke:</p>
+<blockquote>
+<p>So do you test your tests? When you test your tests, do you test the tests that test your tests?</p>
+</blockquote>
+<p>And people are often surprised that I in fact <em>do</em> test my tests.</p>
+<p>With Pester there are two different ways of testing that both look very similar, but are in fact very different.</p>
+<span id="more"></span>
+
+<h2 id="Unit-testing"><a href="#Unit-testing" class="headerlink" title="Unit testing"></a>Unit testing</h2><p>The first way of testing is unit testing. This is the testing as we traditionally know it. We have a function and our goal is using tests to prove that the function works correctly. An example of such function would be this function that reverses a string:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Get-ReversedString</span> <span class="params">(<span class="variable">$Value</span>)</span></span> &#123;</span><br><span class="line">    <span class="variable">$characters</span> = <span class="variable">$Value</span>.ToCharArray()</span><br><span class="line">    [<span class="built_in">array</span>]::reverse(<span class="variable">$characters</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$characters</span> <span class="operator">-join</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>To test such function we would write test that gives it the string <code>hello</code> and checks that the returned string is <code>olleh</code>. Like this:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&#x27;Get-ReversedString&#x27;</span> &#123;</span><br><span class="line">    It <span class="string">&quot;reverses string&quot;</span> &#123;</span><br><span class="line">        <span class="built_in">Get-ReversedString</span> <span class="literal">-Value</span> <span class="string">&#x27;hello&#x27;</span> |</span><br><span class="line">            Should <span class="literal">-Be</span> <span class="string">&#x27;olleh&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The test passes, because our function is implemented correctly and we are happy.</p>
+<h2 id="Environment-validation"><a href="#Environment-validation" class="headerlink" title="Environment validation"></a>Environment validation</h2><p>The second way is environment validation. As the name suggests we are validating that our environment is correct. By environment we mean that for example an antivirus is running, domain server is available, we have enough space on our hard disk, and we don’t run at 100% CPU all the time.</p>
+<p>Let’s create a very simple check that makes sure we have at least 10% of free space on our disk <code>C:</code>, which is a recommended practice for SSD disks:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&#x27;Disk health checks&#x27;</span> &#123;</span><br><span class="line">    It <span class="string">&#x27;Has at least 10% of free space&#x27;</span> &#123;</span><br><span class="line">        <span class="variable">$diskInfo</span> = <span class="built_in">Get-WmiObject</span> win32_logicaldisk |</span><br><span class="line">            <span class="built_in">where</span> DeviceId <span class="operator">-eq</span> <span class="string">&#x27;C:&#x27;</span></span><br><span class="line"></span><br><span class="line">        <span class="variable">$diskSize</span> = <span class="variable">$diskInfo</span>.Size</span><br><span class="line"></span><br><span class="line">        <span class="variable">$expectedFreeSpace</span> = <span class="variable">$diskSize</span> * <span class="number">0.1</span>  <span class="comment">#10% of the total size</span></span><br><span class="line">        <span class="variable">$expectedFreeSpaceInGigabytes</span> = [<span class="type">Math</span>]::Round(</span><br><span class="line">            <span class="variable">$expectedFreeSpace</span> / <span class="number">1</span>GB, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="variable">$freeSpace</span> = <span class="variable">$diskInfo</span>.FreeSpace</span><br><span class="line">        <span class="variable">$freeSpaceInGigabytes</span> = [<span class="type">Math</span>]::Round(<span class="variable">$freeSpace</span> / <span class="number">1</span>GB, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="variable">$freeSpaceInGigabytes</span> |</span><br><span class="line">            Should <span class="literal">-BeGreaterThan</span> <span class="variable">$expectedFreeSpaceInGigabytes</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>This test is pretty straightforward, and passes on my computer because I have about 320GB of free space on 500GB disk. Since this is testing the real environment your result may vary.</p>
+<h2 id="The-difference"><a href="#The-difference" class="headerlink" title="The difference"></a>The difference</h2><p>Looking back at those tests, they look quite similar. They are both written in PowerShell, and they both use Pester to execute. But there is a subtle but very <em>important difference</em>. In the first test, the traditional unit test, we are controlling the input to the function. In the second test, we are not controlling the input, instead the input is taken from the environment.</p>
+<p>This puts us in a weird position because the environment test can fail either because our test code is incorrect or because the environment is incorrect. And there is no simple way to know which one it is.</p>
+<p>To make it even worse, we don’t even know if our test <em>passes</em> because the environment is correct, or because we made a mistake in the test code. Here is a version of the previous test that will always pass:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Broken test that always passes.</span></span><br><span class="line">Describe <span class="string">&#x27;Disk health checks&#x27;</span> &#123;</span><br><span class="line">    It <span class="string">&#x27;Has at least 10% of free space&#x27;</span> &#123;</span><br><span class="line">        <span class="variable">$diskInfo</span> = <span class="built_in">Get-WmiObject</span> win32_logicaldisk |</span><br><span class="line">            <span class="built_in">where</span> DeviceId <span class="operator">-eq</span> <span class="string">&#x27;C:&#x27;</span></span><br><span class="line"></span><br><span class="line">        <span class="variable">$diskSize</span> = <span class="variable">$diskInfo</span>.Size</span><br><span class="line"></span><br><span class="line">        <span class="variable">$expectedFreeSpace</span> = <span class="variable">$diskSize</span> * <span class="number">0.1</span>  <span class="comment">#10% of the total size</span></span><br><span class="line">        <span class="variable">$expectedFreeSpacelnGigabytes</span> = [<span class="type">Math</span>]::Round(</span><br><span class="line">            <span class="variable">$expectedFreeSpace</span> / <span class="number">1</span>GB, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="variable">$freeSpace</span> = <span class="variable">$diskInfo</span>.FreeSpace</span><br><span class="line">        <span class="variable">$freeSpaceInGigabytes</span> = [<span class="type">Math</span>]::Round(<span class="variable">$freeSpace</span> / <span class="number">1</span>GB, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="variable">$freeSpaceInGigabytes</span> |</span><br><span class="line">            Should <span class="literal">-BeGreaterThan</span> <span class="variable">$expectedFreeSpaceInGigabytes</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>This is a tiny typo, but very unfortunate one. The test will always pass, and so our disk can fill with data until not a single bit is free. Yet our test will still report that the computer is in full health.</p>
+<p>(Cannot spot the typo? Just read on.)</p>
+<p>I am sure that you can imagine a more serious scenario than filling disk full of data. But even that sucks, especially after you spent all that time convincing your manager that automated environment tests are awesome.</p>
+<p>Unfortunately most of the environment validation tests are written this way. In fact my example is a particularly clean and neat example of an environment test. More often environment tests are a pile of complex code showed in tests. They are then sprinkled with params, conditionals, loops; and topped with configuration file to make them reusable between environments. Don’t fall in the same trap, just because you are using a test framework to run your code does not mean that your code is tested.</p>
+<h2 id="Testing-our-tests-environment-checks"><a href="#Testing-our-tests-environment-checks" class="headerlink" title="Testing our tests environment checks"></a>Testing our <del>tests</del> environment checks</h2><p>Now that we know the difference between environment tests and unit tests, let’s start calling the environment tests <em>environment checks</em> instead. This way we avoid being confused about what type of test I am talking about. It may even become more obvious that environment checks and unit tests are two very different beasts.</p>
+<p>The issue that we are facing now is that we have code in our checks that we have no easy way of testing. The solution is simple: Extract the body of the check into a function, and test that function. Like this:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Assert-MyDiskCHasMoreThan10PercentOfFreeSpace</span></span> &#123;</span><br><span class="line">    <span class="variable">$diskInfo</span> = <span class="built_in">Get-WmiObject</span> win32_logicaldisk |</span><br><span class="line">        <span class="built_in">where</span> DeviceId <span class="operator">-eq</span> <span class="string">&#x27;C:&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="variable">$diskSize</span> = <span class="variable">$diskInfo</span>.Size</span><br><span class="line"></span><br><span class="line">    <span class="variable">$expectedFreeSpace</span> = <span class="variable">$diskSize</span> * <span class="number">0.1</span>  <span class="comment">#10% of the total size</span></span><br><span class="line">    <span class="variable">$expectedFreeSpacelnGigabytes</span> = [<span class="type">Math</span>]::Round(</span><br><span class="line">        <span class="variable">$expectedFreeSpace</span> / <span class="number">1</span>GB, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="variable">$freeSpace</span> = <span class="variable">$diskInfo</span>.FreeSpace</span><br><span class="line">    <span class="variable">$freeSpaceInGigabytes</span> = [<span class="type">Math</span>]::Round(<span class="variable">$freeSpace</span> / <span class="number">1</span>GB, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="variable">$freeSpaceInGigabytes</span> |</span><br><span class="line">        Should <span class="literal">-BeGreaterThan</span> <span class="variable">$expectedFreeSpaceInGigabytes</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># our check</span></span><br><span class="line">Describe <span class="string">&#x27;Disk health checks&#x27;</span> &#123;</span><br><span class="line">    It <span class="string">&#x27;Has at least 10% of free space&#x27;</span> &#123;</span><br><span class="line">        <span class="built_in">Assert-MyDiskCHasMoreThan10PercentOfFreeSpace</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># our test for the check function</span></span><br><span class="line">Describe <span class="string">&quot;Assert-MyDiskCHasMoreThan10PercentOfFreeSpace&quot;</span> &#123;</span><br><span class="line">    It <span class="string">&quot;Throws when I have 1% of free disk space&quot;</span> &#123;</span><br><span class="line">        Mock <span class="built_in">Get-WmiObject</span> &#123;</span><br><span class="line">            [<span class="type">PSCustomObject</span>] <span class="selector-tag">@</span>&#123;</span><br><span class="line">                DeviceId = <span class="string">&#x27;C:&#x27;</span></span><br><span class="line">                Size = <span class="number">100</span>GB</span><br><span class="line">                FreeSpace = <span class="number">1</span>GB </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        &#123; <span class="built_in">Assert-MyDiskCHasMoreThan10PercentOfFreeSpace</span> &#125; |</span><br><span class="line">            Should <span class="literal">-Throw</span> <span class="literal">-ExpectedMessage</span> <span class="string">&#x27;Expected &#123;1&#125; to be greater than &#123;10&#125;&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&quot;Passes when I have 11% of free disk space&quot;</span> &#123;</span><br><span class="line">        Mock <span class="built_in">Get-WmiObject</span> &#123;</span><br><span class="line">            [<span class="type">PSCustomObject</span>] <span class="selector-tag">@</span>&#123;</span><br><span class="line">                DeviceId = <span class="string">&#x27;C:&#x27;</span></span><br><span class="line">                Size = <span class="number">100</span>GB</span><br><span class="line">                FreeSpace = <span class="number">11</span>GB</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">Assert-MyDiskCHasMoreThan10PercentOfFreeSpace</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># more tests to make sure the check function works</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Running the code you can see that the environment check passes, but one of the tests fails with:</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">[-] Throws when I have 1% of free disk space 64ms</span><br><span class="line">  Expected: the expression to throw an exception with message &#123;</span><br><span class="line">      Expected &#123;1&#125; to be greater than &#123;10&#125;</span><br><span class="line">  &#125;, an exception was not raised, message was &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The test fails because we expected an exception, but no exception was thrown. The failure message is not great, but we know that something is wrong with our code! Hooray!</p>
+<p>A bit of digging reveals that I kept the typo from the example that always passes. In  <code>$expectedFreeSpacelnGigabytes</code> I wrote <code>l</code> instead of <code>I</code>.</p>
+<p>Fixing the typo makes the tests pass and we just did the first step to making our environment validation more reliable and easier to maintain.</p>
+<blockquote>
+<p>Still not sure why it always passes?  When I made the typo, the <code>$expectedFreeSpaceInGigabytes</code> was never assigned any value and so it remained <code>$null</code>. This means that in the assertion we are comparing the free space on the disk with <code>$null</code>. Free disk space cannot be less than 0, and any positive number, including 0, is greater than <code>$null</code>. So the check will always pass.</p>
+</blockquote>
+<h2 id="Tests-functions-checks"><a href="#Tests-functions-checks" class="headerlink" title="Tests, functions, checks"></a>Tests, functions, checks</h2><p>So before we go further with our refactoring, let’s re-cap where we are. We now have a suite of tests for our check function. The tests use the standard unit testing techniques to make sure the function works correctly against known input. Then we have the check function itself that contains the whole body of the check and takes no parameters. And lastly we have a single check that validates the free disk space of our computer.</p>
+<p>Just by doing a single refactoring step we moved from code that we had no way of validating, to code that we can easily test, and be pretty sure it works correctly.</p>
+<h2 id="I-don’t-have-just-the-C-drive"><a href="#I-don’t-have-just-the-C-drive" class="headerlink" title="I don’t have just the C: drive"></a>I don’t have just the C: drive</h2><p>Now there is probably something you’ve been wondering since I factored that function out:</p>
+<blockquote>
+<p>I have 200 different configurations of servers, with more disk letters than there are in the alphabet. Do you really think I will be writing a single function for each of them?</p>
+</blockquote>
+<p>Probably not.</p>
+<p>The function we extracted is an extreme case. It is extremely specialized to do only one thing, but to do it properly. This makes our check very reliable. Once the check function passed our tests, there is no way we screw up when putting it in a check.</p>
+<p>In real life, writing a specialized function for every check is impractical. We are often prepared to sacrifice a bit of reliability for re-usability. But you must realize that every parameter is a potential bug. Take for example this function:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Assert-HasFreeSpace</span> <span class="params">(<span class="variable">$Disk</span>, <span class="variable">$Percent</span>)</span></span> &#123;</span><br><span class="line">    <span class="variable">$diskInfo</span> = <span class="built_in">Get-WmiObject</span> win32_logicaldisk |</span><br><span class="line">        <span class="built_in">where</span> DeviceId <span class="operator">-eq</span> (<span class="variable">$Disk</span> + <span class="string">&#x27;:&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="variable">$diskSize</span> = <span class="variable">$diskInfo</span>.Size</span><br><span class="line"></span><br><span class="line">    <span class="variable">$expectedFreeSpace</span> = <span class="variable">$diskSize</span> * (<span class="number">0.01</span> * <span class="variable">$Percent</span>)</span><br><span class="line">    <span class="variable">$expectedFreeSpaceInGigabytes</span> = [<span class="type">Math</span>]::Round(</span><br><span class="line">        <span class="variable">$expectedFreeSpace</span> / <span class="number">1</span>GB, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="variable">$freeSpace</span> = <span class="variable">$diskInfo</span>.FreeSpace</span><br><span class="line">    <span class="variable">$freeSpaceInGigabytes</span> = [<span class="type">Math</span>]::Round(<span class="variable">$freeSpace</span> / <span class="number">1</span>GB, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="variable">$freeSpaceInGigabytes</span> |</span><br><span class="line">        Should <span class="literal">-BeGreaterThan</span> <span class="variable">$expectedFreeSpaceInGigabytes</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>We can provide the drive letter, and the percentage of free space we want. In our check we would use it like this:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Assert-HasFreeSpace</span> <span class="literal">-Disk</span> <span class="string">&#x27;C&#x27;</span> <span class="literal">-Percent</span> <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>This is more re-usable, but makes our checks less reliable. We could again make a typo when putting it in a check and make it require 0% of free space. We don’t have any way of knowing whether or not we made that typo, so there is still some room for error. But we already greatly mitigated the risk in comparison to just putting raw code in the check. We can further mitigate it by validating the range of the <code>-Percent</code> parameter, and the <code>-Disk</code> parameter.</p>
+<p>Another way of mitigating the risk of authoring incorrect checks, is by wrapping the more general check function in a function that locks the parameters down. This is not practical for the 200 different server configs scenario we outlined on top, but it’s extremely useful when you have disk <code>C:</code> that needs 10% and disk <code>D:</code> that needs 20%.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Assert-MyDiskCHasMoreThan10PercentOfFreeSpace</span></span> &#123;</span><br><span class="line">    <span class="built_in">Assert-HasFreeSpace</span> <span class="literal">-Disk</span> <span class="string">&#x27;C&#x27;</span> <span class="literal">-Percent</span> <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Assert-MyDiskDHasMoreThan20PercentOfFreeSpace</span></span> &#123;</span><br><span class="line">    <span class="built_in">Assert-HasFreeSpace</span> <span class="literal">-Disk</span> <span class="string">&#x27;D&#x27;</span> <span class="literal">-Percent</span> <span class="number">20</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>This way you can re-use <code>Assert-HasFreeSpace</code> function from your environment validation toolkit, but still write extremely reliable checks, just by adding functions and two tests for those functions.</p>
+<p>The ratio of risk vs. re-usability you allow depends on you. And it depends on the environment you are dealing with.</p>
+<p>In my code I usually find the sweetspot when the functions are shaped like the <code>Assert-HasFreeSpace</code> function above. On the scale between raw code, and function that does just one thing, this is some 75%.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>We’ve been using <em>check function</em> to refer to the function we extracted, and <em>check</em> to refer to the test that executes it. This naming might make you think that the <em>check</em> is more important than the <em>check function</em>, but the opposite is true.</p>
+<p>The check function is the important part, the check (a Pester <code>It</code>) is just a convenient way of running the check function and getting a nicely colored output. We could easily rewrite the check function without using the <code>Should</code> assertion. We would then be able to run it without any dependency on Pester.</p>
+<p>What I am trying to say here is that the real value you are producing are the check functions. It is no different from any other scripting that you do in PowerShell. Write a function and test it to make sure it works correctly. That you will later run that function via Pester is no excuse for not testing it.</p>
+<p>Writing a pile of code in a test does not make the code correct. But apparently it makes it easier to dismiss testing the code as unnecessary, because you would be “testing your tests”. Don’t be that person, be proud that you test your environment validation checks.</p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            07 December 2017
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

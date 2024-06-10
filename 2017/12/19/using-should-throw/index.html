@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Pester - Using Should -Throw
+        </h1>
+        <div>
+            
+            <a href="/tags/powershell/">
+                <p>powershell</p>
+            </a>
+            
+            <a href="/tags/pester/">
+                <p>pester</p>
+            </a>
+            
+            <a href="/tags/testing/">
+                <p>testing</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>This weekend I added type filter and <code>-PassThru</code> to <code>Should -Throw</code>. Let’s see how are they useful.</p>
+<blockquote>
+<p>🔥 This feature is not released yet, get pre-release <a href="https://www.powershellgallery.com/packages/Pester/4.2.0-alpha3">version 4.2.0-alpha3</a> to use it.</p>
+</blockquote>
+<h2 id="Type-filter"><a href="#Type-filter" class="headerlink" title="Type filter"></a>Type filter</h2><p>Filtering exceptions on type is one of the most basic capabilities of any assertion that deals with exceptions, yet we were missing it till now. But there it is now:</p>
+<span id="more"></span>
+
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&quot;Get-Computer&quot;</span> &#123;</span><br><span class="line">    <span class="comment"># function is here only to make the example work</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Get-Computer</span></span> &#123; <span class="keyword">throw</span> [<span class="type">NotImplementedException</span>]<span class="string">&#x27;&#x27;</span> &#125;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&#x27;throws argument exception when given $null&#x27;</span> &#123;</span><br><span class="line">        &#123; <span class="built_in">Get-Computer</span> `$null &#125; |</span><br><span class="line">            Should <span class="literal">-Throw</span> <span class="literal">-ExceptionType</span> ([<span class="type">ArgumentException</span>])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># outputs</span></span><br><span class="line"><span class="comment"># Describing Get-Computer</span></span><br><span class="line"><span class="comment">#   [-] throws argument exception when given $null 35ms</span></span><br><span class="line"><span class="comment">#     Expected an exception, with type &#123;System.ArgumentException&#125;</span></span><br><span class="line"><span class="comment">#     to be thrown, but the exception type was</span></span><br><span class="line"><span class="comment">#     &#x27;&#123;System.NotImplementedException&#125;&#x27;.</span></span><br></pre></td></tr></table></figure>
+
+<p>The type filter matches the exception type and any of it’s subtypes. This means that throwing <code>ArgumentException</code> or <code>ArgumentNullException</code> would make the previous test pass. This might be surprising to you, but catching the least specific exception from the same family makes your tests less brittle, and hence easier to change.</p>
+<h2 id="Better-error-messages"><a href="#Better-error-messages" class="headerlink" title="Better error messages"></a>Better error messages</h2><p>The error messages got better, because now you see which filters were not matched, instead of all the filters that you applied, like this:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&quot;Get-Computer&quot;</span> &#123;</span><br><span class="line">    <span class="comment"># function is here only to make the example work</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Get-Computer</span></span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> [<span class="type">ArgumentNullException</span>]<span class="string">&#x27;Value was null.&#x27;</span> &#125;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&#x27;throws argument exception when given $null&#x27;</span> &#123;</span><br><span class="line">        &#123; <span class="built_in">Get-Computer</span> `$null &#125; |</span><br><span class="line">            Should <span class="literal">-Throw</span> `</span><br><span class="line">                <span class="literal">-ExceptionType</span> ([<span class="type">ArgumentException</span>]) `</span><br><span class="line">                <span class="literal">-ErrorId</span> <span class="string">&#x27;SpecificErrorId&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># outputs</span></span><br><span class="line"><span class="comment"># Describing Get-Computer</span></span><br><span class="line"><span class="comment">#   [-] throws argument exception when given $null 76ms</span></span><br><span class="line"><span class="comment">#     Expected an exception, with type &#123;System.ArgumentException&#125;,</span></span><br><span class="line"><span class="comment">#     with FullyQualifiedErrorId &#x27;SpecificErrorId&#x27; to be thrown,</span></span><br><span class="line"><span class="comment">#     but the FullyQualifiedErrorId was &#x27;Value cannot be null.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Should-Not-Throw-changed-behavior"><a href="#Should-Not-Throw-changed-behavior" class="headerlink" title="Should -Not -Throw changed behavior"></a>Should -Not -Throw changed behavior</h2><p><code>Should -Not -Throw</code> the ugly sister of <code>Should -Throw</code>, was swallowing errors when a filter was defined and the thrown exception was not met. This did not make sense, the premise of <code>Should -Not -Throw</code> is that an exception was <em>not</em> thrown. So when any exception is thrown the assertion should fail, no matter what filter you specify. The recommended practice is simply not using it, because every line is an implicit should not throw.</p>
+<h2 id="PassThru"><a href="#PassThru" class="headerlink" title="PassThru"></a>PassThru</h2><p>There is a new parameter for that allows you to pass the caught error object so you can examine it further. This is useful when you are interested in the inner exception, or when you catch an aggregate exception and need to extract some info from it.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$sb</span> = &#123; <span class="keyword">throw</span> (<span class="built_in">New-Object</span> Exception <span class="literal">-ArgumentList</span> <span class="string">&quot;ex1&quot;</span>,</span><br><span class="line">                (<span class="built_in">New-Object</span> Exception <span class="literal">-ArgumentList</span> <span class="string">&quot;inner1&quot;</span>,</span><br><span class="line">                    (<span class="built_in">New-Object</span> Exception <span class="literal">-ArgumentList</span> <span class="string">&quot;inner2&quot;</span>))) &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">$err</span> = <span class="variable">$sb</span> | Should <span class="literal">-Throw</span> <span class="literal">-PassThru</span></span><br><span class="line"><span class="variable">$err</span>.Exception.InnerException.InnerException.Message |</span><br><span class="line">    Should <span class="literal">-Be</span> <span class="string">&quot;File not found.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># outputs</span></span><br><span class="line"><span class="comment"># Expected strings to be the same, but they were different.</span></span><br><span class="line"><span class="comment"># Expected length: 15</span></span><br><span class="line"><span class="comment"># Actual length:   6</span></span><br><span class="line"><span class="comment"># Strings differ at index 0.</span></span><br><span class="line"><span class="comment"># Expected: &#123;File not found.&#125;</span></span><br><span class="line"><span class="comment"># But was:  &#123;inner2&#125;</span></span><br><span class="line"><span class="comment"># -----------^</span></span><br></pre></td></tr></table></figure>
+
+<p>Here we are interested in the message of the inner-inner exception. So we capture the object, and then use <code>Should -Be</code> to further examine it.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p><code>Should -Throw</code> got better, so try to use it and help the project by reporting how it works on twitter, powershell slack or our repo. Also checkout other cool features, like <code>-Because</code> or <code>-HaveCount</code>. For full listing see the <a href="https://github.com/pester/Pester/blob/master/CHANGELOG.md">our changelog</a>.</p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            19 December 2017
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

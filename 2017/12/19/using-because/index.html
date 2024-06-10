@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Pester - Using Because in tests
+        </h1>
+        <div>
+            
+            <a href="/tags/powershell/">
+                <p>powershell</p>
+            </a>
+            
+            <a href="/tags/pester/">
+                <p>pester</p>
+            </a>
+            
+            <a href="/tags/testing/">
+                <p>testing</p>
+            </a>
+            
+            <a href="/tags/best-practice/">
+                <p>best practice</p>
+            </a>
+            
+            <a href="/tags/assertion/">
+                <p>assertion</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>This weekend I added custom failure reasons into Pester. This feature I know and love from <a href="http://fluentassertions.com/">Fluent Assertions</a>, so let me show you how I would use it in Pester.</p>
+<blockquote>
+<p>🔥 This feature is not released yet, get pre-release <a href="https://www.powershellgallery.com/packages/Pester/4.2.0-alpha3">version 4.2.0-alpha3</a> to use it.</p>
+</blockquote>
+<h2 id="Because-parameter"><a href="#Because-parameter" class="headerlink" title="Because parameter"></a>Because parameter</h2><p>The new feature adds an optional <code>-Because</code> parameter to all <code>Should</code> assertions. The parameter allows you to specify a reason that will be shown when assertion fails, like so:</p>
+<span id="more"></span>
+
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&#x27;Health check&#x27;</span> &#123;</span><br><span class="line">    <span class="comment"># mock is here only to make the example work</span></span><br><span class="line">    Mock <span class="built_in">Get-Service</span> &#123; [<span class="type">PSCustomObject</span>]<span class="selector-tag">@</span>&#123; Status = <span class="string">&#x27;Stopped&#x27;</span> &#125; &#125;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&#x27;is protected by antivirus&#x27;</span> &#123;</span><br><span class="line">        <span class="variable">$service</span> = <span class="built_in">Get-Service</span> <span class="literal">-Name</span> AntivirusService</span><br><span class="line">        <span class="variable">$running</span> = [<span class="type">ServiceProcess.ServiceControllerStatus</span>]::Running</span><br><span class="line"></span><br><span class="line">        <span class="variable">$service</span>.Status |</span><br><span class="line">            Should <span class="literal">-Be</span> <span class="variable">$running</span> <span class="literal">-Because</span> <span class="string">&#x27;antivirus must be running to protect our computer&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># fails with</span></span><br><span class="line"><span class="comment"># Describing Health check</span></span><br><span class="line"><span class="comment">#   [-] is protected by antivirus 80ms</span></span><br><span class="line"><span class="comment">#     Expected &#123;Running&#125;, because antivirus must be running to protect our computer, but got &#123;Stopped&#125;.</span></span><br></pre></td></tr></table></figure>
+
+<p>As you can see the reason is written in the assertion failure message, between the expectation and the <code>but</code>. This immediately reminds you why you’ve put the test in place, and requires less thinking when you have 10 failed tests and try to understand what is the reason they all started failing.</p>
+<blockquote>
+<p>Admittedly the previous example is a bit simplistic, you would probably do just fine without the additional reason, but it just reads soo well! 🙂</p>
+</blockquote>
+<h2 id="Reasons-force-you-think-more"><a href="#Reasons-force-you-think-more" class="headerlink" title="Reasons force you think more"></a>Reasons force you think more</h2><p>One reason to use <code>-Because</code> is to force yourself to think before writing any code. Writing tests before writing code is a great way of forcing yourself to think about the problem. Using <code>-Because</code> forces you even a bit more, because you have to form a sentence that describes what you are trying to do. When you have problems forming that sentence you are probably not sure what you are doing, so go back to the problem and revisit it.</p>
+<h2 id="Reasons-document-your-intent"><a href="#Reasons-document-your-intent" class="headerlink" title="Reasons document your intent"></a>Reasons document your intent</h2><p>Making your test code obvious is an important part of testing. You write the test code once, and then get back to it every time the test fails. The less thinking the code requires the better.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&#x27;Get-User&#x27;</span> &#123;</span><br><span class="line">    Context <span class="string">&#x27;Validate user object&#x27;</span> &#123;</span><br><span class="line">        <span class="comment"># function is here only to make the example work</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">Get-User</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">        It <span class="string">&#x27;retrieved user has name&#x27;</span> &#123;</span><br><span class="line">            <span class="variable">$user</span> = <span class="built_in">Get-User</span> <span class="literal">-Name</span> <span class="string">&#x27;Jakub&#x27;</span></span><br><span class="line">            <span class="variable">$user</span> | Should <span class="operator">-Not</span> <span class="literal">-BeNullOrEmpty</span> `</span><br><span class="line">                           <span class="literal">-Because</span> <span class="string">&#x27;having a user is a pre-condition for our test&#x27;</span></span><br><span class="line"></span><br><span class="line">            <span class="variable">$user</span>.Name | Should <span class="literal">-Be</span> <span class="string">&#x27;Jakub&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In this example I am validating that an object is populated correctly, but to be able to validate it I first need to have it. So I better check that I have an object <em>before</em> doing the actual test. Adding the reason tells the guy who inherits my test base that the first assertion is a guard assertion. This again requires less guessing about what the code does.</p>
+<p>It also makes the build server failure obvious by telling that the test failed, because we did the setup incorrectly, not because our functionality is broken.</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Describing Get-User</span><br><span class="line">  Context Validate user object</span><br><span class="line">    [-] retrieved user has name 106ms</span><br><span class="line">      Expected a value, because having a user is a pre-condition for our test, but got $null or empty.</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reasons-make-your-TestCases-clearer"><a href="#Reasons-make-your-TestCases-clearer" class="headerlink" title="Reasons make your TestCases clearer"></a>Reasons make your TestCases clearer</h2><p>Using <code>-TestsCases</code> it is really simple to reuse the same test to test many different inputs, unfortunately this often makes it much harder to determine what we are testing as we need to mentally parse a big array of examples in our head. Adding a reason to each of the test cases tells us why we are testing that particular case, and makes it much easier to review the capabilities of our function.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&#x27;Test-Anagram&#x27;</span> &#123;</span><br><span class="line">    <span class="comment"># function is here only to make the example work</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Test-Anagram</span> <span class="params">(<span class="variable">$Original</span>, <span class="variable">$Anagram</span>)</span></span> &#123; <span class="variable">$false</span> &#125;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&quot;Given &#x27;&lt;Original&gt;&#x27;&#x27; and &#x27;&lt;Anagram&gt;&#x27; it returns `$true&quot;</span> <span class="literal">-TestCases</span> <span class="selector-tag">@</span>(</span><br><span class="line">        <span class="selector-tag">@</span>&#123;  Original = <span class="string">&#x27;abcd&#x27;</span></span><br><span class="line">            Anagram  = <span class="string">&#x27;abdc&#x27;</span> </span><br><span class="line">            Because  = <span class="string">&quot;just the last two letters are switched&quot;</span> &#125;</span><br><span class="line"></span><br><span class="line">        <span class="selector-tag">@</span>&#123;  Original = <span class="string">&#x27;hello&#x27;</span></span><br><span class="line">            Anagram  = <span class="string">&#x27;olleh&#x27;</span> </span><br><span class="line">            Because  = <span class="string">&quot;it&#x27;s the same word backwards&quot;</span> &#125;</span><br><span class="line">    ) &#123;</span><br><span class="line">        <span class="keyword">param</span>(<span class="variable">$Original</span>, <span class="variable">$Anagram</span>, <span class="variable">$Because</span>)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">Test-Anagram</span> <span class="variable">$Original</span> <span class="variable">$Anagram</span> | </span><br><span class="line">            Should <span class="literal">-Be</span> <span class="variable">$true</span> <span class="literal">-Because</span> <span class="variable">$Because</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># outputs</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Describing Test-Anagram</span></span><br><span class="line"><span class="comment">#  [-] Given &#x27;abcd&#x27;&#x27; and &#x27;abdc&#x27; it returns $true 84ms</span></span><br><span class="line"><span class="comment">#     Expected &#123;True&#125;, because just the last two letters are switched, but got &#123;False&#125;.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  [-] Given &#x27;hello&#x27;&#x27; and &#x27;olleh&#x27; it returns $true 127ms</span></span><br><span class="line"><span class="comment">#     Expected &#123;True&#125;, because it&#x27;s the same word backwards, but got &#123;False&#125;.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Use <code>-Because</code> to make your tests easier to understand at a glance, and to document your intent so nobody has to guess what you meant.</p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            19 December 2017
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

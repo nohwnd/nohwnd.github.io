@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Testing self-contained scripts with Pester, part 2
+        </h1>
+        <div>
+            
+            <a href="/tags/powershell/">
+                <p>powershell</p>
+            </a>
+            
+            <a href="/tags/pester/">
+                <p>pester</p>
+            </a>
+            
+            <a href="/tags/testing/">
+                <p>testing</p>
+            </a>
+            
+            <a href="/tags/ps1/">
+                <p>ps1</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>Few days ago I <a href="http://jakubjares.com/2019/06/09/2019-07-testing-whole-scripts/">posted about a tiny module</a> I wrote to skip the entry point function in a script. I got few reactions telling me that there are better ways to organize your scripts, and they were all correct. Putting your code into a module and distributing it that way, or splitting the script into different files and combining them during build are both better than having a single file with everything. </p>
+<span id="more"></span>
+
+<p>The post was not a recommendation how to write your scripts <em>all the time</em>, instead it just described a technique that you can use when needed. One such case is when you are providing scripts to others that do not know PowerShell. Providing a single self-contained script is simpler than distributing, importing and invoking a module. I also find it useful for build scripts, or scripts in scheduled tasks.</p>
+<h2 id="Testing-entry-point-function-invocation"><a href="#Testing-entry-point-function-invocation" class="headerlink" title="Testing entry point function invocation"></a>Testing entry point function invocation</h2><p>There are probably other possible use cases, but this is the one I am using this module for. To test that parameters are passed correctly to the entrypoint function. In my case the entrypoint function does an involved, and destructive action, so I cannot simply invoke the whole script and check result, without setting up the whole environment for it. </p>
+<p>Below I will show the same thing on a function that has non-destructive behavior, so a better way to test it would be to simple invoke the whole script and check the result. So keep that in mind. </p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># file script1.ps1</span></span><br><span class="line"></span><br><span class="line"><span class="function">[<span class="type">CmdletBinding</span>(<span class="type">DefaultParameterSetName</span>=<span class="string">&quot;SelectOne&quot;</span>)]</span></span><br><span class="line"><span class="keyword">param</span> (</span><br><span class="line">    [<span class="type">Parameter</span>(<span class="type">ParameterSetName</span>=<span class="string">&quot;SelectOne&quot;</span>, <span class="type">Mandatory</span>)]</span><br><span class="line">    [<span class="type">ValidateSet</span>(<span class="string">&quot;Avocado&quot;</span>, <span class="string">&quot;Orange&quot;</span>, <span class="string">&quot;Pear&quot;</span>)]</span><br><span class="line">    <span class="variable">$Name</span>,</span><br><span class="line">    [<span class="type">Parameter</span>(<span class="type">ParameterSetName</span>=<span class="string">&quot;Random&quot;</span>)]</span><br><span class="line">    [<span class="type">Switch</span>] <span class="variable">$Random</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Get-Fruit</span></span> &#123;</span><br><span class="line">    <span class="function">[<span class="type">CmdletBinding</span>(<span class="type">DefaultParameterSetName</span>=<span class="string">&quot;SelectOne&quot;</span>)]</span></span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="type">Parameter</span>(<span class="type">ParameterSetName</span>=<span class="string">&quot;SelectOne&quot;</span>, <span class="type">Mandatory</span>)]</span><br><span class="line">        [<span class="type">ValidateSet</span>(<span class="string">&quot;Avocado&quot;</span>, <span class="string">&quot;Orange&quot;</span>, <span class="string">&quot;Pear&quot;</span>)]</span><br><span class="line">        <span class="variable">$Name</span>,</span><br><span class="line">        [<span class="type">Parameter</span>(<span class="type">ParameterSetName</span>=<span class="string">&quot;Random&quot;</span>)]</span><br><span class="line">        [<span class="type">Switch</span>] <span class="variable">$Random</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="variable">$emojis</span> = <span class="selector-tag">@</span>&#123; </span><br><span class="line">        <span class="string">&quot;Avocado&quot;</span> = <span class="string">&quot;🥑&quot;</span></span><br><span class="line">        <span class="string">&quot;Orange&quot;</span> = <span class="string">&quot;🍊&quot;</span></span><br><span class="line">        <span class="string">&quot;Pear&quot;</span> = <span class="string">&quot;🍐&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$Random</span>) &#123;</span><br><span class="line">        <span class="variable">$k</span> = <span class="built_in">Get-Random</span> <span class="literal">-Collection</span> (<span class="variable">$emojis</span>.Keys)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$emojis</span>[<span class="variable">$k</span>]    </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="variable">$emojis</span>[<span class="variable">$Name</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># the next line is very hard to test</span></span><br><span class="line"><span class="built_in">Get-Fruit</span> @PSBoundParameters</span><br></pre></td></tr></table></figure>
+
+<p>Our <code>Get-Avocado</code> function was renamed to <code>Get-Fruit</code> and now can return different emojis, or a random one. I am invoking it from the script and passing some mandatory parameters, in two parameter sets.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># file script1.Tests.ps1</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$script</span> = <span class="string">&quot;<span class="variable">$PSScriptRoot</span>/script1.ps1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Import-Script</span> `</span><br><span class="line">    <span class="literal">-EntryPoint</span> <span class="built_in">Get-Fruit</span> `</span><br><span class="line">    <span class="literal">-Parameters</span> <span class="selector-tag">@</span>&#123; Random = <span class="variable">$true</span> &#125; `</span><br><span class="line">    <span class="literal">-Path</span> <span class="variable">$script</span></span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Pass the parameters to the entry point function&quot;</span> &#123;</span><br><span class="line">    It <span class="string">&quot;Passes Random&quot;</span> &#123;</span><br><span class="line">        Mock <span class="built_in">Get-Fruit</span> </span><br><span class="line"></span><br><span class="line">        &amp; <span class="variable">$script</span> <span class="literal">-Random</span> </span><br><span class="line"></span><br><span class="line">        <span class="built_in">Assert-MockCalled</span> <span class="built_in">Get-Fruit</span> `</span><br><span class="line">            <span class="literal">-ParameterFilter</span> &#123; <span class="variable">$true</span> <span class="operator">-eq</span> <span class="variable">$Random</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&quot;Passes Name&quot;</span> &#123;</span><br><span class="line">        Mock <span class="built_in">Get-Fruit</span> </span><br><span class="line"></span><br><span class="line">        &amp; <span class="variable">$script</span> <span class="literal">-Name</span> Avocado</span><br><span class="line"></span><br><span class="line">        <span class="built_in">Assert-MockCalled</span> <span class="built_in">Get-Fruit</span> `</span><br><span class="line">            <span class="literal">-ParameterFilter</span> &#123; <span class="string">&quot;Avocado&quot;</span> <span class="operator">-eq</span> <span class="variable">$Name</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Get-Fruit&quot;</span> &#123;</span><br><span class="line">    It <span class="string">&quot;gets avocado&quot;</span> &#123;</span><br><span class="line">        <span class="built_in">Get-Fruit</span> <span class="literal">-Name</span> Avocado | Should <span class="literal">-Be</span> 🥑</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&quot;gets orange&quot;</span> &#123;</span><br><span class="line">        <span class="built_in">Get-Fruit</span> <span class="literal">-Name</span> Orange | Should <span class="literal">-Be</span> 🍊</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&quot;gets pear&quot;</span> &#123;</span><br><span class="line">        <span class="built_in">Get-Fruit</span> <span class="literal">-Name</span> Pear | Should <span class="literal">-Be</span> 🍐</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In the test I am then importing the script, passing in the <code>Random</code> switch, to make sure I am able to run the script. The call to <code>Get-Fruit</code> is still replaced by the mock so I am able to import the script without ever invoking <code>Get-Fruit</code>. </p>
+<p>At that moment I have the <code>Get-Fruit</code> imported to my local scope and can mock it. Which in turn means that I can test just the <code>param</code> block on the top of the script. </p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>This admittedly tests just a tiny slice of the script, but a bit that would be impossible to test otherwise. Go ahead and try to comment out the invocation of the <code>Get-Fruit</code> function. You should see that all the unit tests still pass, but the script does nothing. And that is the whole goal, to be able to test every single line of the code. You don’t have to do it, but it is nice to have the possibility. </p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            14 June 2019
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

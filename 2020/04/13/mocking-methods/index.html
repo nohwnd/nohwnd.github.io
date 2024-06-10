@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Mocking methods in Pester
+        </h1>
+        <div>
+            
+            <a href="/tags/powershell/">
+                <p>powershell</p>
+            </a>
+            
+            <a href="/tags/pester/">
+                <p>pester</p>
+            </a>
+            
+            <a href="/tags/testing/">
+                <p>testing</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>Mocking functions in Pester is easy, you just use <code>Mock</code> and you are done. But how do you mock a method on an object?</p>
+<span id="more"></span>
+
+<p>For our model example let’s say we decided to stop a process using <code>wmi</code>, and copy some files if we were able to successfully stop the process. This scenario would happen for example when you need to update some <code>.dll</code>s and the program has them loaded. In our case we will just use <code>notepad.exe</code>, so no locking will actually occur. </p>
+<blockquote>
+<p>Yes, using <code>wmi</code> is probably the most complicated way to stop a process, but a bit of complexity is what I am after. 🙂</p>
+</blockquote>
+<p>In to try this out you can try running this snippet in Windows PowerShell. It will start a notepad process, and then immediately kill it: </p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># try running this to see how it actually behaves</span></span><br><span class="line">&amp; notepad.exe</span><br><span class="line"><span class="variable">$wmiObject</span> = <span class="built_in">Get-WmiObject</span> <span class="literal">-Query</span> <span class="string">&quot;select * from win32_process where name=&#x27;notepad.exe&#x27;&quot;</span></span><br><span class="line"><span class="variable">$result</span> = <span class="variable">$wmiObject</span>.Terminate()</span><br><span class="line"><span class="variable">$result</span>.ReturnValue</span><br></pre></td></tr></table></figure>
+
+<p>Inspecting the members on the objects you can see that the <code>$wmiObject</code> has <code>.Terminate()</code> method. When called this method returns a result object which has <code>ReturnValue</code> property, and that property is 0 when the termination succeeded. We will mock all of that. </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">PS&gt; </span><span class="language-bash"><span class="variable">$wmiObject</span> | Get-Member -Name Terminate</span></span><br><span class="line"></span><br><span class="line">TypeName: System.Management.ManagementObject#root\cimv2\Win32_Process</span><br><span class="line"></span><br><span class="line">Name      MemberType Definition</span><br><span class="line">----      ---------- ----------</span><br><span class="line">Terminate Method     System.Management.ManagementBaseObject Terminate(System.UInt32 Reason)</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">PS&gt; </span><span class="language-bash"><span class="variable">$result</span> | Get-Member -Name ReturnValue</span></span><br><span class="line"></span><br><span class="line">TypeName: System.Management.ManagementBaseObject#\__PARAMETERS</span><br><span class="line"></span><br><span class="line">Name        MemberType Definition</span><br><span class="line">----        ---------- ----------</span><br><span class="line">ReturnValue Property   uint32 ReturnValue &#123;get;set;&#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">PS&gt; </span><span class="language-bash"><span class="variable">$result</span>.ReturnValue</span></span><br><span class="line"></span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<p>Here is the how the whole test would look like, followed by explanation of each component:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&quot;Start notepad and kill it&quot;</span> &#123;</span><br><span class="line">    BeforeAll &#123;</span><br><span class="line">        <span class="comment"># this would normally go into our script</span></span><br><span class="line">        <span class="comment"># and we would dot-source it here like this</span></span><br><span class="line">        <span class="comment"># . C:\scripts\myscript.ps1</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">Update-NotepadDependencies</span></span> &#123;</span><br><span class="line">            <span class="variable">$processname</span> = <span class="string">&#x27;notepad.exe&#x27;</span></span><br><span class="line">            <span class="variable">$process</span> = <span class="built_in">Get-WmiObject</span> `</span><br><span class="line">                <span class="literal">-Query</span> <span class="string">&quot;select * from win32_process where name=&#x27;notepad.exe&#x27;&quot;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (<span class="variable">$process</span>) &#123;</span><br><span class="line">                <span class="variable">$result</span> = <span class="variable">$process</span>.Terminate()</span><br><span class="line">                <span class="keyword">if</span> (<span class="variable">$result</span>.ReturnValue <span class="operator">-eq</span> <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="built_in">Copy-Item</span> <span class="literal">-Path</span> <span class="string">&#x27;C:\from&#x27;</span> <span class="literal">-Destination</span> <span class="string">&#x27;C:\to&#x27;</span> <span class="literal">-Force</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="string">&quot;Could not terminate <span class="variable">$processName</span>&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Context <span class="string">&#x27;When the process is active and we terminate it successfully&#x27;</span> &#123;</span><br><span class="line">        BeforeEach &#123;</span><br><span class="line">            <span class="comment"># the calling $wmiprocessMock.Terminate() returns an object</span></span><br><span class="line">            <span class="comment"># like this, so we need to do the same in our mock</span></span><br><span class="line">            <span class="variable">$mockResult</span> = [<span class="type">PSCustomObject</span>] <span class="selector-tag">@</span>&#123;</span><br><span class="line">                ReturnValue = <span class="number">0</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"># this is our mocked implementation of .Terminate()</span></span><br><span class="line">            <span class="variable">$mockTerminateMethod</span> = &#123;</span><br><span class="line">                <span class="comment"># count the invocation and store it on the mock object  </span></span><br><span class="line">                <span class="comment"># to avoid using script:scoped variables</span></span><br><span class="line">                <span class="keyword">$this</span>.TerminateInvoked++</span><br><span class="line"></span><br><span class="line">                <span class="comment"># return the result object as the real method would</span></span><br><span class="line">                <span class="variable">$mockResult</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Get-WmiObject -Class win32_process returns object like this so we do the same</span></span><br><span class="line">            <span class="variable">$mockWmiObject</span> = [<span class="type">PSCustomObject</span>] <span class="selector-tag">@</span>&#123;</span><br><span class="line">                TerminateInvoked = <span class="number">0</span></span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># add .Terminate() method to the fake wmiObject</span></span><br><span class="line">            <span class="variable">$mockWmiObject</span> | </span><br><span class="line">                <span class="built_in">Add-Member</span> <span class="literal">-MemberType</span> ScriptMethod <span class="literal">-Name</span> Terminate <span class="literal">-Value</span> <span class="variable">$mockTerminateMethod</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="comment"># the Get-WmiObject will return the mock object we made above</span></span><br><span class="line">            Mock <span class="built_in">Get-WmiObject</span> &#123; <span class="variable">$mockWmiObject</span> &#125;</span><br><span class="line"></span><br><span class="line">            Mock <span class="literal">-CommandName</span> <span class="built_in">Copy-Item</span> <span class="literal">-MockWith</span> &#123; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        It <span class="string">&#x27;Get-WmiObject was invoked with the correct filter&#x27;</span> &#123;</span><br><span class="line">            <span class="built_in">Update-NotepadDependencies</span></span><br><span class="line"></span><br><span class="line">            <span class="built_in">Assert-MockCalled</span> `</span><br><span class="line">                <span class="literal">-CommandName</span> <span class="built_in">Get-WmiObject</span> `</span><br><span class="line">                <span class="literal">-ParameterFilter</span> &#123; </span><br><span class="line">                    <span class="variable">$Query</span> <span class="operator">-eq</span> <span class="string">&quot;select * from win32_process where name=&#x27;notepad.exe&#x27;&quot;</span> </span><br><span class="line">                &#125; `</span><br><span class="line">                <span class="literal">-Exactly</span> <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        It <span class="string">&#x27;Terminate method was called once on the process object&#x27;</span> &#123;</span><br><span class="line">            <span class="built_in">Update-NotepadDependencies</span></span><br><span class="line"></span><br><span class="line">            <span class="variable">$mockWmiObject</span>.TerminateInvoked | Should <span class="literal">-BeExactly</span> <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        It <span class="string">&#x27;Copy-Item attempted to copy files&#x27;</span> &#123;</span><br><span class="line">            <span class="built_in">Update-NotepadDependencies</span></span><br><span class="line"></span><br><span class="line">            <span class="built_in">Assert-MockCalled</span> <span class="literal">-CommandName</span> <span class="built_in">Copy-Item</span> <span class="literal">-Times</span> <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h2><p>Explaining this rather involved example is best done backwards. So let’s start from the <code>Mock</code> of <code>Get-WmiObject</code>. As we’ve seen the the first snippet, when the real <code>Get-WmiObject</code> is called, it returns a process object. In our mock we also return an object:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$mockWmiObject</span> = [<span class="type">PSCustomObject</span>] <span class="selector-tag">@</span>&#123; &#125;</span><br><span class="line">Mock <span class="built_in">Get-WmiObject</span> &#123; <span class="variable">$mockWmiObject</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># this satisfies this line of code</span></span><br><span class="line"><span class="variable">$wmiObject</span> = <span class="built_in">Get-WmiObject</span> <span class="literal">-Query</span> <span class="string">&quot;select * from win32_process where name=&#x27;notepad.exe&#x27;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>This fake <code>wmiObject</code> needs to have <code>.Terminate()</code> method on it, so we add that:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$mockTerminateMethod</span> = &#123;</span><br><span class="line">    <span class="variable">$mockResult</span> <span class="comment"># defined in next step</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$mockWmiObject</span> | <span class="built_in">Add-Member</span> <span class="literal">-MemberType</span> ScriptMethod <span class="literal">-Name</span> Terminate <span class="literal">-Value</span> <span class="variable">$mockTerminateMethod</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># this satisfies this line of code</span></span><br><span class="line"><span class="variable">$result</span> = <span class="variable">$wmiObject</span>.Terminate()</span><br></pre></td></tr></table></figure>
+
+<p>The <code>.Terminate()</code> method must return a result object with <code>ReturnValue</code>:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$mockResult</span> = [<span class="type">PSCustomObject</span>] <span class="selector-tag">@</span>&#123;</span><br><span class="line">    ReturnValue = <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># this satisfies this line of code</span></span><br><span class="line"><span class="variable">$result</span>.ReturnValue</span><br></pre></td></tr></table></figure>
+
+<h2 id="Counting-the-calls"><a href="#Counting-the-calls" class="headerlink" title="Counting the calls"></a>Counting the calls</h2><p>Additionally to this we want to be able to check if the <code>.Terminate()</code> method was called. We could use script scoped variables for that, but that would make our tests potentially depend on each other. A much better way is to attach the info directly on the <code>mockObject</code>, and keep reference to it: </p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># arrange</span></span><br><span class="line"><span class="variable">$mockTerminateMethod</span> = &#123;</span><br><span class="line">    <span class="keyword">$this</span>.TerminateInvoked++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$mockWmiObject</span> = [<span class="type">PSCustomObject</span>] <span class="selector-tag">@</span>&#123;</span><br><span class="line">    TerminateInvoked = <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$mockWmiObject</span> | <span class="built_in">Add-Member</span> <span class="literal">-MemberType</span> ScriptMethod <span class="literal">-Name</span> Terminate <span class="literal">-Value</span> <span class="variable">$mockTerminateMethod</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># act</span></span><br><span class="line"><span class="comment"># we call the method on object that we got from Get-WmiObject </span></span><br><span class="line"><span class="comment"># and saved it to a variable with different name</span></span><br><span class="line"><span class="comment"># but it is still the same instance as in mockWmiObject</span></span><br><span class="line"><span class="variable">$wmiObject</span>.Terminate()</span><br><span class="line"></span><br><span class="line"><span class="comment"># assertion</span></span><br><span class="line"><span class="variable">$mockWmiObject</span>.TerminateInvoked | Should <span class="literal">-BeExactly</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>All of this combined gives us the big example above, which allows us to mock the functionality as well as count the amount of times the method was invoked. </p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Mocking methods in PowerShell is quite easy once you get the flow of it. It relies on shadowing methods by our own script methods. Next time we will look at how to capture the parameters that were passed in. </p>
+<blockquote>
+<p>🌵 A question was asked why am I using <code>BeforeEach</code> to setup the mock instead <code>BeforeAll</code>. And that is because we share a live reference to an object. Having a single reference to the mock from multiple tests, would make the tests depend on each other, and would make it pretty much the same as if we used script scoped variables in the first place. This way it is slightly slower, but more correct.</p>
+</blockquote>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            13 April 2020
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

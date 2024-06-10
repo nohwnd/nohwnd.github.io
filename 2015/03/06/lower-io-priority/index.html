@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Lowering IO Priority of PowerShell Process
+        </h1>
+        <div>
+            
+            <a href="/tags/powershell/">
+                <p>powershell</p>
+            </a>
+            
+            <a href="/tags/priority/">
+                <p>priority</p>
+            </a>
+            
+            <a href="/tags/process/">
+                <p>process</p>
+            </a>
+            
+            <a href="/tags/pinvoke/">
+                <p>pinvoke</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>This week brought quite a few challenges. One of them was a question asked by a friend:</p>
+<blockquote>
+<p>How do I search contents of all the files for given string, without killing the performance of the computer?</p>
+</blockquote>
+<p>This seemed like a simple question to answer: Just lower the priority of the PowerShell process to Idle.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">(<span class="built_in">Get-Process</span> <span class="literal">-Id</span> <span class="variable">$pid</span>).PriorityClass = <span class="string">&#x27;Idle&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>The only problem is, that it does not work.</p>
+<span id="more"></span>
+
+<p>That piece of code actually lowers the priority of the process. But this priority only applies to compute-bound tasks. In other words, this option is great if we don’t want the CPU to run on 100 %, but it won’t help us much with disk operations.<br>To confirm that you can run the following code on Idle priority and view the PowerShell.exe in Task Manager.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$header</span> = [<span class="built_in">Byte</span>[]](<span class="string">&quot;0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16&quot;</span> <span class="operator">-split</span> <span class="string">&quot;\s&quot;</span>)</span><br><span class="line"><span class="built_in">gci</span> (<span class="built_in">Resolve-Path</span> <span class="variable">$env:SystemRoot</span>).Drive.Root <span class="literal">-Recurse</span> |</span><br><span class="line">      <span class="built_in">where</span> &#123; <span class="operator">-not</span> <span class="variable">$_</span>.PsIsContainer &#125; |</span><br><span class="line">      <span class="keyword">foreach</span> &#123;</span><br><span class="line">            <span class="variable">$content</span> = <span class="built_in">Get-Content</span> <span class="literal">-TotalCount</span> (<span class="variable">$header</span>.Count) <span class="literal">-Encoding</span> Byte <span class="literal">-Path</span> <span class="variable">$_</span>.FullName</span><br><span class="line">            <span class="keyword">if</span> (<span class="variable">$null</span> <span class="operator">-ne</span> <span class="variable">$content</span>) &#123;</span><br><span class="line">                  <span class="keyword">if</span> (<span class="variable">$null</span> <span class="operator">-eq</span> (<span class="built_in">Compare-Object</span> <span class="variable">$header</span> <span class="variable">$content</span> ))</span><br><span class="line">                  &#123;</span><br><span class="line">                        <span class="variable">$_</span>.FullName</span><br><span class="line">                  &#125;</span><br><span class="line">            &#125;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>On my system I can see <code>PowerShell.exe</code> exhausting 90-100 % of disk I&#x2F;O resources.</p>
+<p>At this point I was not sure if I am even setting that priority correctly so I used ProcessExplorer to check the priority and spotted this:</p>
+<img src="/2015/03/06/lower-io-priority/Idle.png" class="" title="Idle">
+
+<p>Now I wonder, how do I lower the priority for I&#x2F;O bound operations? My first was checking the enum of values you can set to the PriorityClass:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">[<span class="type">Enum</span>]::GetNames(((<span class="built_in">Get-Process</span> <span class="literal">-Id</span> <span class="variable">$pid</span>).PriorityClass).GetType())</span><br></pre></td></tr></table></figure>
+
+<p>Which yields:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Normal</span><br><span class="line">Idle</span><br><span class="line">High</span><br><span class="line">RealTime</span><br><span class="line">BelowNormal</span><br><span class="line">AboveNormal</span><br></pre></td></tr></table></figure>
+
+<p>As you can see, nothing specific to IO. No luck there. Let’s Google, because I remember reading about this in Windows via C++.</p>
+<p>The solution to this problem is setting the priority of the process to <code>PROCESS_MODE_BACKGROUND_BEGIN</code>, but unfortunately .NET does not offer this functionality, so we’ll need to P&#x2F;Invoke. Pretty easy to do in PowerShell. Just create a piece of C# code that’s compiled on runtime using the Add-Type cmdlet and you should be good to go.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Add-Type</span> <span class="string">@&quot;</span></span><br><span class="line"><span class="string">using System;</span></span><br><span class="line"><span class="string">using System.Runtime.InteropServices;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">namespace Utility</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  public class PriorityHelper</span></span><br><span class="line"><span class="string">  &#123;</span></span><br><span class="line"><span class="string">    [DllImport(&quot;kernel32.dll&quot;, CharSet=CharSet.Auto, SetLastError=true)]</span></span><br><span class="line"><span class="string">    static extern bool SetPriorityClass(IntPtr handle, PriorityClass priorityClass);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    public enum PriorityClass : uint</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        ABOVE_NORMAL_PRIORITY_CLASS = 0x8000,</span></span><br><span class="line"><span class="string">        BELOW_NORMAL_PRIORITY_CLASS = 0x4000,</span></span><br><span class="line"><span class="string">        HIGH_PRIORITY_CLASS = 0x80,</span></span><br><span class="line"><span class="string">        IDLE_PRIORITY_CLASS = 0x40,</span></span><br><span class="line"><span class="string">        NORMAL_PRIORITY_CLASS = 0x20,</span></span><br><span class="line"><span class="string">        PROCESS_MODE_BACKGROUND_BEGIN = 0x100000,// &#x27;Windows Vista/2008 and higher</span></span><br><span class="line"><span class="string">        PROCESS_MODE_BACKGROUND_END = 0x200000,//   &#x27;Windows Vista/2008 and higher</span></span><br><span class="line"><span class="string">        REALTIME_PRIORITY_CLASS = 0x100</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    public static int SetBackgroundIoPriority ()</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        IntPtr id = System.Diagnostics.Process.GetCurrentProcess().Handle;</span></span><br><span class="line"><span class="string">        if (SetPriorityClass(id, PriorityClass.PROCESS_MODE_BACKGROUND_BEGIN)) return (int) id;</span></span><br><span class="line"><span class="string">        return -1;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">&quot;@</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$result</span> = [<span class="type">Utility.PriorityHelper</span>]::SetBackgroundIoPriority()</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$result</span> <span class="operator">-eq</span> <span class="literal">-1</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="string">&quot;Background IO priority could not be set or is already set&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In the previous code I am creating a static class (to make it easy to call), and importing single method from kernel32.dll. That method is called SetPriorityClass and is well documented on MSDN.aspx). I also define an enum of priorities, which defines the <code>PROCESS_MODE_BACKGROUND_BEGIN</code>, but I could also use the value directly and explain it in a comment.</p>
+<p>Other than that I define a public method SetBackgroundIoPriority which does all the work and sets the current process IO priority to Very Low. In the last three lines of PowerShell code I am just calling that public method and throwing an exception that is not very helpful :D</p>
+<img src="/2015/03/06/lower-io-priority/Low.png" class="">
+<p>Running the same code as above now exhausts 1-3 % of my disk at best.</p>
+<p>(It goes without saying that the script runs a lot longer now, but that’s a tradeoff for letting the foreground work to be done first.)</p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            06 March 2015
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

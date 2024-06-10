@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Pester5 - discovery and script setup
+        </h1>
+        <div>
+            
+            <a href="/tags/powershell/">
+                <p>powershell</p>
+            </a>
+            
+            <a href="/tags/pester/">
+                <p>pester</p>
+            </a>
+            
+            <a href="/tags/pester5/">
+                <p>pester5</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>As described in the <a href="https://github.com/pester/Pester/blob/v5.0/README.md#put-setup-in-beforeall">v5 readme</a>, the fundamental change in Pester5 is that Pester now runs in two phases: Discovery and Run. During Discovery Pester finds all your tests, groups them together and filters them based on your filters. Then in the Run phase it will actually run them.</p>
+<p>Splitting the work into two distinct phases, powers many of the features in this release, and enables many others to be implemented in the future. </p>
+<p>For Discovery to work correctly, there are new rules to follow: </p>
+<p><strong>Put all your code into <code>It</code>, <code>BeforeAll</code>, <code>BeforeEach</code>, <code>AfterAll</code> or <code>AfterEach</code>. Put no code directly into <code>Describe</code>, <code>Context</code> or on the top of your file, without wrapping it in one of these blocks, unless you have a good reason to do so.</strong></p>
+<p><strong>All misplaced code will run during Discovery, and its results won’t be available during Run.</strong></p>
+<p>This article offers more guidance and shows examples of what it means.</p>
+<span id="more"></span>
+
+<h2 id="Why"><a href="#Why" class="headerlink" title="Why?"></a>Why?</h2><p>Putting all your code in the <code>It</code>, <code>BeforeAll</code>, <code>BeforeEach</code>, <code>AfterAll</code> or <code>AfterEach</code> will give Pester control of all your code, and it can decide when is the best time to execute it, or decide to not execute it at all. </p>
+<p>For example here we have a test file that contains Windows and Linux acceptance tests. It uses <code>-Tag</code> to specify that these tests are acceptance tests, and uses <code>-Skip</code> to decide if the tests should run on the current platform. This test file follows the new rule, and correctly places both the file setup and the block setup in <code>BeforeAll</code>: </p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">BeforeAll &#123;</span><br><span class="line">    <span class="comment"># file setup</span></span><br><span class="line">    <span class="built_in">Start-Sleep</span> <span class="literal">-Seconds</span> <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Linux acceptance&quot;</span> <span class="literal">-Tag</span> <span class="string">&quot;Acceptance&quot;</span> <span class="literal">-Skip</span>:(!<span class="variable">$IsLinux</span>) &#123;</span><br><span class="line">    BeforeAll &#123;</span><br><span class="line">        <span class="comment"># block setup</span></span><br><span class="line">        <span class="built_in">Start-Sleep</span> <span class="literal">-Seconds</span> <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&quot;linux test&quot;</span> &#123; </span><br><span class="line">        <span class="comment"># your test code</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Windows acceptance&quot;</span> <span class="literal">-Tag</span> <span class="string">&quot;Acceptance&quot;</span> <span class="literal">-Skip</span>:(!<span class="variable">$IsWindows</span>) &#123;</span><br><span class="line">    It <span class="string">&quot;windows test&quot;</span> &#123; </span><br><span class="line">        <span class="comment"># your test code</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>When we specify <code>-ExcludeTagFilter &#39;Acceptance&#39;</code>, there will be no tests to run, and Pester returns almost immediately:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\tests&gt; Invoke-Pester  -ExcludeTagFilter &quot;Acceptance&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Starting test discovery in 1 files.</span><br><span class="line">Discovering tests in C:\tests\xplat-correct.Tests.ps1.</span><br><span class="line">Found 2 tests. 8ms</span><br><span class="line">Test discovery finished. 16ms</span><br><span class="line">Tests completed in 11ms</span><br><span class="line">Tests Passed: 0, Failed: 0, Skipped: 0, Total: 2, NotRun: 2</span><br></pre></td></tr></table></figure>
+
+<p>This is because Pester was able to collect all tests without running any of your code, and see that all tests are filtered out. So it executed nothing.</p>
+<h3 id="Not-following-the-rules"><a href="#Not-following-the-rules" class="headerlink" title="Not following the rules"></a>Not following the rules</h3><p>Now let’s see what happens if our code <strong>DOES NOT</strong> follow the new rule, and instead puts the code directly into the <code>Describe</code> block, as we would in Pester 4:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># file setup such as . $PSScriptRoot/MyCommand.ps1</span></span><br><span class="line"><span class="built_in">Start-Sleep</span> <span class="literal">-Seconds</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Linux acceptance&quot;</span> <span class="literal">-Tag</span> <span class="string">&quot;Acceptance&quot;</span> <span class="literal">-Skip</span>:(!<span class="variable">$IsLinux</span>) &#123;</span><br><span class="line">    <span class="comment"># block setup</span></span><br><span class="line">    <span class="built_in">Start-Sleep</span> <span class="literal">-Seconds</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    It <span class="string">&quot;linux test&quot;</span> &#123; </span><br><span class="line">        <span class="comment"># your test code</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Windows acceptance&quot;</span> <span class="literal">-Tag</span> <span class="string">&quot;Acceptance&quot;</span> <span class="literal">-Skip</span>:(!<span class="variable">$IsWindows</span>) &#123;</span><br><span class="line">    It <span class="string">&quot;windows test&quot;</span> &#123; </span><br><span class="line">        <span class="comment"># your test code</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Excluding all tests in this file will take <strong>more than 2 seconds</strong> to complete:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\tests&gt; Invoke-Pester  -ExcludeTagFilter &quot;Acceptance&quot;</span><br><span class="line"></span><br><span class="line">Starting test discovery in 1 files.</span><br><span class="line">Discovering tests in C:\tests\xplat-wrong.Tests.ps1.</span><br><span class="line">Found 2 tests. 2.06s</span><br><span class="line">Test discovery finished. 2.07s</span><br><span class="line">Tests completed in 2.07s</span><br><span class="line">Tests Passed: 0, Failed: 0, Skipped: 0, Total: 2, NotRun: 2</span><br></pre></td></tr></table></figure>
+
+<p>The run takes 2 seconds, because Pester executed the script to discover tests in it, and it immediately hit the <code>Start-Sleep</code>. Once it was done waiting it continued and hit the second <code>Start-Sleep</code> and waited again for 1 second. </p>
+<p>Pester then finishes the discovery and processes the tests. It sees that all tests are filtered out, and that there is nothing to execute and returns.</p>
+<h2 id="How-discovery-works"><a href="#How-discovery-works" class="headerlink" title="How discovery works?"></a>How discovery works?</h2><p>As you could see in the previous example Discovery just saved us 2 seconds of execution time, which is pretty amazing if you ask me. So how does it work? </p>
+<p>It is actually very simple. During the discovery phase Pester will invoke the <code>.Tests.ps1</code> like you would with any other file. The trick is that while <code>Describe</code> and <code>Context</code> will invoke the ScriptBlock you provided, the <code>It</code>, <code>BeforeAll</code>, <code>BeforeEach</code>, <code>AfterAll</code> or <code>AfterEach</code> will not. Instead they will store it to internal state and continue. Here is a model of the whole process:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$script:Tests</span> = <span class="selector-tag">@</span>()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Describe</span> <span class="params">(<span class="variable">$Name</span>, <span class="variable">$ScriptBlock</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">Write-Host</span> <span class="string">&quot;-&gt; Describe function executed&quot;</span> <span class="literal">-ForegroundColor</span> Magenta</span><br><span class="line">    &amp; <span class="variable">$ScriptBlock</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">It</span> <span class="params">(<span class="variable">$Name</span>, <span class="variable">$ScriptBlock</span>)</span></span> &#123;</span><br><span class="line">    <span class="built_in">Write-Host</span> <span class="string">&quot;  -&gt; It function executed&quot;</span> <span class="literal">-ForegroundColor</span> Magenta</span><br><span class="line">    <span class="variable">$script:Tests</span> += <span class="variable">$ScriptBlock</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;Discovery start&quot;</span> <span class="literal">-ForegroundColor</span> Magenta</span><br><span class="line">Describe <span class="string">&quot;d1&quot;</span> &#123;</span><br><span class="line">    <span class="built_in">Write-Host</span> <span class="string">&quot;-&gt; Describe scriptblock was executed&quot;</span> </span><br><span class="line">    It <span class="string">&quot;i1&quot;</span> &#123;</span><br><span class="line">        <span class="built_in">Write-Host</span> <span class="string">&quot; -&gt; It scriptblock was executed&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;Discovery done&quot;</span> <span class="literal">-ForegroundColor</span> Magenta</span><br><span class="line"></span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;Run start&quot;</span> <span class="literal">-ForegroundColor</span> Cyan</span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$test</span> <span class="keyword">in</span> <span class="variable">$script:Tests</span>) &#123;</span><br><span class="line">    &amp; <span class="variable">$test</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;Run start&quot;</span> <span class="literal">-ForegroundColor</span> Cyan</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>If you run it in a console you will see this output: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Discovery start</span><br><span class="line"><span class="meta prompt_">-&gt; </span><span class="language-bash">Describe <span class="keyword">function</span> executed</span></span><br><span class="line"><span class="meta prompt_">-&gt; </span><span class="language-bash">Describe scriptblock was executed</span></span><br><span class="line"><span class="meta prompt_">  -&gt; </span><span class="language-bash">It <span class="keyword">function</span> executed</span></span><br><span class="line">Discovery done</span><br><span class="line">Run start</span><br><span class="line"><span class="meta prompt_"> -&gt; </span><span class="language-bash">It scriptblock was executed</span></span><br><span class="line">Run start</span><br></pre></td></tr></table></figure>
+
+<p>The message from the <code>It</code> ScriptBlock does not appear during discovery, because it is not executed. Instead we finish discovery, and then in the Run phase we run the test. </p>
+<h2 id="When-is-it-okay-to-break-the-new-rule"><a href="#When-is-it-okay-to-break-the-new-rule" class="headerlink" title="When is it okay to break the new rule?"></a>When is it okay to break the new rule?</h2><p>There are few situations where you will knowingly or unknowingly break the new rule, and that is okay, as long as you know what you are doing. </p>
+<p>A common case is when you specify <code>-Skip</code> with a custom condition, as we did in our previous example <code>-Skip:(!$IsWindows)</code>. </p>
+<p>This is technically breaking the rule, but in this case it is totally okay. The condition will evaluate very quickly, and as you saw in the results it had no negative impact on our discovery speed. </p>
+<p>You might also decide to define your own functions, to determine whether or not the test should be skipped. And in that case it is okay to define them direcly in the file setup or <code>Describe</code>. Just assume that these function will be available only during Discovery. Sometimes that might mean that you will have similar setup in your <code>BeforeAll</code> and in your discovery setup.</p>
+<p>And also make those functions execute as fast as possible by leveraging readonly global variables, caching, or similar techniques. More examples later.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Discovery is what powers a lot of the new features in Pester 5, and the way it works is actually quite simple. To keep it fast, keep your code inside of the leaf blocks.</p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            11 April 2020
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

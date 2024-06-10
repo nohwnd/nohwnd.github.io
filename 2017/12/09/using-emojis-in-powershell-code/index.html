@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Using emojis in PowerShell code
+        </h1>
+        <div>
+            
+            <a href="/tags/powershell/">
+                <p>powershell</p>
+            </a>
+            
+            <a href="/tags/fun/">
+                <p>fun</p>
+            </a>
+            
+            <a href="/tags/emoji/">
+                <p>emoji</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>Few days ago I saw a post about using hieroglyph unicode characters in Haskell to write fully functional haskell code. They shown an example of <code>map</code> function. A function that applies a function to a collection of items. Pretty much how <code>foreach</code> does in PowerShell.</p>
+<p>I thought this was fun, and tweeted this:</p>
+<img src="/2017/12/09/using-emojis-in-powershell-code/orig.jpeg" class="" title="Original tweet">
+
+<span id="more"></span>
+
+<p>That code uses capabilities of PowerShell that has been there since I started using it. We can use the smiley face as the function name because it is a valid unicode character and is not a restricted character. And then we can use it the same emoji again as the parameter to the function. All we need to do is wrap the variable name in <code>$&#123;&#125;</code>. This sequence of characters is recognized by PowerShell as an escape sequence and allows us to define the variable name as any sequence of unicode characters, except for the closing curly brace. This is mainly meant for interoperability with code that does not follow PowerShell rules, but why not use it to have a bit of fun.</p>
+<p>Another example of emojis in code is this hello world example:</p>
+<img src="/2017/12/09/using-emojis-in-powershell-code/helloworld.jpeg" class="" title="Hello world">
+
+<p>This is still fairly recognizable as PowerShell code, we are just using special characters for that function name. This was not enough for me and I wanted to get closer to coding purely in emojis, like <a href="http://www.emojicode.org/">emojicode</a> does it.</p>
+<p>So I came up with this:</p>
+<img src="/2017/12/09/using-emojis-in-powershell-code/poopcompiler.jpeg" class="" title="Poopcompiler">
+
+<p>This is totally valid PowerShell code that defines four functions, and then uses them. </p>
+<h2 id="Here-is-how-it-works"><a href="#Here-is-how-it-works" class="headerlink" title="Here is how it works"></a>Here is how it works</h2><blockquote>
+<p><em>Note: I had some trouble rendering the 1️⃣ 2️⃣ glyphs in code, so I will be using 🍺 🍻 instead of them in the rest of the article. Beer is more awesome than keycaps anyway.</em></p>
+</blockquote>
+<p>We use 🐙 to define a function, as if we used the <code>function</code> keyword. After that we define the name of the function, followed by function parameters. We don’t know how many parameters there will be so we need to separate them from the function body. To do that we use the most famous emoji, the pile of poo 💩.</p>
+<p>The first function is named 🥓 (bacon) and returns bacon as a string. We use 🔤 to denote the start and end of a string. Here is the whole function definition:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">🐙 🥓 💩 🔤🥓🔤</span><br></pre></td></tr></table></figure>
+
+<p>The next two functions are building on the same idea, but we are defining 🍺 to mean <code>1</code> and 🍻 to mean <code>2</code>.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">🐙 🍺 💩 <span class="number">1</span></span><br><span class="line">🐙 🍻 💩 <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>The last function definition ➕ (add) is more interesting, we define two parameters 🅰 and 🅱, we then add those two parameters together.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">🐙 ➕ 🅰 🅱 💩 🅰+🅱</span><br></pre></td></tr></table></figure>
+
+<p>And we can use it like this:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">➕ 🥓 🥓  <span class="comment"># returns 🥓🥓</span></span><br><span class="line">➕ 🍺 🍻  <span class="comment"># returns 3</span></span><br><span class="line">➕ <span class="number">1</span> <span class="number">4</span>    <span class="comment"># returns 5</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="How-does-that-work"><a href="#How-does-that-work" class="headerlink" title="How does that work?"></a>How does that work?</h2><p>In essence we are not doing anything particularly difficult. Translating the code above into normal PowerShell code it would look like this:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bacon</span></span> &#123; <span class="string">&#x27;bacon&#x27;</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">oneBeer</span></span> &#123; <span class="number">1</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">twoBeers</span></span> &#123; <span class="number">2</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span> <span class="params">(<span class="variable">$a</span>, <span class="variable">$b</span>)</span></span> &#123; <span class="variable">$a</span> + <span class="variable">$b</span> &#125;</span><br><span class="line"></span><br><span class="line">add (bacon) (bacon)</span><br><span class="line">add (oneBeer) (twoBeers)</span><br><span class="line">add <span class="number">1</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>There are just few problems that we need to solve:</p>
+<ul>
+<li><p>make 🐙 generate valid PowerShell function</p>
+</li>
+<li><p>make 🐙 define that function</p>
+</li>
+<li><p>get rid of the parentheses when calling functions</p>
+</li>
+</ul>
+<h2 id="Generating-a-function"><a href="#Generating-a-function" class="headerlink" title="Generating a function"></a>Generating a function</h2><p>A proper PowerShell function consists of four things. The <code>function</code> keyword, the name of that function, parameters block, and function body. Schematically it looks like this:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> &lt;<span class="title">name</span>&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">param</span>(&lt;param1&gt;, &lt;param2&gt;)</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The simplest function to generate is the 🍺 function. It simply returns the number <code>1</code> when called. All we need to do is split the list of emojis to two groups based on where the 💩 separator is.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$separator</span> = <span class="string">&#x27;💩&#x27;</span></span><br><span class="line"><span class="variable">$name</span>,<span class="variable">$params</span> = <span class="variable">$args</span>.Where(&#123;<span class="variable">$_</span> <span class="operator">-eq</span> <span class="variable">$separator</span>&#125;,<span class="string">&#x27;Until&#x27;</span>)</span><br><span class="line"><span class="variable">$null</span>,<span class="variable">$groups</span> = <span class="variable">$args</span>.Where(&#123;<span class="variable">$_</span> <span class="operator">-eq</span> <span class="variable">$separator</span>&#125;,<span class="string">&#x27;SkipUntil&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>The first item from the first group is the function name. All the following items are the parameters, in this case we don’t have any. All the items in the second group go into the function body. Luckily there are no special characters to be translated, so we don’t have to deal with that just yet.</p>
+<p>Our function generator would then look like this:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> 🐙</span> &#123;</span><br><span class="line">    <span class="variable">$separator</span> = <span class="string">&#x27;💩&#x27;</span></span><br><span class="line">    <span class="variable">$name</span>,<span class="variable">$params</span> = <span class="variable">$args</span>.Where(&#123;<span class="variable">$_</span> <span class="operator">-eq</span> <span class="variable">$separator</span>&#125;,<span class="string">&#x27;Until&#x27;</span>)</span><br><span class="line">    <span class="variable">$null</span>,<span class="variable">$groups</span> = <span class="variable">$args</span>.Where(&#123;<span class="variable">$_</span> <span class="operator">-eq</span> <span class="variable">$separator</span>&#125;,<span class="string">&#x27;SkipUntil&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;function <span class="variable">$name</span> &#123; <span class="variable">$groups</span> &#125;&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># calling this</span></span><br><span class="line">🐙 🍺 💩 <span class="number">1</span></span><br><span class="line"><span class="comment"># generates</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> 🍺</span> &#123; <span class="number">1</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Defining-a-function"><a href="#Defining-a-function" class="headerlink" title="Defining a function"></a>Defining a function</h2><p>Our generator generated a function body as string, and now we need to define that function. In PowerShell there is a reserved keyword <code>function</code> that we use to define functions. Using this keyword we can define function within the current scope. Unfortunately this is not what we need. Our 🐙 must be able to define a function outside of itself. Luckily you can define a function as a global function, to make it available in all scopes. We already have our function as a string so the best way to proceed is adding <code>gloabal:</code> before the function name, and invoking it via <code>Invoke-Expression</code>. Like this:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Invoke-Expression</span> <span class="string">&quot;function global:🍺 &#123; 1 &#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Not being able to define functions in any scope we want is a bit that is surprisingly missing from PowerShell when you realize that Set-Variable -Scope 1 allows us to do just that. In this case we don’t mind defining functions as global, because this whole thing is a silly example. But if you really need to define function in the parent scope of your function, you can look at my <a href="https://github.com/nohwnd/Mock">Mock module prototype</a> that uses the same trick as <code>Invoke-Expression</code> uses to run code outside of itself. That allows the <code>New-Mock</code> function define functions that live in the parent scope.</p>
+</blockquote>
+<h2 id="Get-rid-of-the-parentheses"><a href="#Get-rid-of-the-parentheses" class="headerlink" title="Get rid of the parentheses"></a>Get rid of the parentheses</h2><p>We defined 🍺 as a function that returns the number <code>1</code>. Using it in function call without parentheses would pass on the literal value 🍺, instead of calling the function and passing on the number <code>1</code>. This is a bit of a problem for us, but luckily we know that all functions are accessible via <code>Get-Command</code>. All we need to do is check if 🍺 is a defined function and call it inside of our generated function.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span> <span class="params">(<span class="variable">$value</span>)</span></span> &#123;</span><br><span class="line">    <span class="variable">$value</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">g</span> <span class="params">(<span class="variable">$valueOrFunction</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Get-Command</span> <span class="variable">$valueOrFunction</span> <span class="literal">-ErrorAction</span> SilentlyContinue) &#123;</span><br><span class="line">        &amp;(<span class="built_in">Get-Command</span> <span class="variable">$valueOrFunction</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable">$valueOrFunction</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> 🍺 <span class="params">()</span></span> &#123; <span class="number">1</span> &#125;</span><br><span class="line"></span><br><span class="line">f  <span class="number">3</span>   <span class="comment"># outputs 3</span></span><br><span class="line">f  🍺  <span class="comment"># outputs 🍺 &lt;- and that&#x27;s not what we want</span></span><br><span class="line">f (🍺) <span class="comment"># outputs 1</span></span><br><span class="line"></span><br><span class="line">g  <span class="number">3</span>  <span class="comment"># outputs -&gt; 3</span></span><br><span class="line">g 🍺 <span class="comment"># 🍺 evalueates function 🍺 and outputs 1</span></span><br></pre></td></tr></table></figure>
+
+<p>And that is it. A cleaned up version of the whole compiler function then looks like this:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># split to whole unicode characters, cannot use ToCharArray,</span></span><br><span class="line"><span class="comment"># because some of tha unicode characters occupy two &quot;char&quot; positions</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Split-ToUnicodeCharacters</span> <span class="params">(<span class="variable">$String</span>)</span></span> &#123;</span><br><span class="line">    <span class="variable">$enumerator</span> = [<span class="type">Globalization.StringInfo</span>]::GetTextElementEnumerator(<span class="variable">$String</span>)</span><br><span class="line">    <span class="keyword">while</span> (<span class="variable">$enumerator</span>.MoveNext())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable">$enumerator</span>.Current</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># for every character decide what to do, either translate it to</span></span><br><span class="line"><span class="comment"># something else or keep it as it is</span></span><br><span class="line"><span class="comment"># 🔤 starts and stops mode when every character is output as-is</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Translate-Characters</span> <span class="params">(<span class="variable">$characters</span>)</span></span> &#123;</span><br><span class="line">    <span class="variable">$literalMode</span> = <span class="variable">$false</span></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="variable">$character</span> <span class="keyword">in</span> <span class="variable">$characters</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$character</span> <span class="operator">-eq</span> <span class="string">&quot;🔤&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment"># switch between translating characters</span></span><br><span class="line">            <span class="comment"># and outputting them as-is</span></span><br><span class="line">            <span class="variable">$literalMode</span> = <span class="operator">-not</span> <span class="variable">$literalMode</span></span><br><span class="line">            <span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$literalMode</span>) &#123;</span><br><span class="line">            <span class="variable">$character</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># if the current character is one of the parameters</span></span><br><span class="line">        <span class="comment"># we need to treat it likea variable, so we generate</span></span><br><span class="line">        <span class="comment"># the $&#123;&#125; escape sequence around it</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$character</span> <span class="operator">-in</span> <span class="variable">$params</span>) &#123;</span><br><span class="line">            <span class="comment"># define randomly named variable so we can store</span></span><br><span class="line">            <span class="comment"># the result of command lookup</span></span><br><span class="line">            <span class="comment"># (in production you should never shorten GUID)</span></span><br><span class="line">            <span class="variable">$randomVariableName</span> = [<span class="type">Guid</span>]::NewGuid() `</span><br><span class="line">                .ToString(<span class="string">&#x27;N&#x27;</span>).Substring(<span class="number">0</span>,<span class="number">5</span>)</span><br><span class="line">            <span class="comment"># generate immediately invoked scriptblock around the if</span></span><br><span class="line">            <span class="comment"># because otherwise the code would not parse</span></span><br><span class="line">            <span class="comment">#</span></span><br><span class="line">            <span class="comment"># then inspect the value inside the parameter, if it is a defined function then invoke it</span></span><br><span class="line">            <span class="comment"># otherwise just return the value</span></span><br><span class="line">            <span class="string">&quot;(&amp;&#123;</span></span><br><span class="line"><span class="string">                if (`$<span class="variable">$randomVariableName</span> = (Get-Command `$&#123;<span class="variable">$character</span>&#125; -ErrorAction SilentlyContinue))</span></span><br><span class="line"><span class="string">                &#123;</span></span><br><span class="line"><span class="string">                    &amp;`$<span class="variable">$randomVariableName</span></span></span><br><span class="line"><span class="string">                &#125; else &#123;</span></span><br><span class="line"><span class="string">                    `$&#123;<span class="variable">$character</span>&#125;</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">            &#125;)&quot;</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># the character is not param, then look it up in defined functions,</span></span><br><span class="line">        <span class="comment"># if it exists execute it, otherwise just output it as character</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">Get-Command</span> <span class="variable">$character</span> <span class="literal">-ErrorAction</span> SilentlyContinue) &#123;</span><br><span class="line">            <span class="string">&quot;(&amp;(Get-Command <span class="variable">$character</span>))&quot;</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$character</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> 🐙</span> &#123;</span><br><span class="line">    <span class="comment"># split on the splitter, to get name, params and body</span></span><br><span class="line">    <span class="variable">$separator</span> = <span class="string">&#x27;💩&#x27;</span></span><br><span class="line">    <span class="variable">$name</span>,<span class="variable">$params</span> = <span class="variable">$args</span>.Where(&#123;<span class="variable">$_</span> <span class="operator">-eq</span> <span class="variable">$separator</span>&#125;,<span class="string">&#x27;Until&#x27;</span>)</span><br><span class="line">    <span class="variable">$null</span>,<span class="variable">$groups</span> = <span class="variable">$args</span>.Where(&#123;<span class="variable">$_</span> <span class="operator">-eq</span> <span class="variable">$separator</span>&#125;,<span class="string">&#x27;SkipUntil&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="variable">$body</span> = <span class="selector-tag">@</span>()</span><br><span class="line">    <span class="comment"># process each character group in the body, and translate it into </span></span><br><span class="line">    <span class="comment"># PowerShell code</span></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="variable">$characterGroup</span> <span class="keyword">in</span> <span class="variable">$groups</span>)  &#123;</span><br><span class="line">        <span class="variable">$characters</span> = <span class="built_in">Split-ToUnicodeCharacters</span> <span class="variable">$characterGroup</span></span><br><span class="line">        <span class="variable">$body</span> += Translate<span class="literal">-Characters</span> <span class="variable">$characters</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># generate paraters with the escape sequence</span></span><br><span class="line">    <span class="variable">$paramsText</span> = (<span class="variable">$params</span> | <span class="built_in">where</span> &#123;<span class="variable">$_</span>&#125; | <span class="keyword">foreach</span> &#123;<span class="string">&quot;`$&#123;<span class="variable">$_</span>&#125;&quot;</span>&#125;) <span class="operator">-join</span><span class="string">&#x27;,&#x27;</span></span><br><span class="line">    <span class="variable">$bodyText</span> = <span class="variable">$body</span> <span class="operator">-join</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="variable">$functionDefinition</span> = <span class="string">@&quot;</span></span><br><span class="line"><span class="string">        param(<span class="variable">$paramsText</span>)</span></span><br><span class="line"><span class="string">        <span class="variable">$bodyText</span></span></span><br><span class="line"><span class="string">&quot;@</span></span><br><span class="line">    <span class="comment"># put it all together</span></span><br><span class="line">    <span class="variable">$wholeFunction</span> = <span class="string">&quot;function global:<span class="variable">$name</span> &#123;<span class="variable">$functionDefinition</span>&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the function</span></span><br><span class="line">    <span class="built_in">Invoke-Expression</span> <span class="variable">$wholeFunction</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 🐙 # -&gt; defines a function</span></span><br><span class="line"><span class="comment"># 💩 # -&gt; splits function parameters and function body</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># define bacon function as string bacon</span></span><br><span class="line">🐙 🥓 💩 🔤🥓🔤</span><br><span class="line"></span><br><span class="line"><span class="comment"># define oneBeer emoji as 1</span></span><br><span class="line">🐙 🍺 💩 <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># define twoBeers emoji as 2</span></span><br><span class="line">🐙 🍻 💩 <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># define plus emoji function that takes</span></span><br><span class="line"><span class="comment"># parameters a and b and adds them together</span></span><br><span class="line">🐙 ➕ 🅰 🅱 💩 🅰+🅱</span><br><span class="line"></span><br><span class="line"><span class="comment"># add bacon to bacon</span></span><br><span class="line">➕ 🥓 🥓</span><br><span class="line"></span><br><span class="line"><span class="comment"># add 1 and 2 using emojis</span></span><br><span class="line">➕ 🍺 🍻</span><br><span class="line"></span><br><span class="line"><span class="comment"># add numbers 1 and 4</span></span><br><span class="line">➕ <span class="number">1</span> <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;bacon definition&#x27;</span></span><br><span class="line"><span class="built_in">get-command</span> 🥓 | % definition</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;plus definition&#x27;</span></span><br><span class="line"><span class="built_in">get-command</span> ➕ | % definition</span><br><span class="line"></span><br><span class="line">➕ 🥓 🥓</span><br><span class="line">➕ 🍺 🍻</span><br><span class="line">➕ <span class="number">1</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>I had a lot of fun with this. More of us did, actually. <a href="https://twitter.com/IISResetMe">Matthias</a> wrote his own version, from which I used some bits for this article, see <a href="https://gist.github.com/IISResetMe/cba955fc01b84fff4396dada77e36102">his version</a>. You can also find the twitter threads <a href="https://twitter.com/nohwnd/status/937978006659878912">here</a> and <a href="https://twitter.com/nohwnd/status/938126535189463040">here</a>.</p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            09 December 2017
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

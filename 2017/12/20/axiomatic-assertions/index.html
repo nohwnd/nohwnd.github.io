@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Axiomatic assertions
+        </h1>
+        <div>
+            
+            <a href="/tags/powershell/">
+                <p>powershell</p>
+            </a>
+            
+            <a href="/tags/pester/">
+                <p>pester</p>
+            </a>
+            
+            <a href="/tags/testing/">
+                <p>testing</p>
+            </a>
+            
+            <a href="/tags/assertions/">
+                <p>assertions</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>Writing a test framework is a lot of fun, and presents some unique challenges to overcome. One of them is testing your assertions. I am writing my own set of <a href="https://github.com/nohwnd/Assert">assertions for Pester</a> and I also used the same ideas to test some of the <code>Should</code> assertions in Pester.</p>
+<span id="more"></span>
+
+<h2 id="Axiom"><a href="#Axiom" class="headerlink" title="Axiom"></a>Axiom</h2><p>Proving that your assertions are correct, is a major stumbling point that you have to overcome right at the start of writing your assertion suite. To prove that your assertions are correct you need to write tests for them. To write those tests you need tested assertions. To prove that those assertions are correct you need to write tests for them. To write those tests you need tested assertions. To prove that those assertions are correct you need to write tests for them. To write those tests you need tested assertions. To prove that those assertions are correct you need to write tests for them…And so on, ad-infinitum.</p>
+<p>This is a typical recursive situation, and as with any such situation, we need a base condition to <em>break out</em> of the infinite recursion.</p>
+<p>We have three options:</p>
+<ul>
+<li>Use a third-party set of assertions that are tested and believed to be correct</li>
+<li>Use untested code directly in our tests</li>
+<li>Write a custom suit of assertions</li>
+</ul>
+<h2 id="Using-a-third-party-set-of-assertions"><a href="#Using-a-third-party-set-of-assertions" class="headerlink" title="Using a third-party set of assertions"></a>Using a third-party set of assertions</h2><p>The first option gives us a head start, we have a suite that has all the features that we need and we can start writing our assertion suite right off. This is very convenient, but we are making a trade off. Our test suite is no longer self-contained, and its correctness depends on the third-party assertions being correct.</p>
+<p>Proving that the third-party assertions are correct is a job for their author, and he possibly did the same trade off. He reused some other suite of assertions, and those assertions might be untested, or possibly even tested with the assertions we are writing. As you can see there is a chain of trust that either terminates in not-automatically tested, or becomes recursive.</p>
+<p>Neither of those cases proves that our assertions are correct, we always have to take someones word that his assertions are correct. At the same time it adds the complexity of multiple assertion suites, most of them having a lot of bells and whistles that we do not need, and that make them difficult to understand.</p>
+<h2 id="Use-untested-code-in-tests"><a href="#Use-untested-code-in-tests" class="headerlink" title="Use untested code in tests"></a>Use untested code in tests</h2><p>The second option offers no convenience, and brings us no closer to proving our code is correct. In fact it does the opposite. The more untested code we have the more uncertain we are that the code is working correctly. On the other hand there are some pros: We are now at the end of the chain of trust, and our code is self-contained.</p>
+<h2 id="Write-a-custom-suite-of-assertions"><a href="#Write-a-custom-suite-of-assertions" class="headerlink" title="Write a custom suite of assertions"></a>Write a custom suite of assertions</h2><p>The third option puts us at the start of the problem. We have yet another suite of assertion to prove to be correct, which is what we are going to do. Well sort of. As we learned we cannot prove that our assertions are correct, but we can make them extremely easy to understand and test manually. Everyone can then try for themselves in under 5 minutes, and decide if they trust the building blocks of our test suite or not.</p>
+<h2 id="Axiomatic-assertions"><a href="#Axiomatic-assertions" class="headerlink" title="Axiomatic assertions"></a>Axiomatic assertions</h2><p>Each of our new assertions is an axiom:</p>
+<blockquote>
+<p>An axiom is a statement that is taken to be true, to serve as a premise or starting point for further reasoning and arguments. The word comes from the Greek axíōma (ἀξίωμα) ‘that which is thought worthy or fit’ or ‘that which commends itself as evident.’</p>
+</blockquote>
+<p>In theory we only need a single axiomatic assertion to write all of our tests: <code>Verify-True</code>. I don’t have any proof for it, but I believe that any code that you write can be expressed as a condition, result of which is then compared to $true. In practice at least <code>Verify-True</code> and <code>Verify-Throw</code> are needed to avoid making the tests unbearably awkward to write. And about eight assertions to make the test code readable and easy to follow. All of which you can <a href="https://github.com/nohwnd/Assert/tree/master/Axiom/src">find here</a>.</p>
+<p>As an example let’s look at the source code of <code>Verify-True</code> and <code>Verify-Throw</code>:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Verify-True</span></span> &#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="type">Parameter</span>(<span class="type">ValueFromPipeline</span>=<span class="variable">$true</span>)]</span><br><span class="line">        <span class="variable">$Actual</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">-not</span> <span class="variable">$Actual</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> [<span class="type">Exception</span>]<span class="string">&quot;Expected `$true but got &#x27;<span class="variable">$Actual</span>&#x27;.&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$Actual</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>There is nothing surprising or difficult to understand. There is a single condition that throws exception when the input is not $true or truthy value such as 1. All the other assertions follow along those lines. The most complicated of them being <code>Verify-Throw</code>, which is still very simple:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Verify-Throw</span></span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="type">Parameter</span>(<span class="type">Mandatory</span>=<span class="variable">$true</span>, <span class="type">ValueFromPipeline</span>=<span class="variable">$true</span>)]</span><br><span class="line">        [<span class="type">ScriptBlock</span>]<span class="variable">$ScriptBlock</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="variable">$exceptionThrown</span> = <span class="variable">$false</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="variable">$null</span> = &amp; <span class="variable">$ScriptBlock</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable">$exceptionThrown</span> = <span class="variable">$true</span></span><br><span class="line">        <span class="variable">$_</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">-not</span> <span class="variable">$exceptionThrown</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> [<span class="type">Exception</span>]<span class="string">&quot;An exception was expected, but no exception was thrown!&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Both are absolutely bare-bone implementation of the assertion. Yet they still allow to write expressive tests, that work well for our purpose, such as this one:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&quot;Compare-ObjectEquivalent&quot;</span> &#123;</span><br><span class="line">    It <span class="string">&quot;Given expected &#x27;&lt;expected&gt;&#x27; that is not an object</span></span><br><span class="line"><span class="string">        it throws ArgumentException&quot;</span> <span class="literal">-TestCases</span> <span class="selector-tag">@</span>(</span><br><span class="line">        <span class="selector-tag">@</span>&#123; Expected = <span class="string">&quot;a&quot;</span> &#125;,</span><br><span class="line">        <span class="selector-tag">@</span>&#123; Expected = <span class="string">&quot;1&quot;</span> &#125;,</span><br><span class="line">        <span class="selector-tag">@</span>&#123; Expected = &#123; abc &#125; &#125;,</span><br><span class="line">        <span class="selector-tag">@</span>&#123; Expected = (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>) &#125;</span><br><span class="line">    ) &#123;</span><br><span class="line">        <span class="keyword">param</span>(<span class="variable">$Expected</span>)</span><br><span class="line">        <span class="variable">$err</span> = &#123; <span class="built_in">Compare-ObjectEquivalent</span> `</span><br><span class="line">                    <span class="literal">-Actual</span> <span class="string">&quot;dummy&quot;</span> `</span><br><span class="line">                    <span class="literal">-Expected</span> <span class="variable">$Expected</span></span><br><span class="line">               &#125; | Verify<span class="literal">-Throw</span></span><br><span class="line">        <span class="variable">$err</span>.Exception <span class="operator">-is</span> [<span class="type">ArgumentException</span>] | Verify<span class="literal">-True</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Testing assertions is simple if you have the right tools. Writing a second set of minimal assertions is better than not testing the assertions at all, or testing them using complicated tools that you don’t control.</p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            20 December 2017
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

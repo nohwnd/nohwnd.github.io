@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            7 years of Pester
+        </h1>
+        <div>
+            
+            <a href="/tags/powershell/">
+                <p>powershell</p>
+            </a>
+            
+            <a href="/tags/pester/">
+                <p>pester</p>
+            </a>
+            
+            <a href="/tags/testing/">
+                <p>testing</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>Seven years ago, on the first day of 2011 the <a href="https://github.com/pester/Pester/commit/a1d6a0e01f58375175ed090647ab8245a049f1a6">first commit</a> to Pester repository was done by <a href="https://twitter.com/ScottMuc">Scott Muc</a>. Little did he know that this minimal implementation of a testing framework, he committed still a bit drunk from the previous evening, will grow into the number one PowerShell testing framework it is today.</p>
+<span id="more"></span>
+
+<p>At that time the implementation was extremely simple and used fluent syntax for the assertions. Here is the first of the original examples that came with the first commit:</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$pwd</span> = <span class="built_in">Split-Path</span> <span class="literal">-Parent</span> <span class="variable">$MyInvocation</span>.MyCommand.Path</span><br><span class="line">. <span class="string">&quot;<span class="variable">$pwd</span>\Add-Numbers.ps1&quot;</span></span><br><span class="line">. <span class="string">&quot;<span class="variable">$pwd</span>\..\..\Source\Pester.ps1&quot;</span></span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Add-Numbers&quot;</span> &#123;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&quot;adds positive numbers&quot;</span> &#123;</span><br><span class="line">        <span class="variable">$sum</span> = <span class="built_in">Add-Numbers</span> <span class="number">2</span> <span class="number">3</span></span><br><span class="line">        <span class="variable">$sum</span>.should.be(<span class="number">4</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>I encourage you to check out that commit, to see how little code is needed to actually implement a working testing framework. One of the things you might notice is that the first commit does not use exceptions to indicate fail of a test. Instead a boolean condition is used. This was later amended, to prevent any test failure from stopping the whole test run.</p>
+<h2 id="Flying-under-the-radar"><a href="#Flying-under-the-radar" class="headerlink" title="Flying under the radar"></a>Flying under the radar</h2><p>In next few years, Pester did not get much traction, in the first year Scott developed it alone mostly, with occasional help from others. The idea of testing in PowerShell was probably too revolutionary at that time and not many people seen any use in it. Lucking in 2012 <a href="https://twitter.com/mwrockx">Matt Wrock</a> joined the project and added <a href="https://github.com/pester/Pester/wiki/Mock">Mocking</a> to Pester. Most of the code is still present in the codebase.</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Commits:</span><br><span class="line"></span><br><span class="line">2011</span><br><span class="line">   33 Scott Muc</span><br><span class="line">    6 Martin Aatmaa</span><br><span class="line">    4 manojlds</span><br><span class="line">2012</span><br><span class="line">   56 Matt Wrock</span><br><span class="line">   21 Scott Muc</span><br><span class="line">    7 Max Bergmann</span><br><span class="line">2013</span><br><span class="line">   61 Scott Muc</span><br><span class="line">   14 Matt Wrock</span><br><span class="line">    4 Arun Mahapatra</span><br></pre></td></tr></table></figure>
+
+<h2 id="Getting-on-board"><a href="#Getting-on-board" class="headerlink" title="Getting on board"></a>Getting on board</h2><p>That brings us to year 2014 (or rather end of 2013), when I found myself in need of a testing framework. At that time I barely knew anything about testing and only had a feeling that a testing framework would help me make my code less brittle. Multiple frameworks were available at that time, but Pester felt to be the most feature-complete of them. So I started using it, and it in fact helped me to finish the project successfully.</p>
+<p>Full of enthusiasm for this newly found skill that everyone one else seemed to be missing on, I started talking about Pester to anyone who was willing to listen, and wrote my <a href="http://www.powershellmagazine.com/2014/03/12/get-started-with-pester-powershell-unit-testing-framework/">first article about Pester</a>. </p>
+<p>I also improved few features, and so on, but at that time it seemed that I am the only person interested in testing. Soon I also inherited the project from Scott who was not doing development on Windows anymore, and so he had little interest in maintaining the project.</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Commits:</span><br><span class="line"></span><br><span class="line">2014</span><br><span class="line">  180 Dave Wyatt</span><br><span class="line">  100 nohwnd</span><br><span class="line">   25 Joel Bennett</span><br></pre></td></tr></table></figure>
+
+<p>Hopefully writing about Pester helped stir some interest and soon after <a href="https://twitter.com/msh_dave">Dave Wyatt</a> joined the project. He started started cleaning the codebase, piling in features, and for the years to come he became the top committer to the project.</p>
+<h2 id="Getting-popular"><a href="#Getting-popular" class="headerlink" title="Getting popular"></a>Getting popular</h2><p>Year 2015 marks a very important mark for both Pester and Windows. Pester was selected to be shipped with Windows 10 and was the first open source software to ever be shipped as part of Windows. See the <a href="https://youtu.be/aem257PCO9c?t=17m27s">announcement here</a>.</p>
+<p>Still it wasn’t till 2016 when the project started to get a bit more traction in the community. Many articles were published and everyone was talking about testing. See the listing <a href="https://github.com/pester/Pester/wiki/Articles-and-other-resources">of Pester related articles</a>.</p>
+<p>For me the years 2015 and 2016 marked an important change in my life. I changed careers, and became a developer, unfortunately at the price of neglecting Pester. On the other hand, being a developer gave me way more practice in testing, because I now do it everyday.</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Commits:</span><br><span class="line"></span><br><span class="line">2015</span><br><span class="line">  210 Dave Wyatt</span><br><span class="line">   38 Joel Bennett</span><br><span class="line">   16 nohwnd</span><br><span class="line">2016</span><br><span class="line">   93 Dave Wyatt</span><br><span class="line">   21 nohwnd</span><br><span class="line">   13 June Blender</span><br></pre></td></tr></table></figure>
+
+<h2 id="Last-year"><a href="#Last-year" class="headerlink" title="Last year"></a>Last year</h2><p>The year 2017 was awesome for Pester. We finally released version 4. Which also includes Gherkin that <a href="https://twitter.com/Jaykul">Joel Bennet</a> added. Got new core members: <a href="https://twitter.com/itpraktyk">Wojciech Sciesinski</a>, who made Pester work on PSCore. <a href="https://twitter.com/alx9r">Alx9r</a> who is extremely knowledgeable about PowerShell edge cases. </p>
+<p>Some people even went as far as saying that Pester <a href="https://twitter.com/cl/status/931130461111422977">totally changed their life</a> and that it was <a href="https://twitter.com/FredBainbridge/status/942968510095003649">the most important thing they learned that year</a>!</p>
+<p>For me the biggest win is that I got back to actively working on Pester, and that I started blogging again.</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Commits:</span><br><span class="line"></span><br><span class="line">2017</span><br><span class="line">   97 nohwnd</span><br><span class="line">   35 Wojciech Sciesinski</span><br><span class="line">   23 Joel Bennett</span><br></pre></td></tr></table></figure>
+
+<h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><p>Let’s see what the year 2018 brings! 🍾🍾🍾</p>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            01 January 2018
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>

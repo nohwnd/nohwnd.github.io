@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jakubjares.com</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+<link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
+
+    
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111716940-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+    <header class="article-header">
+    <div class="main-page-header-filler"></div>
+    <div class="menu">
+        <a href="/">
+            <div>
+                <svg viewBox="76 -3 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M80.5814303,71.6096505 C75.6649156,71.5033353 83.1767812,0.439369496 89.9186348,0.439368205 C97.914984,0.439366673 116.442438,74.9999972 125.727143,75 C135.011849,75.0000028 147.86947,0.507256695 151.30356,0.507256695 C154.73765,0.507256695 150.408807,74.9427912 142.667229,74.9427906 C134.925651,74.94279 120.545497,1.52077528e-08 106.655055,-7.10542736e-15 C94.9311609,-1.28357508e-08 85.497945,71.7159657 80.5814303,71.6096505 Z"
+        id="Path-7" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" fill="none"></path>
+</svg>
+                <h1>Jakub<br />Jareš</h1>
+            </div>
+        </a>
+        <nav>
+            
+            <a href="/">
+                articles</a>
+            
+            <a href="/talks">
+                talks</a>
+            
+            <a href="/about">
+                about</a>
+            
+        </nav>
+    </div>
+    <div class="title">
+        <h1>
+            Testing Giraffe with Microsoft.AspNetCore.TestHost
+        </h1>
+        <div>
+            
+            <a href="/tags/fsharp/">
+                <p>fsharp</p>
+            </a>
+            
+            <a href="/tags/csharp/">
+                <p>csharp</p>
+            </a>
+            
+            <a href="/tags/C/">
+                <p>C#</p>
+            </a>
+            
+            <a href="/tags/NET-Core/">
+                <p>.NET Core</p>
+            </a>
+            
+            <a href="/tags/ASP-NET-Core/">
+                <p>ASP.NET Core</p>
+            </a>
+            
+        </div>
+    </div>
+</header>
+
+<div class="article">
+
+    <div class="article-content">
+        <p>Last week I started a project in F#. In the F# project we are using <a href="https://github.com/giraffe-fsharp/Giraffe">Giraffe</a> for the backend and we are testing it with <a href="https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-2.2">Microsoft.AspNetCore.TestHost</a>. This test host allows your ASP.NET Core app to run and be queried, just like it normally would, but with one instance per test and with doing everything in memory. This is great for integration tests, because with a very simple setup you can test your routing, validation, permissions, http return codes, serialization and so on. A lot of stuff that your might otherwise find difficult to test. </p>
+<span id="more"></span>
+
+<p>A typical setup in C# would look like this: </p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UnitTest1</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">Fact</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task <span class="title">GetsOkOnRoot</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// -- Arrange</span></span><br><span class="line">        <span class="keyword">var</span> webBuilder = <span class="keyword">new</span> WebHostBuilder()</span><br><span class="line">            .UseStartup&lt;WebApplication1.Startup&gt;();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">var</span> testServer = <span class="keyword">new</span> TestServer(webBuilder);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> client = testServer.CreateClient();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// -- Act</span></span><br><span class="line">        <span class="keyword">var</span> response = <span class="keyword">await</span> client.GetAsync(<span class="string">&quot;/&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// -- Assert</span></span><br><span class="line">        Assert.Equal(HttpStatusCode.OK, response.StatusCode);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The <code>WebHostBuilder</code> points to <code>Startup</code> class in your web app project. Based on a naming convention the builder looks up for <code>Configure</code> and <code>ConfigureServices</code> methods on this class an uses them to start your application.</p>
+<p>In F# with Giraffe the setup is very similar, but there is no <code>Startup</code> class, but luckily we can give the builder the callbacks to <code>ConfigureServices</code> and <code>Configure</code> directly. </p>
+<p>This is how it’s done: </p>
+<figure class="highlight fsharp"><table><tr><td class="code"><pre><span class="line"><span class="meta">[&lt;Fact&gt;]</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">``My test``</span> () <span class="operator">=</span></span><br><span class="line">    <span class="keyword">task</span> &#123;</span><br><span class="line">        <span class="comment">// -- Arrange</span></span><br><span class="line">        <span class="keyword">let</span> webBuilder <span class="operator">=</span></span><br><span class="line">            WebHostBuilder()</span><br><span class="line">                .ConfigureServices(App.configureServices)</span><br><span class="line">                .Configure(Action<span class="operator">&lt;</span>IApplicationBuilder<span class="operator">&gt;</span> App.configureApp)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> testServer <span class="operator">=</span> <span class="keyword">new</span> TestServer(webBuilder)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">let</span> client <span class="operator">=</span> testServer.CreateClient()</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// -- Act</span></span><br><span class="line">        <span class="keyword">let!</span> response <span class="operator">=</span> client.GetAsync <span class="string">&quot;/&quot;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// -- Assert</span></span><br><span class="line">        Assert.Equal(HttpStatusCode.OK, response.StatusCode)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>The change is at the start of the <code>webBuilder</code>, we point the builder to the appropriate functions in our web app (and hint the type of <code>configureApp</code> to the compiler). </p>
+<p>Running the test proves that it works.</p>
+<p>For completeness here is the server code listing: </p>
+<figure class="highlight fsharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> GiraffeWebApp.App</span><br><span class="line"></span><br><span class="line"><span class="keyword">open</span> System</span><br><span class="line"><span class="keyword">open</span> Microsoft.AspNetCore.Builder</span><br><span class="line"><span class="keyword">open</span> Microsoft.AspNetCore.Hosting</span><br><span class="line"><span class="keyword">open</span> Microsoft.Extensions.DependencyInjection</span><br><span class="line"><span class="keyword">open</span> Giraffe</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> webApp <span class="operator">=</span></span><br><span class="line">    choose [</span><br><span class="line">        GET <span class="operator">&gt;=&gt;</span></span><br><span class="line">            choose [</span><br><span class="line">                route <span class="string">&quot;/&quot;</span> <span class="operator">&gt;=&gt;</span> text <span class="string">&quot;hello&quot;</span></span><br><span class="line">            ]</span><br><span class="line">        setStatusCode <span class="number">404</span> <span class="operator">&gt;=&gt;</span> text <span class="string">&quot;Not Found&quot;</span> ]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> configureServices (services <span class="operator">:</span> IServiceCollection) <span class="operator">=</span></span><br><span class="line">    services.AddGiraffe() <span class="operator">|&gt;</span> <span class="built_in">ignore</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> configureApp (app <span class="operator">:</span> IApplicationBuilder) <span class="operator">=</span></span><br><span class="line">    app.UseGiraffe(webApp)</span><br><span class="line"></span><br><span class="line"><span class="meta">[&lt;EntryPoint&gt;]</span></span><br><span class="line"><span class="keyword">let</span> main _ <span class="operator">=</span></span><br><span class="line">    WebHostBuilder()</span><br><span class="line">        .UseKestrel()</span><br><span class="line">        .UseIISIntegration()</span><br><span class="line">        .ConfigureServices(configureServices)</span><br><span class="line">        .Configure(Action<span class="operator">&lt;</span>IApplicationBuilder<span class="operator">&gt;</span> configureApp)</span><br><span class="line">        .Build()</span><br><span class="line">        .Run()</span><br><span class="line">    <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Okay-what’s-the-big-deal"><a href="#Okay-what’s-the-big-deal" class="headerlink" title="Okay what’s the big deal?"></a>Okay what’s the big deal?</h2><p>All of this looks just like an implementation detail, we simply need to do a bit more work in F# than in C#, but it’s not just that. In F# we can leverage partial application to provide test configuration in a hard-typed way, while keeping the application really strict about it’s config in production.</p>
+<p>For example we have email configuration and we want to change it when running in a test. The configuration is loaded from environment variables e.g. <code>EMAIL_ADDRESS</code>.</p>
+<p>Changing the configuration between test and production can be done for example like this: </p>
+<figure class="highlight fsharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// in App</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">EmailOptions</span> <span class="operator">=</span></span><br><span class="line">    &#123;</span><br><span class="line">        Email <span class="operator">:</span> <span class="type">string</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">let</span> webApp <span class="operator">=</span></span><br><span class="line">    choose [</span><br><span class="line">        GET <span class="operator">&gt;=&gt;</span></span><br><span class="line">            choose [</span><br><span class="line">                route <span class="string">&quot;/&quot;</span> <span class="operator">&gt;=&gt;</span></span><br><span class="line">                    <span class="keyword">fun</span>  next (ctx<span class="operator">:</span>HttpContext) <span class="operator">-&gt;</span></span><br><span class="line">                        <span class="keyword">let</span> o <span class="operator">=</span> ctx.GetService<span class="operator">&lt;</span>EmailOptions<span class="operator">&gt;</span>()</span><br><span class="line">                        Successful.OK o.Email next ctx    </span><br><span class="line">            ]</span><br><span class="line">        setStatusCode <span class="number">404</span> <span class="operator">&gt;=&gt;</span> text <span class="string">&quot;Not Found&quot;</span> ]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> emailOptions <span class="operator">=</span> &#123;</span><br><span class="line">    Email <span class="operator">=</span> Environment.GetEnvironmentVariable(<span class="string">&quot;EMAIL_ADDRESS&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> configureServices (services <span class="operator">:</span> IServiceCollection) <span class="operator">=</span></span><br><span class="line">    services.AddSingleton(emailOptions) <span class="operator">|&gt;</span> <span class="built_in">ignore</span></span><br><span class="line">    services.AddGiraffe() <span class="operator">|&gt;</span> <span class="built_in">ignore</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> configureApp (app <span class="operator">:</span> IApplicationBuilder) <span class="operator">=</span></span><br><span class="line">    app.UseGiraffe(webApp)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// in test </span></span><br><span class="line"><span class="meta">[&lt;Fact&gt;]</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">``My test``</span> () <span class="operator">=</span></span><br><span class="line">    <span class="keyword">task</span> &#123;</span><br><span class="line">        <span class="comment">// -- Arrange</span></span><br><span class="line">        <span class="keyword">let</span> emailOptions <span class="operator">=</span> &#123; Email <span class="operator">=</span> <span class="string">&quot;me@company.com&quot;</span> &#125; </span><br><span class="line">        <span class="keyword">let</span> webBuilder <span class="operator">=</span></span><br><span class="line">            WebHostBuilder()</span><br><span class="line">                .ConfigureServices(App.configureServices)</span><br><span class="line">                .ConfigureServices(<span class="keyword">fun</span> s <span class="operator">-&gt;</span> s.AddSingleton(emailOptions) <span class="operator">|&gt;</span> <span class="built_in">ignore</span>)</span><br><span class="line">                .Configure(Action<span class="operator">&lt;</span>IApplicationBuilder<span class="operator">&gt;</span> App.configureApp)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> testServer <span class="operator">=</span> <span class="keyword">new</span> TestServer(webBuilder)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">let</span> client <span class="operator">=</span> testServer.CreateClient()</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// -- Act</span></span><br><span class="line">        <span class="keyword">let!</span> response <span class="operator">=</span> client.GetAsync <span class="string">&quot;/&quot;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// -- Assert</span></span><br><span class="line">        Assert.Equal(HttpStatusCode.OK, response.StatusCode)</span><br><span class="line">        <span class="keyword">let!</span> content <span class="operator">=</span> response.Content.ReadAsStringAsync()</span><br><span class="line">        Assert.Equal(<span class="string">&quot;\&quot;me@company.com\&quot;&quot;</span>, content)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>We define a new type for email options and load them from environment variables into a record. </p>
+<p>Inside of the test, we also register a new singleton of type EmailOptions, this time with the testing data. This will effectively hide the options that we loaded in the production code and will allow the test to pass, because the record we provided in test is used. </p>
+<p>This is quite cool, and powerful but full of implicit knowledge. </p>
+<h2 id="A-better-way"><a href="#A-better-way" class="headerlink" title="A better way?"></a>A better way?</h2><p>A better way to structure this is to make the dependencies for the builder explicit. That way we can directly provide the dependencies via parameters. </p>
+<figure class="highlight fsharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// in App</span></span><br><span class="line"><span class="keyword">let</span> emailOptions <span class="operator">=</span> &#123;</span><br><span class="line">    Email <span class="operator">=</span> Environment.GetEnvironmentVariable(<span class="string">&quot;EMAIL_ADDRESS&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> configureServices (emailOptions <span class="operator">:</span> EmailOptions) (services <span class="operator">:</span> IServiceCollection) <span class="operator">=</span></span><br><span class="line">    services.AddSingleton(emailOptions) <span class="operator">|&gt;</span> <span class="built_in">ignore</span></span><br><span class="line">    services.AddGiraffe() <span class="operator">|&gt;</span> <span class="built_in">ignore</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> configureApp (app <span class="operator">:</span> IApplicationBuilder) <span class="operator">=</span></span><br><span class="line">    app.UseGiraffe(webApp)</span><br><span class="line"></span><br><span class="line"><span class="meta">[&lt;EntryPoint&gt;]</span></span><br><span class="line"><span class="keyword">let</span> main _ <span class="operator">=</span></span><br><span class="line">    WebHostBuilder()</span><br><span class="line">        .UseKestrel()</span><br><span class="line">        .UseIISIntegration()</span><br><span class="line">        .ConfigureServices(configureServices emailOptions)</span><br><span class="line">        .Configure(Action<span class="operator">&lt;</span>IApplicationBuilder<span class="operator">&gt;</span> configureApp)</span><br><span class="line">        .Build()</span><br><span class="line">        .Run()</span><br><span class="line">    <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// in Test</span></span><br><span class="line"><span class="meta">[&lt;Fact&gt;]</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">``My test``</span> () <span class="operator">=</span></span><br><span class="line">    <span class="keyword">task</span> &#123;</span><br><span class="line">        <span class="comment">// -- Arrange</span></span><br><span class="line">        <span class="keyword">let</span> emailOptions <span class="operator">=</span> &#123; Email <span class="operator">=</span> <span class="string">&quot;me@company.com&quot;</span> &#125; </span><br><span class="line">        <span class="keyword">let</span> webBuilder <span class="operator">=</span></span><br><span class="line">            WebHostBuilder()</span><br><span class="line">                .ConfigureServices(App.configureServices emailOptions)</span><br><span class="line">                .Configure(Action<span class="operator">&lt;</span>IApplicationBuilder<span class="operator">&gt;</span> App.configureApp)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> testServer <span class="operator">=</span> <span class="keyword">new</span> TestServer(webBuilder)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">let</span> client <span class="operator">=</span> testServer.CreateClient()</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// -- Act</span></span><br><span class="line">        <span class="keyword">let!</span> response <span class="operator">=</span> client.GetAsync <span class="string">&quot;/&quot;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// -- Assert</span></span><br><span class="line">        Assert.Equal(HttpStatusCode.OK, response.StatusCode)</span><br><span class="line">        <span class="keyword">let!</span> content <span class="operator">=</span> response.Content.ReadAsStringAsync()</span><br><span class="line">        Assert.Equal(<span class="string">&quot;\&quot;me@company.com\&quot;&quot;</span>, content)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>In the application we added a new parameter to <code>configureServices</code> that explicitly asks for <code>emailOptions</code> and then we used it in the <code>main</code> function at the bottom of the startup code. </p>
+<p>In the test we removed the <code>AddSingleton</code> call that was shadowing the registration we did in the App, and instead we are partially applying testing <code>emailOptions</code> to the <code>App.configureServices</code>. </p>
+<h2 id="Is-it-worth-it"><a href="#Is-it-worth-it" class="headerlink" title="Is it worth it?"></a>Is it worth it?</h2><p>In my opinion it totally is. You are stating your dependencies explicitly. You run into fewer bugs because you do not forget to provide a testing configuration for some dependency. It is also much nicer to work with strongly typed records than with non-typed strings. And in case you are running your tests in parallel you don’t have to worry about your configuration bleeding into other tests.</p>
+<blockquote>
+<p><em>Side note</em>: The examples above are very simplistic, in case I was doing just that I would probably do it in a way that <a href="https://fsharpforfunandprofit.com/posts/dependency-injection-1/">Scott Wlaschin</a> recommends here. When there is only configuraion that can be easily provided via environment variables that method is just much simpler. Unfortunately it cannot be applied to passing behavior rather than just options. Say we have a mailing “service” that either sends mails, or just collects them in memory (in a test). That service cannot be injected into the program during tests via environment variables, for that we need a proper abstraction. Another examples where you need to replace behavior but not config might be using in-memory database provider for testing, stable time provider or similar. In all of those cases you might add the testing dependencies to your application, and use configuration to enable&#x2F;disable the testing behavior, but that is a bad idea.</p>
+</blockquote>
+
+    </div>
+    <div class="article-footer">
+        <p>written at</p>
+        <time datetime="">
+            07 April 2019
+        </time>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-filler"></div>
+
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
+</footer>
+</body>
+
+</html>
