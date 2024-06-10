@@ -77,5 +77,14 @@ deploy:
   repo: https://github.com/nohwnd/nohwnd.github.io.git
   branch: master
 
+syntax_highlighter: highlight.js
 highlight:
-  enable: false
+  line_number: false
+  auto_detect: false
+  tab_replace: ''
+  wrap: true
+  hljs: false
+prismjs:
+  preprocess: true
+  line_number: false
+  tab_replace: ''
