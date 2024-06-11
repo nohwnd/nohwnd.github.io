@@ -4,7 +4,8 @@ date: 2022-06-24 16:00
 tags: 
  - talk
  - powershell
- - pester
+ - profiler
+ - performance
 categories:
  - talk
 ---
