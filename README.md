@@ -1,2 +1,3 @@
 # nohwnd.github.io
-blog
+
+<https://jakubjares.com> blog
