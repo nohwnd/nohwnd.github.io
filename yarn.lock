@@ -1027,10 +1027,10 @@ hexo-pagination@3.0.0:
   resolved "https://registry.yarnpkg.com/hexo-pagination/-/hexo-pagination-3.0.0.tgz#b98b050bbddff25ae646e3d00ad607ac6ae77ea7"
   integrity sha512-8oo1iozloZo7TojPVYg4IxL3SJKCBdSJ908fTlIxIK7TWJIKdYnQlW31+12DBJ0NhVZA/lZisPObGF08wT8fKw==
 
-hexo-pagination@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/hexo-pagination/-/hexo-pagination-1.0.0.tgz#c9c0ca3665267b9e9d0a89fc3edcaf3276907dc1"
-  integrity sha512-miEVFgxchPr2qNWxw0JWpJ9R/Yaf7HjHBZVjvCCcqfbsLyYtCvIfJDxcEwz1sDOC/fLzYPqNnhUI73uNxBHRSA==
+hexo-pagination@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/hexo-pagination/-/hexo-pagination-4.0.0.tgz#19fb4a8074598da9688fab825ccca4687844e23a"
+  integrity sha512-jNG6AX3EHzY3FRfdzB46tZ833CUX4WudZue3yv6kKaVCCWR61iwFL9LD6xQadvwHBuT1oHy444dJClWORG4sxg==
 
 hexo-renderer-ejs@^2.0.0:
   version "2.0.0"
