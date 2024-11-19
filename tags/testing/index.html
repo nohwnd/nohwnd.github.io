@@ -6,14 +6,12 @@
     <meta charset="UTF-8">
     <title>jakubjares.com</title>
     <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css">
-    
-<script src="/highlight/highlight.pack.js"></script>
-
-    <script>hljs.initHighlightingOnLoad();</script>
 
     
 <link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
 
     
 <script>
@@ -25,7 +23,7 @@
 	ga('send', 'pageview');
 </script>
 
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
     <header class="main-page-header">
@@ -41,10 +39,10 @@
 <nav>
     
     <a href="/">
-        articles</a>
-    
-    <a href="/talks">
         talks</a>
+    
+    <a href="/articles">
+        articles</a>
     
     <a href="/about">
         about</a>
@@ -56,6 +54,58 @@
 
 <div class="list">
 
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2024/11/14/testing-platform-netconf2024/">
+        <div>
+            <h1>.NET Conf - Testing.Platform the new way to run .NET Tests</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>.NET Conf 2024 talk where I show how to use the new Testing.Platform together with MSTest, XUnit, NUnit and Docker.</p></div>
+<footer>
+    <time datetime="November 2024">
+        November 2024
+    </time>
+    <span>
+    
+        <a href="/tags/testing/">
+            testing,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+        <a href="/tags/docker/">
+            docker,
+        </a>
+    
+        <a href="/tags/net/">
+            .net,
+        </a>
+    
+        <a href="/tags/mstest/">
+            mstest,
+        </a>
+    
+        <a href="/tags/xunit/">
+            xunit,
+        </a>
+    
+        <a href="/tags/nunit/">
+            nunit,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
 
 <div class="list-item">
 <article class="article">
@@ -136,7 +186,7 @@
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2019/06/09/2019-07-testing-whole-scripts/">
+    <a href="/2019/06/09/testing-whole-scripts/">
         <div>
             <h1>Testing self-contained scripts with Pester</h1>
             <span class="read-more">Read more</span>
@@ -184,7 +234,7 @@
         
     </a>
 </header>
-<div class="article-content"><p>Seven years ago, on the first day of 2011 the <a target="_blank" rel="noopener" href="https://github.com/pester/Pester/commit/a1d6a0e01f58375175ed090647ab8245a049f1a6">first commit</a> to Pester repository was done by <a target="_blank" rel="noopener" href="https://twitter.com/ScottMuc">Scott Muc</a>. Little did he know that this minimal implementation of a testing framework, he committed still a bit drunk from the previous evening, will grow into the number one PowerShell testing framework it is today.</p></div>
+<div class="article-content"><p>Seven years ago, on the first day of 2011 the <a href="https://github.com/pester/Pester/commit/a1d6a0e01f58375175ed090647ab8245a049f1a6">first commit</a> to Pester repository was done by <a href="https://twitter.com/ScottMuc">Scott Muc</a>. Little did he know that this minimal implementation of a testing framework, he committed still a bit drunk from the previous evening, will grow into the number one PowerShell testing framework it is today.</p></div>
 <footer>
     <time datetime="January 2018">
         January 2018
@@ -220,7 +270,7 @@
         
     </a>
 </header>
-<div class="article-content"><p>Writing a test framework is a lot of fun, and presents some unique challenges to overcome. One of them is testing your assertions. I am writing my own set of <a target="_blank" rel="noopener" href="https://github.com/nohwnd/Assert">assertions for Pester</a> and I also used the same ideas to test some of the <code>Should</code> assertions in Pester.</p></div>
+<div class="article-content"><p>Writing a test framework is a lot of fun, and presents some unique challenges to overcome. One of them is testing your assertions. I am writing my own set of <a href="https://github.com/nohwnd/Assert">assertions for Pester</a> and I also used the same ideas to test some of the <code>Should</code> assertions in Pester.</p></div>
 <footer>
     <time datetime="December 2017">
         December 2017
@@ -262,7 +312,7 @@
 </header>
 <div class="article-content"><p>This weekend I added type filter and <code>-PassThru</code> to <code>Should -Throw</code>. Let’s see how are they useful.</p>
 <blockquote>
-<p>🔥 This feature is not released yet, get pre-release <a target="_blank" rel="noopener" href="https://www.powershellgallery.com/packages/Pester/4.2.0-alpha3">version 4.2.0-alpha3</a> to use it.</p>
+<p>🔥 This feature is not released yet, get pre-release <a href="https://www.powershellgallery.com/packages/Pester/4.2.0-alpha3">version 4.2.0-alpha3</a> to use it.</p>
 </blockquote>
 <h2 id="Type-filter"><a href="#Type-filter" class="headerlink" title="Type filter"></a>Type filter</h2><p>Filtering exceptions on type is one of the most basic capabilities of any assertion that deals with exceptions, yet we were missing it till now. But there it is now:</p></div>
 <footer>
@@ -300,9 +350,9 @@
         
     </a>
 </header>
-<div class="article-content"><p>This weekend I added custom failure reasons into Pester. This feature I know and love from <a target="_blank" rel="noopener" href="http://fluentassertions.com/">Fluent Assertions</a>, so let me show you how I would use it in Pester.</p>
+<div class="article-content"><p>This weekend I added custom failure reasons into Pester. This feature I know and love from <a href="http://fluentassertions.com/">Fluent Assertions</a>, so let me show you how I would use it in Pester.</p>
 <blockquote>
-<p>🔥 This feature is not released yet, get pre-release <a target="_blank" rel="noopener" href="https://www.powershellgallery.com/packages/Pester/4.2.0-alpha3">version 4.2.0-alpha3</a> to use it.</p>
+<p>🔥 This feature is not released yet, get pre-release <a href="https://www.powershellgallery.com/packages/Pester/4.2.0-alpha3">version 4.2.0-alpha3</a> to use it.</p>
 </blockquote>
 <h2 id="Because-parameter"><a href="#Because-parameter" class="headerlink" title="Because parameter"></a>Because parameter</h2><p>The new feature adds an optional <code>-Because</code> parameter to all <code>Should</code> assertions. The parameter allows you to specify a reason that will be shown when assertion fails, like so:</p></div>
 <footer>
@@ -434,7 +484,7 @@
         
     </a>
 </header>
-<div class="article-content"><p>Lately we are getting some great questions on our <a target="_blank" rel="noopener" href="https://github.com/pester/Pester/issues">Pester issue page</a>, I am reposting soem of my answers as blog posts, because I hope they are worth reading. You can access the <a target="_blank" rel="noopener" href="https://github.com/pester/Pester/issues/317">original question here</a>.</p>
+<div class="article-content"><p>Lately we are getting some great questions on our <a href="https://github.com/pester/Pester/issues">Pester issue page</a>, I am reposting soem of my answers as blog posts, because I hope they are worth reading. You can access the <a href="https://github.com/pester/Pester/issues/317">original question here</a>.</p>
 <p>We test because we need a simple set of boundaries that define a more complicated system. Coming up with simple tests and gradually refining them to define more complex systems is easy for us humans. Definitely easier than defining a complex system in a single swoop.</p></div>
 <footer>
     <time datetime="April 2015">
@@ -505,9 +555,9 @@
 <footer class="footer">
     <div class="footer-filler"></div>
 
-    <a target="_blank" rel="noopener" href="https://twitter.com/nohwnd">twitter</a>&bull;
-    <a target="_blank" rel="noopener" href="https://github.com/nohwnd">github</a>&bull;
-    <a target="_blank" rel="noopener" href="https://linkedin.com/in/jares/">linkedin</a>
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
 </footer>
 </body>
 

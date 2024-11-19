@@ -6,14 +6,12 @@
     <meta charset="UTF-8">
     <title>jakubjares.com</title>
     <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css">
-    
-<script src="/highlight/highlight.pack.js"></script>
-
-    <script>hljs.initHighlightingOnLoad();</script>
 
     
 <link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
 
     
 <script>
@@ -25,7 +23,7 @@
 	ga('send', 'pageview');
 </script>
 
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
     <header class="article-header">
@@ -43,10 +41,10 @@
         <nav>
             
             <a href="/">
-                articles</a>
-            
-            <a href="/talks">
                 talks</a>
+            
+            <a href="/articles">
+                articles</a>
             
             <a href="/about">
                 about</a>
@@ -88,7 +86,7 @@
 <p>Another example of emojis in code is this hello world example:</p>
 <img src="/2017/12/09/using-emojis-in-powershell-code/helloworld.jpeg" class="" title="Hello world">
 
-<p>This is still fairly recognizable as PowerShell code, we are just using special characters for that function name. This was not enough for me and I wanted to get closer to coding purely in emojis, like <a target="_blank" rel="noopener" href="http://www.emojicode.org/">emojicode</a> does it.</p>
+<p>This is still fairly recognizable as PowerShell code, we are just using special characters for that function name. This was not enough for me and I wanted to get closer to coding purely in emojis, like <a href="http://www.emojicode.org/">emojicode</a> does it.</p>
 <p>So I came up with this:</p>
 <img src="/2017/12/09/using-emojis-in-powershell-code/poopcompiler.jpeg" class="" title="Poopcompiler">
 
@@ -153,7 +151,7 @@ function 🍺 &#123; 1 &#125;</code></pre>
 <h2 id="Defining-a-function"><a href="#Defining-a-function" class="headerlink" title="Defining a function"></a>Defining a function</h2><p>Our generator generated a function body as string, and now we need to define that function. In PowerShell there is a reserved keyword <code>function</code> that we use to define functions. Using this keyword we can define function within the current scope. Unfortunately this is not what we need. Our 🐙 must be able to define a function outside of itself. Luckily you can define a function as a global function, to make it available in all scopes. We already have our function as a string so the best way to proceed is adding <code>gloabal:</code> before the function name, and invoking it via <code>Invoke-Expression</code>. Like this:</p>
 <pre><code class="powershell">Invoke-Expression &quot;function global:🍺 &#123; 1 &#125;&quot;</code></pre>
 <blockquote>
-<p>Not being able to define functions in any scope we want is a bit that is surprisingly missing from PowerShell when you realize that Set-Variable -Scope 1 allows us to do just that. In this case we don’t mind defining functions as global, because this whole thing is a silly example. But if you really need to define function in the parent scope of your function, you can look at my <a target="_blank" rel="noopener" href="https://github.com/nohwnd/Mock">Mock module prototype</a> that uses the same trick as <code>Invoke-Expression</code> uses to run code outside of itself. That allows the <code>New-Mock</code> function define functions that live in the parent scope.</p>
+<p>Not being able to define functions in any scope we want is a bit that is surprisingly missing from PowerShell when you realize that Set-Variable -Scope 1 allows us to do just that. In this case we don’t mind defining functions as global, because this whole thing is a silly example. But if you really need to define function in the parent scope of your function, you can look at my <a href="https://github.com/nohwnd/Mock">Mock module prototype</a> that uses the same trick as <code>Invoke-Expression</code> uses to run code outside of itself. That allows the <code>New-Mock</code> function define functions that live in the parent scope.</p>
 </blockquote>
 <h2 id="Get-rid-of-the-parentheses"><a href="#Get-rid-of-the-parentheses" class="headerlink" title="Get rid of the parentheses"></a>Get rid of the parentheses</h2><p>We defined 🍺 as a function that returns the number <code>1</code>. Using it in function call without parentheses would pass on the literal value 🍺, instead of calling the function and passing on the number <code>1</code>. This is a bit of a problem for us, but luckily we know that all functions are accessible via <code>Get-Command</code>. All we need to do is check if 🍺 is a defined function and call it inside of our generated function.</p>
 <pre><code class="powershell">function f ($value) &#123;
@@ -308,7 +306,7 @@ get-command ➕ | % definition
 ➕ 🥓 🥓
 ➕ 🍺 🍻
 ➕ 1 4</code></pre>
-<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>I had a lot of fun with this. More of us did, actually. <a target="_blank" rel="noopener" href="https://twitter.com/IISResetMe">Matthias</a> wrote his own version, from which I used some bits for this article, see <a target="_blank" rel="noopener" href="https://gist.github.com/IISResetMe/cba955fc01b84fff4396dada77e36102">his version</a>. You can also find the twitter threads <a target="_blank" rel="noopener" href="https://twitter.com/nohwnd/status/937978006659878912">here</a> and <a target="_blank" rel="noopener" href="https://twitter.com/nohwnd/status/938126535189463040">here</a>.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>I had a lot of fun with this. More of us did, actually. <a href="https://twitter.com/IISResetMe">Matthias</a> wrote his own version, from which I used some bits for this article, see <a href="https://gist.github.com/IISResetMe/cba955fc01b84fff4396dada77e36102">his version</a>. You can also find the twitter threads <a href="https://twitter.com/nohwnd/status/937978006659878912">here</a> and <a href="https://twitter.com/nohwnd/status/938126535189463040">here</a>.</p>
 
     </div>
     <div class="article-footer">
@@ -321,9 +319,9 @@ get-command ➕ | % definition
 <footer class="footer">
     <div class="footer-filler"></div>
 
-    <a target="_blank" rel="noopener" href="https://twitter.com/nohwnd">twitter</a>&bull;
-    <a target="_blank" rel="noopener" href="https://github.com/nohwnd">github</a>&bull;
-    <a target="_blank" rel="noopener" href="https://linkedin.com/in/jares/">linkedin</a>
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
 </footer>
 </body>
 

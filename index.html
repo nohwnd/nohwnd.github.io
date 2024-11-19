@@ -6,14 +6,12 @@
     <meta charset="UTF-8">
     <title>jakubjares.com</title>
     <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css">
-    
-<script src="/highlight/highlight.pack.js"></script>
-
-    <script>hljs.initHighlightingOnLoad();</script>
 
     
 <link rel="stylesheet" href="/scss/styles.css">
+
+    
+<link rel="stylesheet" href="/scss/highlight.css">
 
     
 <script>
@@ -25,7 +23,7 @@
 	ga('send', 'pageview');
 </script>
 
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
     <header class="main-page-header">
@@ -41,10 +39,10 @@
 <nav>
     
     <a href="/">
-        articles</a>
-    
-    <a href="/talks">
         talks</a>
+    
+    <a href="/articles">
+        articles</a>
     
     <a href="/about">
         about</a>
@@ -60,33 +58,49 @@
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2020/04/13/mocking-methods/">
+    <a href="/2024/11/14/testing-platform-netconf2024/">
         <div>
-            <h1>Mocking methods in Pester</h1>
+            <h1>.NET Conf - Testing.Platform the new way to run .NET Tests</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>Mocking functions in Pester is easy, you just use <code>Mock</code> and you are done. But how do you mock a method on an object?</p></div>
+<div class="article-content"><p>.NET Conf 2024 talk where I show how to use the new Testing.Platform together with MSTest, XUnit, NUnit and Docker.</p></div>
 <footer>
-    <time datetime="April 2020">
-        April 2020
+    <time datetime="November 2024">
+        November 2024
     </time>
     <span>
-    
-        <a href="/tags/powershell/">
-            powershell,
-        </a>
-    
-        <a href="/tags/pester/">
-            pester,
-        </a>
     
         <a href="/tags/testing/">
             testing,
         </a>
     
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+        <a href="/tags/docker/">
+            docker,
+        </a>
+    
+        <a href="/tags/net/">
+            .net,
+        </a>
+    
+        <a href="/tags/mstest/">
+            mstest,
+        </a>
+    
+        <a href="/tags/xunit/">
+            xunit,
+        </a>
+    
+        <a href="/tags/nunit/">
+            nunit,
+        </a>
+    
     
     </span>
 </footer>
@@ -96,23 +110,98 @@
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2020/04/11/pester5-discovery-and-script-setup/">
+    <a href="/2024/06/24/new-assertions-in-pester/">
         <div>
-            <h1>Pester5 - discovery and script setup</h1>
+            <h1>PSConfEU - New assertions in Pester</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>As described in the <a target="_blank" rel="noopener" href="https://github.com/pester/Pester/blob/v5.0/README.md#put-setup-in-beforeall">v5 readme</a>, the fundamental change in Pester5 is that Pester now runs in two phases: Discovery and Run. During Discovery Pester finds all your tests, groups them together and filters them based on your filters. Then in the Run phase it will actually run them.</p>
-<p>Splitting the work into two distinct phases, powers many of the features in this release, and enables many others to be implemented in the future. </p>
-<p>For Discovery to work correctly, there are new rules to follow: </p>
-<p><strong>Put all your code into <code>It</code>, <code>BeforeAll</code>, <code>BeforeEach</code>, <code>AfterAll</code> or <code>AfterEach</code>. Put no code directly into <code>Describe</code>, <code>Context</code> or on the top of your file, without wrapping it in one of these blocks, unless you have a good reason to do so.</strong></p>
-<p><strong>All misplaced code will run during Discovery, and its results won’t be available during Run.</strong></p>
-<p>This article offers more guidance and shows examples of what it means.</p></div>
+<div class="article-content"><p>PSConfEU talk where I show the most important aspects of Profiler, and the new memory view I’ve added.</p></div>
 <footer>
-    <time datetime="April 2020">
-        April 2020
+    <time datetime="June 2024">
+        June 2024
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+        <a href="/tags/profiler/">
+            profiler,
+        </a>
+    
+        <a href="/tags/performance/">
+            performance,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2024/06/24/10-things-you-should-know-about-profiler/">
+        <div>
+            <h1>PSConfEU - 10 things you should know about Profiler</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>PSConfEU talk where I show the most important aspects of Profiler, and the new memory view I’ve added.</p></div>
+<footer>
+    <time datetime="June 2024">
+        June 2024
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+        <a href="/tags/profiler/">
+            profiler,
+        </a>
+    
+        <a href="/tags/performance/">
+            performance,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2023/06/23/pester-what-is-new/">
+        <div>
+            <h1>PSConfEU - Pester what is new?</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk from PSConfEU 2023 where I show the news in Pester testing framework that happened in the previous year</p></div>
+<footer>
+    <time datetime="June 2023">
+        June 2023
     </time>
     <span>
     
@@ -124,8 +213,8 @@
             pester,
         </a>
     
-        <a href="/tags/pester5/">
-            pester5,
+        <a href="/tags/talk/">
+            talk,
         </a>
     
     
@@ -137,29 +226,162 @@
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2020/04/11/pester5-importing-ps-files/">
+    <a href="/2023/06/22/psconfeu-2022-interview/">
         <div>
-            <h1>Pester5 - importing your ps1 files</h1>
+            <h1>PSConfEU - Interview</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>In <a target="_blank" rel="noopener" href="https://github.com/pester/Pester/blob/v5.0/README.md#put-setup-in-beforeall">Pester 5</a> you should put your script setup inside of a <code>BeforeAll</code> block. If you are still using this historical approach, then it will no longer work: </p>
-<pre><code class="powershell">BeforeAll &#123;
-    $here = Split-Path -Parent $MyInvocation.MyCommand.Path
-    $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(&quot;.Tests.&quot;, &quot;.&quot;)
-    . &quot;$here\$sut&quot;
-&#125;
-
-Describe &quot;Get-Emoji&quot; &#123;
-    It &quot;Gets cactus&quot; &#123;
-        # your test code
-    &#125;
-&#125;</code></pre></div>
+<div class="article-content"><p>Interview with me on PSConfEU 2022 that I’ve co-organized in Prague and that was held at Cubex conference center.</p></div>
 <footer>
-    <time datetime="April 2020">
-        April 2020
+    <time datetime="June 2023">
+        June 2023
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2023/06/10/powershell-podcast-e73/">
+        <div>
+            <h1>PowerShell Podcast E73 - Delving into Pester, Profiler, and PSConfEU</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Interview on PowerShell podcast about my life, Pester, Profiler and PSConfEU.</p></div>
+<footer>
+    <time datetime="June 2023">
+        June 2023
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+        <a href="/tags/interview/">
+            interview,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2022/06/24/make-your-scripts-faster-with-profiler/">
+        <div>
+            <h1>PSConfEU - Make your scripts faster with Profiler</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>PSConfEU talk that shows Profiler and how to use Trace-Script to learn which lines of your code are taking the most time to run. It shows 5 examples of optimizations that I did on real life code, and that improved the performance by 100%.</p></div>
+<footer>
+    <time datetime="June 2022">
+        June 2022
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+        <a href="/tags/profiler/">
+            profiler,
+        </a>
+    
+        <a href="/tags/performance/">
+            performance,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2022/06/24/net-ecosystem/">
+        <div>
+            <h1>PSConfEU - The .NET eco system</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Lightning talk that shows the .NET ecosystem, focusing on the tools, and practices that are making it, rather than just the C# language.</p></div>
+<footer>
+    <time datetime="June 2022">
+        June 2022
+    </time>
+    <span>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+        <a href="/tags/net/">
+            .net,
+        </a>
+    
+        <a href="/tags/lightning/">
+            lightning,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2022/06/23/pester5-vs-pester4/">
+        <div>
+            <h1>PSConfEU - Pester 5 vs Pester 4</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk on PSConfEU describing the differences between Pester 4 and Pester 5 and how to migrate between them.</p></div>
+<footer>
+    <time datetime="June 2022">
+        June 2022
     </time>
     <span>
     
@@ -171,8 +393,8 @@ Describe &quot;Get-Emoji&quot; &#123;
             pester,
         </a>
     
-        <a href="/tags/pester5/">
-            pester5,
+        <a href="/tags/talk/">
+            talk,
         </a>
     
     
@@ -184,35 +406,239 @@ Describe &quot;Get-Emoji&quot; &#123;
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2019/06/15/shortest-wpf/">
+    <a href="/2022/02/03/pssh-introduction-to-pester/">
         <div>
-            <h1>The shortest way to a WPF App</h1>
+            <h1>PSSouthHampton - Introduction to Pester</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>I often see a lot of unnecessary code in WPF demos in PowerShell, so I want to share the most barebone version that still works correctly. </p>
-<p>You don’t need to use <code>New-Object System.Xml.XmlNodeReader $xaml</code>, and you don’t need <code>[Windows.Markup.XamlReader]::Load($reader)</code>. Just use <code>Parse</code>.</p>
-<p>You also don’t need the <code>x</code> and <code>d</code> namespaces (most of the time) so you can remove them as well. </p>
-<p>Just make sure that the <code>$xaml</code> variable has type <code>[string]</code>, and you can get a working app in just few lines of code.</p>
-<pre><code class="powershell">Add-Type -AssemblyName PresentationFramework
-
-[String]$xaml = @&quot;
-&lt;Window xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;&gt;
-    &lt;Grid&gt;
-        &lt;Label FontSize=&quot;100&quot; Name=&quot;Text&quot; /&gt; 
-    &lt;/Grid&gt;
-&lt;/Window&gt;
-&quot;@
-
-$Window = [Windows.Markup.XamlReader]::Parse($xaml)
-
-$Text = $Window.Content.FindName(&quot;Text&quot;)
-$Text.Content = &quot;👋, from WPF!&quot;
-
-$Window.ShowDialog()</code></pre>
+<div class="article-content"><p>Talk from PS South Hampton where I show how to use Pester, and introductory lesson that shows the most important aspect of Pester testing framework and how to apply it to test your own code.</p></div>
+<footer>
+    <time datetime="February 2022">
+        February 2022
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
 </div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2021/09/17/pdc-profiling-your-powershell-code-with-profiler/">
+        <div>
+            <h1>PDC Conference - Profiling your PowerShell code with Profiler</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk that I delivered online to PDC conference that covers Profiler, and how to use it to profile your script, and how to measure if you did good job optimizing the code.</p></div>
+<footer>
+    <time datetime="September 2021">
+        September 2021
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+        <a href="/tags/profiler/">
+            profiler,
+        </a>
+    
+        <a href="/tags/performance/">
+            performance,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2021/05/25/make-your-scripts-faster/">
+        <div>
+            <h1>DuPSUG - Make Your Scripts Faster</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk from DuPSUG, showing profiler and how to use it to make your code run faster.</p></div>
+<footer>
+    <time datetime="May 2021">
+        May 2021
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+        <a href="/tags/profiler/">
+            profiler,
+        </a>
+    
+        <a href="/tags/performance/">
+            performance,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2021/04/14/testing-with-pester-5/">
+        <div>
+            <h1>PSUG Inn-Salzach - PowerShell Testing with Pester 5</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Testing talk on Pester 5, how to enable code coverage in VS Code and how to use Pester to test your code.</p></div>
+<footer>
+    <time datetime="April 2021">
+        April 2021
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2019/12/31/cover-your-legacy-scripts-with-tests/">
+        <div>
+            <h1>PSDayUK - Cover your legacy scripts with tests</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk from PSDayUK 2019 held Birmingham. In this talk I show the various techniques that can be used to cover your existing code base with tests, including how to mock .NET methods, how to mock .NET types, how to test in module scope and so on.</p></div>
+<footer>
+    <time datetime="December 2019">
+        December 2019
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2019/08/21/pposh-intro-to-pester2/">
+        <div>
+            <h1>PPosh - Introduction to Pester</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk from PPosh user groun in 2019 held Wroclaw. In this talk I introduce the attendees to testing with Pester, yet another time.</p></div>
+<footer>
+    <time datetime="August 2019">
+        August 2019
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2019/06/15/community-talk-pester5/">
+        <div>
+            <h1>PSConfEU - Community talk Pester5</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Community enagaement session from PSConfEurope 2019 held in Hannover. I show news in Pester 5 and ask the community if they’d rather want a compatible version or a version that enables a lot of new features.</p></div>
 <footer>
     <time datetime="June 2019">
         June 2019
@@ -221,16 +647,88 @@ $Window.ShowDialog()</code></pre>
     
         <a href="/tags/powershell/">
             powershell,
+        </a>
+    
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2019/06/15/custom-assertions/">
+        <div>
+            <h1>PSConfEU - Custom Pester assertions are the vocabulary of your tests</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>A session from PSConfEurope 2019 held in Hannover. I show ,ultiple approaches to creating your own custom Pester assertions, and why they are useful.</p></div>
+<footer>
+    <time datetime="June 2019">
+        June 2019
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2019/06/14/a-better-way-to-do-wpf-in-powershell/">
+        <div>
+            <h1>PSConfEU - A better way to do WPF in PowerShell 5+</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk from PSConfEurope 2019 held in Hannover. Shows my wrapper around WPF in PowerShell and how it enables binding to be used in PowerShell which was thought to be impossible.</p></div>
+<footer>
+    <time datetime="June 2019">
+        June 2019
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
         </a>
     
         <a href="/tags/wpf/">
             wpf,
         </a>
     
-        <a href="/tags/xaml/">
-            xaml,
-        </a>
-    
     
     </span>
 </footer>
@@ -240,15 +738,15 @@ $Window.ShowDialog()</code></pre>
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2019/06/14/testing-whole-scripts-part2/">
+    <a href="/2019/06/07/pester5-internals/">
         <div>
-            <h1>Testing self-contained scripts with Pester, part 2</h1>
+            <h1>PSConfEU - Pester 5 internals and concepts</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>Few days ago I <a href="http://jakubjares.com/2019/06/09/2019-07-testing-whole-scripts/">posted about a tiny module</a> I wrote to skip the entry point function in a script. I got few reactions telling me that there are better ways to organize your scripts, and they were all correct. Putting your code into a module and distributing it that way, or splitting the script into different files and combining them during build are both better than having a single file with everything. </p></div>
+<div class="article-content"><p>Talk from PSConfEurope 2019 held in Hannover. A deep dive into Pester 5 testing framework internals, whith emphasis on scoping and session states, and multiple workarounds that I need to get the desired functionality.</p></div>
 <footer>
     <time datetime="June 2019">
         June 2019
@@ -263,12 +761,8 @@ $Window.ShowDialog()</code></pre>
             pester,
         </a>
     
-        <a href="/tags/testing/">
-            testing,
-        </a>
-    
-        <a href="/tags/ps1/">
-            ps1,
+        <a href="/tags/talk/">
+            talk,
         </a>
     
     
@@ -280,18 +774,18 @@ $Window.ShowDialog()</code></pre>
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2019/06/09/2019-07-testing-whole-scripts/">
+    <a href="/2019/02/18/pspowerhour-testing-self-contained-scripts/">
         <div>
-            <h1>Testing self-contained scripts with Pester</h1>
+            <h1>PSPowerHour - Testing self-contained scripts</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>Testing a self-contained script file with Pester is difficult. I visited this idea few times before, for <a href="http://jakubjares.com/2015/01/10/test-script-end-to-end/">example here</a> and never reached a solution that I would like, but every time I am getting closer and closer.</p></div>
+<div class="article-content"><p>Talk from PSPowerHour 2019 held online. In this talk I show my Import-Script function and how to use it to test self-contained PowerShell scripts.</p></div>
 <footer>
-    <time datetime="June 2019">
-        June 2019
+    <time datetime="February 2019">
+        February 2019
     </time>
     <span>
     
@@ -303,12 +797,8 @@ $Window.ShowDialog()</code></pre>
             pester,
         </a>
     
-        <a href="/tags/testing/">
-            testing,
-        </a>
-    
-        <a href="/tags/ps1/">
-            ps1,
+        <a href="/tags/talk/">
+            talk,
         </a>
     
     
@@ -320,71 +810,251 @@ $Window.ShowDialog()</code></pre>
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2019/04/07/aspnetcore-testhost/">
+    <a href="/2018/12/18/pspowerhour-assert/">
         <div>
-            <h1>Testing Giraffe with Microsoft.AspNetCore.TestHost</h1>
+            <h1>PSPowerHour - Assert module</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>Last week I started a project in F#. In the F# project we are using <a target="_blank" rel="noopener" href="https://github.com/giraffe-fsharp/Giraffe">Giraffe</a> for the backend and we are testing it with <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-2.2">Microsoft.AspNetCore.TestHost</a>. This test host allows your ASP.NET Core app to run and be queried, just like it normally would, but with one instance per test and with doing everything in memory. This is great for integration tests, because with a very simple setup you can test your routing, validation, permissions, http return codes, serialization and so on. A lot of stuff that your might otherwise find difficult to test. </p></div>
+<div class="article-content"><p>Talk from PSPowerHour 2018 held online. In this talk I show my Assert module and it’s capabilities, especially Assert-Equivalent which compares objects as a whole.</p></div>
 <footer>
-    <time datetime="April 2019">
-        April 2019
+    <time datetime="December 2018">
+        December 2018
     </time>
     <span>
     
-        <a href="/tags/fsharp/">
-            fsharp,
+        <a href="/tags/powershell/">
+            powershell,
         </a>
     
-        <a href="/tags/csharp/">
-            csharp,
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2018/10/18/introduction-to-pester-psconfasia2018/">
+        <div>
+            <h1>PSConfAsia - Introduction to Pester</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk from PSConfAsia 2018 held in Singapore. Shows an introduction to testing with Pester, with few practical examples.</p></div>
+<footer>
+    <time datetime="October 2018">
+        October 2018
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2018/05/18/pposh-intro-to-pester/">
+        <div>
+            <h1>PPosh - Introduction to Pester</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk from PPosh user groun in 2018 held Wroclaw. In this talk I introduce the attendees to testing with Pester.</p></div>
+<footer>
+    <time datetime="May 2018">
+        May 2018
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2018/04/20/pester-internals/">
+        <div>
+            <h1>PSConfEU - Pester internals</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk from PSConfEurope 2018 held in Hannover. Shows how the Pester testing framework works internally and different interesting workarounds that we need to take to provide the functionality.</p></div>
+<footer>
+    <time datetime="April 2018">
+        April 2018
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2018/04/20/common-mistakes-in-pester-tests/">
+        <div>
+            <h1>PSConfEU - Common mistakes in Pester tests</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk from PSConfEurope 2018 held in Hannover. Shows common mistakes that test writers make and provides solutions to make your code better.</p></div>
+<footer>
+    <time datetime="April 2018">
+        April 2018
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2017/04/08/introduction-to-pester-psconfasia2019/">
+        <div>
+            <h1>Introduction to Pester</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk from PowerShell User Group Singapore. Shows an introduction to testing with Pester, with few practical examples.</p></div>
+<footer>
+    <time datetime="April 2017">
+        April 2017
+    </time>
+    <span>
+    
+        <a href="/tags/powershell/">
+            powershell,
+        </a>
+    
+        <a href="/tags/pester/">
+            pester,
+        </a>
+    
+        <a href="/tags/talk/">
+            talk,
+        </a>
+    
+    
+    </span>
+</footer>
+</article>
+</div>
+
+<div class="list-item">
+<article class="article">
+<header>
+    <a href="/2017/03/06/vs-2017-and-csharp-7/">
+        <div>
+            <h1>Visual studio 2017 & C# 7 🇨🇿</h1>
+            <span class="read-more">Read more</span>
+        </div>
+        
+    </a>
+</header>
+<div class="article-content"><p>Talk from CN Group - SMART detailing Visual Studio 2017 and the new features in C# 7, like tuples, destructuring and so on. Talk is in czech.</p></div>
+<footer>
+    <time datetime="March 2017">
+        March 2017
+    </time>
+    <span>
+    
+        <a href="/tags/talk/">
+            talk,
         </a>
     
         <a href="/tags/C/">
             C#,
         </a>
     
-        <a href="/tags/NET-Core/">
-            .NET Core,
+        <a href="/tags/cz/">
+            cz,
         </a>
     
-        <a href="/tags/ASP-NET-Core/">
-            ASP.NET Core,
-        </a>
-    
-    
-    </span>
-</footer>
-</article>
-</div>
-
-<div class="list-item">
-<article class="article">
-<header>
-    <a href="/2018/11/08/powercfg/">
-        <div>
-            <h1>Powercfg.exe tips & tricks</h1>
-            <span class="read-more">Read more</span>
-        </div>
-        
-    </a>
-</header>
-<div class="article-content"><p>Yesterday I had to write a script to do some initial setup on Windows and one of the steps was configuring power settings. I remembered that there were few useful options, but googling them did not help me. Luckily I found the pieces in an old script I wrote. So here are few tips for using <code>powercfg.exe</code></p></div>
-<footer>
-    <time datetime="November 2018">
-        November 2018
-    </time>
-    <span>
-    
-        <a href="/tags/windows/">
-            windows,
-        </a>
-    
-        <a href="/tags/power-management/">
-            power management,
+        <a href="/tags/Visual-Studio/">
+            Visual Studio,
         </a>
     
     
@@ -396,39 +1066,31 @@ $Window.ShowDialog()</code></pre>
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2018/08/30/regex-replace-with-tokens/">
+    <a href="/2017/01/31/docker-first-steps/">
         <div>
-            <h1>Regex replace with capturing groups</h1>
+            <h1>Docker first steps 🇨🇿</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>Regular expressions with capturing groups are super useful for text replacements, and Visual Studio, VS Code, and notepad++ all support them. They can prevent you from doing a lot of boring work, such as:</p></div>
+<div class="article-content"><p>Talk from CN Group - SMART showing how to start with Docker in a step by step manner. Talk is in czech.</p></div>
 <footer>
-    <time datetime="August 2018">
-        August 2018
+    <time datetime="January 2017">
+        January 2017
     </time>
     <span>
     
-        <a href="/tags/code/">
-            code,
+        <a href="/tags/talk/">
+            talk,
         </a>
     
-        <a href="/tags/editing/">
-            editing,
+        <a href="/tags/cz/">
+            cz,
         </a>
     
-        <a href="/tags/VS/">
-            VS,
-        </a>
-    
-        <a href="/tags/VS-Code/">
-            VS Code,
-        </a>
-    
-        <a href="/tags/npp/">
-            npp,
+        <a href="/tags/docker/">
+            docker,
         </a>
     
     
@@ -440,31 +1102,35 @@ $Window.ShowDialog()</code></pre>
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2018/01/01/7-years-of-pester/">
+    <a href="/2016/12/22/code-weaving-with-fody/">
         <div>
-            <h1>7 years of Pester</h1>
+            <h1>Code weaving .NET with Fody 🇨🇿</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>Seven years ago, on the first day of 2011 the <a target="_blank" rel="noopener" href="https://github.com/pester/Pester/commit/a1d6a0e01f58375175ed090647ab8245a049f1a6">first commit</a> to Pester repository was done by <a target="_blank" rel="noopener" href="https://twitter.com/ScottMuc">Scott Muc</a>. Little did he know that this minimal implementation of a testing framework, he committed still a bit drunk from the previous evening, will grow into the number one PowerShell testing framework it is today.</p></div>
+<div class="article-content"><p>Talk from CN Group - SMART describing what is the Fody plugin and how to use it to generate code for repetitive tasks, like automatic implementation of <code>INotifyPropertyChanged</code>. Talk is in Czech. </p></div>
 <footer>
-    <time datetime="January 2018">
-        January 2018
+    <time datetime="December 2016">
+        December 2016
     </time>
     <span>
     
-        <a href="/tags/powershell/">
-            powershell,
+        <a href="/tags/talk/">
+            talk,
         </a>
     
-        <a href="/tags/pester/">
-            pester,
+        <a href="/tags/C/">
+            C#,
         </a>
     
-        <a href="/tags/testing/">
-            testing,
+        <a href="/tags/cz/">
+            cz,
+        </a>
+    
+        <a href="/tags/net/">
+            .net,
         </a>
     
     
@@ -476,274 +1142,31 @@ $Window.ShowDialog()</code></pre>
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2017/12/20/axiomatic-assertions/">
+    <a href="/2016/10/19/reflection/">
         <div>
-            <h1>Axiomatic assertions</h1>
+            <h1>Reflection in .NET</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>Writing a test framework is a lot of fun, and presents some unique challenges to overcome. One of them is testing your assertions. I am writing my own set of <a target="_blank" rel="noopener" href="https://github.com/nohwnd/Assert">assertions for Pester</a> and I also used the same ideas to test some of the <code>Should</code> assertions in Pester.</p></div>
+<div class="article-content"><p>Talk from CN Group - SMART about Reflection in .NET, going from the basics to more advanced topics in a very simple manner.</p></div>
 <footer>
-    <time datetime="December 2017">
-        December 2017
+    <time datetime="October 2016">
+        October 2016
     </time>
     <span>
     
-        <a href="/tags/powershell/">
-            powershell,
-        </a>
-    
-        <a href="/tags/pester/">
-            pester,
-        </a>
-    
-        <a href="/tags/testing/">
-            testing,
-        </a>
-    
-        <a href="/tags/assertions/">
-            assertions,
-        </a>
-    
-    
-    </span>
-</footer>
-</article>
-</div>
-
-<div class="list-item">
-<article class="article">
-<header>
-    <a href="/2017/12/19/using-should-throw/">
-        <div>
-            <h1>Pester - Using Should -Throw</h1>
-            <span class="read-more">Read more</span>
-        </div>
-        
-    </a>
-</header>
-<div class="article-content"><p>This weekend I added type filter and <code>-PassThru</code> to <code>Should -Throw</code>. Let’s see how are they useful.</p>
-<blockquote>
-<p>🔥 This feature is not released yet, get pre-release <a target="_blank" rel="noopener" href="https://www.powershellgallery.com/packages/Pester/4.2.0-alpha3">version 4.2.0-alpha3</a> to use it.</p>
-</blockquote>
-<h2 id="Type-filter"><a href="#Type-filter" class="headerlink" title="Type filter"></a>Type filter</h2><p>Filtering exceptions on type is one of the most basic capabilities of any assertion that deals with exceptions, yet we were missing it till now. But there it is now:</p></div>
-<footer>
-    <time datetime="December 2017">
-        December 2017
-    </time>
-    <span>
-    
-        <a href="/tags/powershell/">
-            powershell,
-        </a>
-    
-        <a href="/tags/pester/">
-            pester,
-        </a>
-    
-        <a href="/tags/testing/">
-            testing,
-        </a>
-    
-    
-    </span>
-</footer>
-</article>
-</div>
-
-<div class="list-item">
-<article class="article">
-<header>
-    <a href="/2017/12/19/using-because/">
-        <div>
-            <h1>Pester - Using Because in tests</h1>
-            <span class="read-more">Read more</span>
-        </div>
-        
-    </a>
-</header>
-<div class="article-content"><p>This weekend I added custom failure reasons into Pester. This feature I know and love from <a target="_blank" rel="noopener" href="http://fluentassertions.com/">Fluent Assertions</a>, so let me show you how I would use it in Pester.</p>
-<blockquote>
-<p>🔥 This feature is not released yet, get pre-release <a target="_blank" rel="noopener" href="https://www.powershellgallery.com/packages/Pester/4.2.0-alpha3">version 4.2.0-alpha3</a> to use it.</p>
-</blockquote>
-<h2 id="Because-parameter"><a href="#Because-parameter" class="headerlink" title="Because parameter"></a>Because parameter</h2><p>The new feature adds an optional <code>-Because</code> parameter to all <code>Should</code> assertions. The parameter allows you to specify a reason that will be shown when assertion fails, like so:</p></div>
-<footer>
-    <time datetime="December 2017">
-        December 2017
-    </time>
-    <span>
-    
-        <a href="/tags/powershell/">
-            powershell,
-        </a>
-    
-        <a href="/tags/pester/">
-            pester,
-        </a>
-    
-        <a href="/tags/testing/">
-            testing,
-        </a>
-    
-        <a href="/tags/best-practice/">
-            best practice,
-        </a>
-    
-        <a href="/tags/assertion/">
-            assertion,
-        </a>
-    
-    
-    </span>
-</footer>
-</article>
-</div>
-
-<div class="list-item">
-<article class="article">
-<header>
-    <a href="/2017/12/09/using-emojis-in-powershell-code/">
-        <div>
-            <h1>Using emojis in PowerShell code</h1>
-            <span class="read-more">Read more</span>
-        </div>
-        
-    </a>
-</header>
-<div class="article-content"><p>Few days ago I saw a post about using hieroglyph unicode characters in Haskell to write fully functional haskell code. They shown an example of <code>map</code> function. A function that applies a function to a collection of items. Pretty much how <code>foreach</code> does in PowerShell.</p>
-<p>I thought this was fun, and tweeted this:</p>
-<img src="/2017/12/09/using-emojis-in-powershell-code/orig.jpeg" class="" title="Original tweet"></div>
-<footer>
-    <time datetime="December 2017">
-        December 2017
-    </time>
-    <span>
-    
-        <a href="/tags/powershell/">
-            powershell,
-        </a>
-    
-        <a href="/tags/fun/">
-            fun,
-        </a>
-    
-        <a href="/tags/emoji/">
-            emoji,
-        </a>
-    
-    
-    </span>
-</footer>
-</article>
-</div>
-
-<div class="list-item">
-<article class="article">
-<header>
-    <a href="/2017/12/07/testing-your-environment-tests/">
-        <div>
-            <h1>Environment testing with Pester: Testing your tests</h1>
-            <span class="read-more">Read more</span>
-        </div>
-        
-    </a>
-</header>
-<div class="article-content"><p>This always starts of as a joke:</p>
-<blockquote>
-<p>So do you test your tests? When you test your tests, do you test the tests that test your tests?</p>
-</blockquote>
-<p>And people are often surprised that I in fact <em>do</em> test my tests.</p>
-<p>With Pester there are two different ways of testing that both look very similar, but are in fact very different.</p></div>
-<footer>
-    <time datetime="December 2017">
-        December 2017
-    </time>
-    <span>
-    
-        <a href="/tags/pester/">
-            pester,
-        </a>
-    
-        <a href="/tags/testing/">
-            testing,
-        </a>
-    
-        <a href="/tags/environment-validation/">
-            environment validation,
-        </a>
-    
-    
-    </span>
-</footer>
-</article>
-</div>
-
-<div class="list-item">
-<article class="article">
-<header>
-    <a href="/2016/11/18/bootstrap-your-functional-knowledge/">
-        <div>
-            <h1>Bootstrap your functional knowledge</h1>
-            <span class="read-more">Read more</span>
-        </div>
-        
-    </a>
-</header>
-<div class="article-content"><p>They say a picture is worth a thousand words. I would say that a great talk is worth ten times more than that. Especially if you are a beginner looking for their way into a new topic. One such topic is functional programming, with its endofunctors, lambda calculus and set theory.</p></div>
-<footer>
-    <time datetime="November 2016">
-        November 2016
-    </time>
-    <span>
-    
-        <a href="/tags/fsharp/">
-            fsharp,
-        </a>
-    
-        <a href="/tags/csharp/">
-            csharp,
-        </a>
-    
-        <a href="/tags/functional/">
-            functional,
-        </a>
-    
-        <a href="/tags/programming/">
-            programming,
-        </a>
-    
-        <a href="/tags/fp/">
-            fp,
-        </a>
-    
-        <a href="/tags/f/">
-            f#,
-        </a>
-    
-        <a href="/tags/haskell/">
-            haskell,
-        </a>
-    
-        <a href="/tags/clojure/">
-            clojure,
+        <a href="/tags/talk/">
+            talk,
         </a>
     
         <a href="/tags/c/">
             c#,
         </a>
     
-        <a href="/tags/kata/">
-            kata,
-        </a>
-    
-        <a href="/tags/fizzBuzz/">
-            fizzBuzz,
-        </a>
-    
-        <a href="/tags/pits-of-success/">
-            pits of success,
+        <a href="/tags/net/">
+            .net,
         </a>
     
     
@@ -755,229 +1178,35 @@ $Window.ShowDialog()</code></pre>
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2016/03/27/Temporal-tables-in-MSSQL-2016/">
+    <a href="/2016/07/14/aspnet-core-1/">
         <div>
-            <h1>Temporal tables in MSSQL 2016</h1>
+            <h1>ASP.NET Core 1.0 hands-on</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>The new version of MS SQL server offers a lot of new cool features. One of them is called system-versioned temporal tables. </p>
-<p>As the name suggests, this feature enables versioning for data in table, it does quite simply by creating a second table that holds the historic state of each row, as well as information about the timespan in which the row was valid. </p></div>
+<div class="article-content"><p>A workshop and a talk from CN Group - INDEED Hands-On &amp; SMART explaining how to use ASP.NET Core 1.0.</p></div>
 <footer>
-    <time datetime="March 2016">
-        March 2016
+    <time datetime="July 2016">
+        July 2016
     </time>
     <span>
     
-        <a href="/tags/sql/">
-            sql,
+        <a href="/tags/talk/">
+            talk,
         </a>
     
-        <a href="/tags/entityframework/">
-            entityframework,
+        <a href="/tags/cz/">
+            cz,
         </a>
     
-    
-    </span>
-</footer>
-</article>
-</div>
-
-<div class="list-item">
-<article class="article">
-<header>
-    <a href="/2016/03/27/Create-mongoDB-cluster/">
-        <div>
-            <h1>Create mongoDB cluster</h1>
-            <span class="read-more">Read more</span>
-        </div>
-        
-    </a>
-</header>
-<div class="article-content"><p>I finished the excellent <a target="_blank" rel="noopener" href="http://www.amazon.com/NoSQL-Distilled-Emerging-Polyglot-Persistence/dp/0321826620">NoSQL Distilled</a> book yesterday and today I tried to start few mongo sessions and configure them as a cluster. This turned out to be a bit tedious, so I wrote a <em>very rough</em> script for it. </p></div>
-<footer>
-    <time datetime="March 2016">
-        March 2016
-    </time>
-    <span>
-    
-        <a href="/tags/nosql/">
-            nosql,
+        <a href="/tags/docker/">
+            docker,
         </a>
     
-        <a href="/tags/mongo/">
-            mongo,
-        </a>
-    
-    
-    </span>
-</footer>
-</article>
-</div>
-
-<div class="list-item">
-<article class="article">
-<header>
-    <a href="/2015/04/30/Testing-class-based-DSC-resources-with-Pester/">
-        <div>
-            <h1>Testing class based DSC resources with Pester</h1>
-            <span class="read-more">Read more</span>
-        </div>
-        
-    </a>
-</header>
-<div class="article-content"><p><em>I am using PowerShell version 5.0.10018.0 for the examples. This version of PowerShell ships with the WMF February 2015 Preview package that you can download here.</em></p>
-<p>I was asked if there are any resources on testing class based DSC resources. And to be honest I am not sure. We shortly discussed the possibilities on the PS MVP mailing list, but I am still not sure what are the possibilities. So why not discover them while learning something more about the topic.</p>
-<p>Luckily there are quite a few great resources on how to actually create a class based DSC resource, and what you need to do that. Some of them are:</p>
-<p>Creating a Class based DSC Resource using PowerShell</p>
-<p>Class-defined DSC resources in Windows Management Framework 5.0 Preview</p>
-<p>Writing a custom DSC resource with PowerShell classes</p></div>
-<footer>
-    <time datetime="April 2015">
-        April 2015
-    </time>
-    <span>
-    
-        <a href="/tags/powershell/">
-            powershell,
-        </a>
-    
-        <a href="/tags/pester/">
-            pester,
-        </a>
-    
-        <a href="/tags/testing/">
-            testing,
-        </a>
-    
-        <a href="/tags/dsc/">
-            dsc,
-        </a>
-    
-    
-    </span>
-</footer>
-</article>
-</div>
-
-<div class="list-item">
-<article class="article">
-<header>
-    <a href="/2015/04/29/why-do-we-test/">
-        <div>
-            <h1>Why do we test?</h1>
-            <span class="read-more">Read more</span>
-        </div>
-        
-    </a>
-</header>
-<div class="article-content"><p>Lately we are getting some great questions on our <a target="_blank" rel="noopener" href="https://github.com/pester/Pester/issues">Pester issue page</a>, I am reposting soem of my answers as blog posts, because I hope they are worth reading. You can access the <a target="_blank" rel="noopener" href="https://github.com/pester/Pester/issues/317">original question here</a>.</p>
-<p>We test because we need a simple set of boundaries that define a more complicated system. Coming up with simple tests and gradually refining them to define more complex systems is easy for us humans. Definitely easier than defining a complex system in a single swoop.</p></div>
-<footer>
-    <time datetime="April 2015">
-        April 2015
-    </time>
-    <span>
-    
-        <a href="/tags/powershell/">
-            powershell,
-        </a>
-    
-        <a href="/tags/pester/">
-            pester,
-        </a>
-    
-        <a href="/tags/testing/">
-            testing,
-        </a>
-    
-        <a href="/tags/tdd/">
-            tdd,
-        </a>
-    
-    
-    </span>
-</footer>
-</article>
-</div>
-
-<div class="list-item">
-<article class="article">
-<header>
-    <a href="/2015/03/06/lower-io-priority/">
-        <div>
-            <h1>Lowering IO Priority of PowerShell Process</h1>
-            <span class="read-more">Read more</span>
-        </div>
-        
-    </a>
-</header>
-<div class="article-content"><p>This week brought quite a few challenges. One of them was a question asked by a friend:</p>
-<blockquote>
-<p>How do I search contents of all the files for given string, without killing the performance of the computer?</p>
-</blockquote>
-<p>This seemed like a simple question to answer: Just lower the priority of the PowerShell process to Idle.</p>
-<pre><code class="powershell">(Get-Process -Id $pid).PriorityClass = &#39;Idle&#39;</code></pre>
-<p>The only problem is, that it does not work.</p></div>
-<footer>
-    <time datetime="March 2015">
-        March 2015
-    </time>
-    <span>
-    
-        <a href="/tags/powershell/">
-            powershell,
-        </a>
-    
-        <a href="/tags/priority/">
-            priority,
-        </a>
-    
-        <a href="/tags/process/">
-            process,
-        </a>
-    
-        <a href="/tags/pinvoke/">
-            pinvoke,
-        </a>
-    
-    
-    </span>
-</footer>
-</article>
-</div>
-
-<div class="list-item">
-<article class="article">
-<header>
-    <a href="/2015/01/10/test-script-end-to-end/">
-        <div>
-            <h1>Test PowerShell Scripts End-to-end With Pester</h1>
-            <span class="read-more">Read more</span>
-        </div>
-        
-    </a>
-</header>
-<div class="article-content"><h2 id="End-to-end-test-of-simple-script"><a href="#End-to-end-test-of-simple-script" class="headerlink" title="End-to-end test of simple script"></a>End-to-end test of simple script</h2><p>With Pester it is really easy to test a single PowerShell function or a library of them, but what if your script contains some code that runs those functions?</p>
-<p>Let’s say we have a script like this one:</p></div>
-<footer>
-    <time datetime="January 2015">
-        January 2015
-    </time>
-    <span>
-    
-        <a href="/tags/powershell/">
-            powershell,
-        </a>
-    
-        <a href="/tags/pester/">
-            pester,
-        </a>
-    
-        <a href="/tags/testing/">
-            testing,
+        <a href="/tags/net/">
+            .net,
         </a>
     
     
@@ -990,9 +1219,9 @@ $Window.ShowDialog()</code></pre>
 <footer class="footer">
     <div class="footer-filler"></div>
 
-    <a target="_blank" rel="noopener" href="https://twitter.com/nohwnd">twitter</a>&bull;
-    <a target="_blank" rel="noopener" href="https://github.com/nohwnd">github</a>&bull;
-    <a target="_blank" rel="noopener" href="https://linkedin.com/in/jares/">linkedin</a>
+    <a href="https://twitter.com/nohwnd">twitter</a>&bull;
+    <a href="https://github.com/nohwnd">github</a>&bull;
+    <a href="https://linkedin.com/in/jares/">linkedin</a>
 </footer>
 </body>
 
