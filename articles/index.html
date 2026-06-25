@@ -4,6 +4,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <title>jakubjares.com</title>
     <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato:100,300,400,700,900,900i|Roboto" rel="stylesheet">
 
@@ -126,20 +128,16 @@
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2020/04/11/pester5-discovery-and-script-setup/">
+    <a href="/2020/04/11/pester5-importing-ps-files/">
         <div>
-            <h1>Pester5 - discovery and script setup</h1>
+            <h1>Pester5 - importing your ps1 files</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>As described in the <a href="https://github.com/pester/Pester/blob/v5.0/README.md#put-setup-in-beforeall">v5 readme</a>, the fundamental change in Pester5 is that Pester now runs in two phases: Discovery and Run. During Discovery Pester finds all your tests, groups them together and filters them based on your filters. Then in the Run phase it will actually run them.</p>
-<p>Splitting the work into two distinct phases, powers many of the features in this release, and enables many others to be implemented in the future. </p>
-<p>For Discovery to work correctly, there are new rules to follow: </p>
-<p><strong>Put all your code into <code>It</code>, <code>BeforeAll</code>, <code>BeforeEach</code>, <code>AfterAll</code> or <code>AfterEach</code>. Put no code directly into <code>Describe</code>, <code>Context</code> or on the top of your file, without wrapping it in one of these blocks, unless you have a good reason to do so.</strong></p>
-<p><strong>All misplaced code will run during Discovery, and its results won’t be available during Run.</strong></p>
-<p>This article offers more guidance and shows examples of what it means.</p></div>
+<div class="article-content"><p>In <a href="https://github.com/pester/Pester/blob/v5.0/README.md#put-setup-in-beforeall">Pester 5</a> you should put your script setup inside of a <code>BeforeAll</code> block. If you are still using this historical approach, then it will no longer work: </p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">BeforeAll &#123;</span><br><span class="line">    <span class="variable">$here</span> = <span class="built_in">Split-Path</span> <span class="literal">-Parent</span> <span class="variable">$MyInvocation</span>.MyCommand.Path</span><br><span class="line">    <span class="variable">$sut</span> = (<span class="built_in">Split-Path</span> <span class="literal">-Leaf</span> <span class="variable">$MyInvocation</span>.MyCommand.Path).Replace(<span class="string">&quot;.Tests.&quot;</span>, <span class="string">&quot;.&quot;</span>)</span><br><span class="line">    . <span class="string">&quot;<span class="variable">$here</span>\<span class="variable">$sut</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Get-Emoji&quot;</span> &#123;</span><br><span class="line">    It <span class="string">&quot;Gets cactus&quot;</span> &#123;</span><br><span class="line">        <span class="comment"># your test code</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 <footer>
     <time datetime="April 2020">
         April 2020
@@ -167,16 +165,20 @@
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2020/04/11/pester5-importing-ps-files/">
+    <a href="/2020/04/11/pester5-discovery-and-script-setup/">
         <div>
-            <h1>Pester5 - importing your ps1 files</h1>
+            <h1>Pester5 - discovery and script setup</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>In <a href="https://github.com/pester/Pester/blob/v5.0/README.md#put-setup-in-beforeall">Pester 5</a> you should put your script setup inside of a <code>BeforeAll</code> block. If you are still using this historical approach, then it will no longer work: </p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">BeforeAll &#123;</span><br><span class="line">    <span class="variable">$here</span> = <span class="built_in">Split-Path</span> <span class="literal">-Parent</span> <span class="variable">$MyInvocation</span>.MyCommand.Path</span><br><span class="line">    <span class="variable">$sut</span> = (<span class="built_in">Split-Path</span> <span class="literal">-Leaf</span> <span class="variable">$MyInvocation</span>.MyCommand.Path).Replace(<span class="string">&quot;.Tests.&quot;</span>, <span class="string">&quot;.&quot;</span>)</span><br><span class="line">    . <span class="string">&quot;<span class="variable">$here</span>\<span class="variable">$sut</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Get-Emoji&quot;</span> &#123;</span><br><span class="line">    It <span class="string">&quot;Gets cactus&quot;</span> &#123;</span><br><span class="line">        <span class="comment"># your test code</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<div class="article-content"><p>As described in the <a href="https://github.com/pester/Pester/blob/v5.0/README.md#put-setup-in-beforeall">v5 readme</a>, the fundamental change in Pester5 is that Pester now runs in two phases: Discovery and Run. During Discovery Pester finds all your tests, groups them together and filters them based on your filters. Then in the Run phase it will actually run them.</p>
+<p>Splitting the work into two distinct phases, powers many of the features in this release, and enables many others to be implemented in the future. </p>
+<p>For Discovery to work correctly, there are new rules to follow: </p>
+<p><strong>Put all your code into <code>It</code>, <code>BeforeAll</code>, <code>BeforeEach</code>, <code>AfterAll</code> or <code>AfterEach</code>. Put no code directly into <code>Describe</code>, <code>Context</code> or on the top of your file, without wrapping it in one of these blocks, unless you have a good reason to do so.</strong></p>
+<p><strong>All misplaced code will run during Discovery, and its results won’t be available during Run.</strong></p>
+<p>This article offers more guidance and shows examples of what it means.</p></div>
 <footer>
     <time datetime="April 2020">
         April 2020
