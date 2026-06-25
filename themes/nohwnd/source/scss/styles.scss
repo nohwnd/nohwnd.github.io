@@ -56,16 +56,20 @@ a:hover {
     svg {
       height: 75px;
       width: 75px;
+      filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.5));
     }
 
     h1 {
       text-align: center;
       color: $menu-color;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
     }
   }
 
   > nav {
     width: 100%;
+    max-width: 42rem;
+    margin: 0 auto;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -78,6 +82,7 @@ a:hover {
       letter-spacing: 4px;
       letter-spacing: 0.4rem;
       font-weight: $font-weight-light;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
     }
   }
 }
@@ -452,15 +457,35 @@ a:hover {
 }
 
 .main-page-header-filler {
-  background-color: $accent-color;
-  background: linear-gradient(0deg, #7ce8e9 0%, #149799 100%);
-  background-image: url("./../img/home_bg.png");
+  // Photo capped at the content width and centred, so the crop stays consistent
+  // on wide monitors instead of stretching edge-to-edge (which re-crops the photo
+  // as the viewport widens). Beyond the cap the page background shows in the
+  // gutters.
+  background-image: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0.12) 26%,
+      rgba(0, 0, 0, 0) 46%,
+      rgba(0, 0, 0, 0.32) 66%,
+      rgba(0, 0, 0, 0.72) 100%
+    ),
+    url("./../img/home_bg.jpg");
   background-size: cover;
+  background-position: center 28%;
   width: 100%;
+  max-width: 80rem;
   height: 30rem;
   position: absolute;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: -1;
+}
+
+// Posts keep the same compact header; the menu sits in a row at the top so the
+// crop is biased a little higher to keep the speaker in frame.
+.article-header .main-page-header-filler {
+  height: 30rem;
+  background-position: center 18%;
 }
 
 // --- Mobile / narrow screens ---------------------------------------------
@@ -507,7 +532,14 @@ a:hover {
     }
   }
 
-  // Home/list menu: keep the three links from colliding.
+  // Home/list menu: keep the three links from colliding, and inset them a little
+  // further from the screen edges than the body padding alone gives.
+  .main-page-header > nav {
+    box-sizing: border-box;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
   .main-page-header > nav a {
     font-size: 1.6rem;
     letter-spacing: 0.1rem;
@@ -538,6 +570,111 @@ a:hover {
     > div {
       width: 100%;
       justify-content: flex-start;
+    }
+  }
+}
+
+// --- About / CV page -----------------------------------------------------
+
+.about {
+  font-family: Roboto, sans-serif;
+  margin-bottom: 40px;
+}
+
+.about-content {
+  font-size: 1.9rem;
+  line-height: 1.55;
+  color: #222;
+
+  p {
+    margin: 0 0 1em;
+  }
+
+  a {
+    color: $secondary-accent-color;
+    font-weight: 500;
+    border-bottom: 2px solid rgba($accent-color, 0.45);
+  }
+
+  a:hover {
+    color: $accent-color;
+    border-bottom-color: $accent-color;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  code {
+    background: #eee;
+    padding: 0 0.3em;
+    font-family: "Source Code Pro", Consolas, monospace;
+    font-size: 0.9em;
+  }
+
+  h2 {
+    font-size: 2.1rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    font-weight: 900;
+    margin: 1.6em 0 0.6em;
+    padding-bottom: 0.3em;
+    border-bottom: 3px solid $accent-color;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      position: relative;
+      padding-left: 1.1em;
+      margin-bottom: 0.5em;
+    }
+
+    li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: $accent-color;
+      font-weight: 700;
+    }
+  }
+}
+
+.about-contacts {
+  margin-top: 2.4em;
+
+  h2 {
+    font-size: 2.1rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    font-weight: 900;
+    margin-bottom: 0.7em;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    a {
+      display: inline-block;
+      padding: 10px 20px;
+      border: 2px solid $accent-color;
+      border-radius: 999px;
+      color: $secondary-accent-color;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1rem;
+      font-size: 1.5rem;
+      transition: 0.2s;
+    }
+
+    a:hover {
+      background: $accent-color;
+      color: white;
     }
   }
 }
