@@ -11,8 +11,4 @@ categories:
 
 Talk from PSConfEU 2023 where I show the news in Pester testing framework that happened in the previous year
 
-<!-- more -->
-
-[![Pester what is new?](http://img.youtube.com/vi/ysGRRyZfa0g/0.jpg)](https://www.youtube.com/watch?v=ysGRRyZfa0g "Pester what is new?")
-
-<https://www.youtube.com/watch?v=ysGRRyZfa0g>
+{% youtube ysGRRyZfa0g %}

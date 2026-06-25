@@ -12,8 +12,5 @@ categories:
 
 PSConfEU talk where I show the most important aspects of Profiler, and the new memory view I've added.
 
-<!-- more -->
+{% youtube 4biWCrEv75Q %}
 
-[![10 things you should know about Profiler](http://img.youtube.com/vi/4biWCrEv75Q/0.jpg)](https://www.youtube.com/watch?v=4biWCrEv75Q "10 things you should know about Profiler")
-
-<https://www.youtube.com/watch?v=4biWCrEv75Q>

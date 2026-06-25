@@ -15,8 +15,5 @@ categories:
 
 .NET Conf 2024 talk where I show how to use the new Testing.Platform together with MSTest, XUnit, NUnit and Docker.
 
-<!-- more -->
+{% youtube 9Jz47Ze9LOI %}
 
-[![Testing.Platform, the new way to run .NET tests](http://img.youtube.com/vi/9Jz47Ze9LOI/0.jpg)](https://www.youtube.com/watch?v=9Jz47Ze9LOI "Testing.Platform, the new way to run .NET tests")
-
-<https://www.youtube.com/watch?v=9Jz47Ze9LOI>
