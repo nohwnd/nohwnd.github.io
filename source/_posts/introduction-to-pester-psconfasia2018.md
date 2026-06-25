@@ -11,6 +11,4 @@ categories:
 
 Talk from PSConfAsia 2018 held in Singapore. Shows an introduction to testing with Pester, with few practical examples.
 
-<!-- more -->
-
-[![Introduction to Pester](http://img.youtube.com/vi/5OtGvm7HMMs/0.jpg)](https://www.youtube.com/watch?v=5OtGvm7HMMs "Introduction to Pester")
+{% youtube 5OtGvm7HMMs %}

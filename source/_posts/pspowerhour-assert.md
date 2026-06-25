@@ -12,7 +12,5 @@ categories:
 
 Talk from PSPowerHour 2018 held online. In this talk I show my Assert module and it's capabilities, especially Assert-Equivalent which compares objects as a whole.
 
-<!-- more -->
-
-[![Assert module](http://img.youtube.com/vi/iGEFqRLwdzg/0.jpg)](https://www.youtube.com/watch?v=iGEFqRLwdzg?t=25 "Assert module")
+{% youtube iGEFqRLwdzg %}
 

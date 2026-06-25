@@ -12,8 +12,5 @@ categories:
 
 Presentation from .NET Conf 2025, where I talk about the new things in dotnet test that I worked on. MSTest and Microsoft.Testing.Platform.
 
-<!-- more -->
+{% youtube QWi_bvQc4fc %}
 
-[![Best new features in dotnet test, Microsoft.Testing.Platform and MSTest](http://img.youtube.com/vi/QWi_bvQc4fc/0.jpg)](https://www.youtube.com/watch?v=QWi_bvQc4fc "Best new features in dotnet test, Microsoft.Testing.Platform and MSTest")
-
-<https://www.youtube.com/watch?v=QWi_bvQc4fc>

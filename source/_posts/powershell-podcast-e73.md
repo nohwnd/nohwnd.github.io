@@ -11,8 +11,4 @@ categories:
 
 Interview on PowerShell podcast about my life, Pester, Profiler and PSConfEU.
 
-<!-- more -->
-
-[![Cover your legacy scripts with tests](http://img.youtube.com/vi/MB8wkipUNUc/0.jpg)](https://www.youtube.com/watch?v=MB8wkipUNUc "Cover your legacy scripts with tests")
-
-<https://www.youtube.com/watch?v=MB8wkipUNUc>
+{% youtube MB8wkipUNUc %}

@@ -12,8 +12,5 @@ categories:
 
 Interview with Heiko Brenn as the interviewer for Inside IT Automation. We talk about Pester, Profiler and other PowerShell related stuff.
 
-<!-- more -->
+{% youtube NSj7oFicUBw %}
 
-[![PowerShell testing with Pester and mores](http://img.youtube.com/vi/NSj7oFicUBw/0.jpg)](https://www.youtube.com/watch?v=NSj7oFicUBw "PowerShell testing with Pester and mores")
-
-<https://www.youtube.com/watch?v=NSj7oFicUBw>

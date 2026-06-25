@@ -11,8 +11,5 @@ categories:
 
 PSConfEU 2025 talk where I show how I created Profiler for PowerShell, what are the tricks I am using to make it work and what you can learn from them.
 
-<!-- more -->
+{% youtube oWBk12UCjCo %}
 
-[![Profiler internals](http://img.youtube.com/vi/oWBk12UCjCo/0.jpg)](https://www.youtube.com/watch?v=oWBk12UCjCo "Profiler internals")
-
-<https://www.youtube.com/watch?v=oWBk12UCjCo>

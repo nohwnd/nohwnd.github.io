@@ -4,7 +4,8 @@
   margin: 10px 0;
   padding: 10px 10px;
   overflow: auto;
-  color: #fff;
+  max-width: 100%;
+  color: #24292e;
   font-size: 0.9em;
   line-height: 22.400000000000002px;
 }
@@ -21,12 +22,14 @@
   background: #eee;
   padding: 0 0.3em;
   border: none;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .article-content pre code {
   background: none;
   text-shadow: none;
   padding: 0;
-  color: #fff;
+  color: inherit;
 }
 
 .article-content .highlight {
