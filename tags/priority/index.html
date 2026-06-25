@@ -71,7 +71,8 @@
 <p>How do I search contents of all the files for given string, without killing the performance of the computer?</p>
 </blockquote>
 <p>This seemed like a simple question to answer: Just lower the priority of the PowerShell process to Idle.</p>
-<pre><code class="powershell">(Get-Process -Id $pid).PriorityClass = &#39;Idle&#39;</code></pre>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">(<span class="built_in">Get-Process</span> <span class="literal">-Id</span> <span class="variable">$pid</span>).PriorityClass = <span class="string">&#x27;Idle&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>The only problem is, that it does not work.</p></div>
 <footer>
     <time datetime="March 2015">

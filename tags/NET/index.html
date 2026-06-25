@@ -58,42 +58,27 @@
 <div class="list-item">
 <article class="article">
 <header>
-    <a href="/2015/03/06/lower-io-priority/">
+    <a href="/2025/08/22/running-dotnet-on-s390x/">
         <div>
-            <h1>Lowering IO Priority of PowerShell Process</h1>
+            <h1>Running .NET on s390x with BigEndian</h1>
             <span class="read-more">Read more</span>
         </div>
         
     </a>
 </header>
-<div class="article-content"><p>This week brought quite a few challenges. One of them was a question asked by a friend:</p>
-<blockquote>
-<p>How do I search contents of all the files for given string, without killing the performance of the computer?</p>
-</blockquote>
-<p>This seemed like a simple question to answer: Just lower the priority of the PowerShell process to Idle.</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">(<span class="built_in">Get-Process</span> <span class="literal">-Id</span> <span class="variable">$pid</span>).PriorityClass = <span class="string">&#x27;Idle&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>The only problem is, that it does not work.</p></div>
+<div class="article-content"><p>I wanted to test some big-endian code in .NET, for Guid generation. This is how I got .NET 8 working on s390x emulated system via docker on Windows.</p></div>
 <footer>
-    <time datetime="March 2015">
-        March 2015
+    <time datetime="August 2025">
+        August 2025
     </time>
     <span>
     
-        <a href="/tags/powershell/">
-            powershell,
+        <a href="/tags/dotnet/">
+            dotnet,
         </a>
     
-        <a href="/tags/priority/">
-            priority,
-        </a>
-    
-        <a href="/tags/process/">
-            process,
-        </a>
-    
-        <a href="/tags/pinvoke/">
-            pinvoke,
+        <a href="/tags/NET/">
+            .NET,
         </a>
     
     

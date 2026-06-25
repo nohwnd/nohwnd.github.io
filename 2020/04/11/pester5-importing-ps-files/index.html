@@ -77,84 +77,31 @@
 
     <div class="article-content">
         <p>In <a href="https://github.com/pester/Pester/blob/v5.0/README.md#put-setup-in-beforeall">Pester 5</a> you should put your script setup inside of a <code>BeforeAll</code> block. If you are still using this historical approach, then it will no longer work: </p>
-<pre><code class="powershell">BeforeAll &#123;
-    $here = Split-Path -Parent $MyInvocation.MyCommand.Path
-    $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(&quot;.Tests.&quot;, &quot;.&quot;)
-    . &quot;$here\$sut&quot;
-&#125;
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">BeforeAll &#123;</span><br><span class="line">    <span class="variable">$here</span> = <span class="built_in">Split-Path</span> <span class="literal">-Parent</span> <span class="variable">$MyInvocation</span>.MyCommand.Path</span><br><span class="line">    <span class="variable">$sut</span> = (<span class="built_in">Split-Path</span> <span class="literal">-Leaf</span> <span class="variable">$MyInvocation</span>.MyCommand.Path).Replace(<span class="string">&quot;.Tests.&quot;</span>, <span class="string">&quot;.&quot;</span>)</span><br><span class="line">    . <span class="string">&quot;<span class="variable">$here</span>\<span class="variable">$sut</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Get-Emoji&quot;</span> &#123;</span><br><span class="line">    It <span class="string">&quot;Gets cactus&quot;</span> &#123;</span><br><span class="line">        <span class="comment"># your test code</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-Describe &quot;Get-Emoji&quot; &#123;
-    It &quot;Gets cactus&quot; &#123;
-        # your test code
-    &#125;
-&#125;</code></pre>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>Running this script will throw the following exception: </p>
-<pre><code class="shell">Starting test discovery in 1 files.
-Discovering tests in C:\tests\Get-Emoji.Tests.ps1.
-Found 1 tests. 66ms
-Test discovery finished. 126ms
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Starting test discovery in 1 files.</span><br><span class="line">Discovering tests in C:\tests\Get-Emoji.Tests.ps1.</span><br><span class="line">Found 1 tests. 66ms</span><br><span class="line">Test discovery finished. 126ms</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Running tests from &#x27;C:\tests\Get-Emoji.Tests.ps1&#x27;</span><br><span class="line">Container &#x27;C:\tests\Get-Emoji.Tests.ps1&#x27; failed with:</span><br><span class="line">System.Management.Automation.ParameterBindingValidationException: Cannot bind argument to parameter &#x27;Path&#x27; because it is null.</span><br><span class="line">   at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)</span><br><span class="line">   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)</span><br><span class="line">   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)</span><br><span class="line">   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)</span><br></pre></td></tr></table></figure>
 
-
-Running tests from &#39;C:\tests\Get-Emoji.Tests.ps1&#39;
-Container &#39;C:\tests\Get-Emoji.Tests.ps1&#39; failed with:
-System.Management.Automation.ParameterBindingValidationException: Cannot bind argument to parameter &#39;Path&#39; because it is null.
-   at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
-   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
-   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
-   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)</code></pre>
 <p>This is an unfortunate side-effect or your code running in a function rather than directly in the script. In such case <code>$MyInvocation.MyCommand.Path</code> is not defined, and you will get <code>$null</code>. </p>
 <p>This is also your prompt to replace this approach that was outdated since 2012 when PowerShell 3 was released.</p>
 <p>The recommended way is to replace that monster with one of these approaches, that are more succint, uneffected by running in a function and cross-platform: </p>
-<pre><code class="powershell">BeforeAll &#123;
-   . $PSCommandPath.Replace(&#39;.Tests.ps1&#39;, &#39;.ps1&#39;)
-&#125;
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">BeforeAll &#123;</span><br><span class="line">   . <span class="variable">$PSCommandPath</span>.Replace(<span class="string">&#x27;.Tests.ps1&#x27;</span>, <span class="string">&#x27;.ps1&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&#x27;Get-Emoji&#x27;</span> &#123;</span><br><span class="line">    <span class="comment"># etc. </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-Describe &#39;Get-Emoji&#39; &#123;
-    # etc. 
-&#125;</code></pre>
-<pre><code class="powershell">BeforeAll &#123;
-   . $PSCommandPath.Replace(&#39;.Tests&#39;, &#39;&#39;)
-&#125;
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">BeforeAll &#123;</span><br><span class="line">   . <span class="variable">$PSCommandPath</span>.Replace(<span class="string">&#x27;.Tests&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&#x27;Get-Emoji&#x27;</span> &#123;</span><br><span class="line">    <span class="comment"># etc. </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-Describe &#39;Get-Emoji&#39; &#123;
-    # etc. 
-&#125;</code></pre>
 <p>Or if you don’t use the standard convention, or like to spell out the name of the file, do this: </p>
-<pre><code class="powershell">BeforeAll &#123;
-   . $PSScriptRoot/Get-Emoji.ps1
-&#125;
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">BeforeAll &#123;</span><br><span class="line">   . <span class="variable">$PSScriptRoot</span>/<span class="built_in">Get-Emoji</span>.ps1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&#x27;Get-Emoji&#x27;</span> &#123;</span><br><span class="line">    <span class="comment"># etc. </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-Describe &#39;Get-Emoji&#39; &#123;
-    # etc. 
-&#125;</code></pre>
 <h2 id="Does-this-affect-all-other-MyInvocation-MyCommand-Path"><a href="#Does-this-affect-all-other-MyInvocation-MyCommand-Path" class="headerlink" title="Does this affect all other $MyInvocation.MyCommand.Path?"></a>Does this affect all other <code>$MyInvocation.MyCommand.Path</code>?</h2><p>No. This change does not affect all other <code>$MyInvocation.MyCommand.Path</code>. If you module uses it, then it will continue to work. The breaking change in Pester is because the <code>$here\$sut</code> snippet relies on the fact that it runs directly in the script. Running <code>$MyInvocation.MyCommand.Path</code> in any function will make the Path property undefined:</p>
-<pre><code class="powershell">&quot;in script: -$($MyInvocation.MyCommand.Path)-&quot;
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;in script: -<span class="variable">$</span>(<span class="variable">$MyInvocation</span>.MyCommand.Path)-&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span> <span class="params">()</span></span> &#123; <span class="string">&quot;in function: -<span class="variable">$</span>(<span class="variable">$MyInvocation</span>.MyCommand.Path)-&quot;</span> &#125;</span><br><span class="line">f</span><br><span class="line"></span><br><span class="line"><span class="comment"># output: </span></span><br><span class="line"><span class="keyword">in</span> script: <span class="literal">-C</span>:\temp\script.ps1-</span><br><span class="line"><span class="keyword">in</span> function: <span class="literal">--</span></span><br></pre></td></tr></table></figure>
 
-function f () &#123; &quot;in function: -$($MyInvocation.MyCommand.Path)-&quot; &#125;
-f
-
-# output: 
-in script: -C:\temp\script.ps1-
-in function: --</code></pre>
 <h2 id="Functions-form-their-own-scope-don’t-they"><a href="#Functions-form-their-own-scope-don’t-they" class="headerlink" title="Functions form their own scope don’t they?"></a>Functions form their own scope don’t they?</h2><p>You might be wondering how come that your script is actually dot-sourced in the correct scope when the problem is that you are running in a function. And functions make their own scope. And you would be right to wonder. </p>
 <p><code>BeforeAll</code> relies on the fact that modules have their own session state, and that script also has its own session state. The scopes in both are tracked independetly, which allows me to take your ScriptBlock and dot-source it into the correct scope. And because you already dot-sourced into that scriptblock your functions and variables will end up in the correct scope. </p>
 <p>Here a quick example of what happens internally:</p>
-<pre><code class="powershell">Get-Module p | Remove-Module
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Get-Module</span> p | <span class="built_in">Remove-Module</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">New-Module</span> <span class="literal">-Name</span> p <span class="literal">-ScriptBlock</span> &#123; </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">BeforeAll</span> <span class="params">(<span class="variable">$ScriptBlock</span>)</span></span> &#123; </span><br><span class="line">        . <span class="variable">$ScriptBlock</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$s</span> = <span class="variable">$null</span></span><br><span class="line"><span class="string">&quot;s is null: <span class="variable">$</span>(<span class="variable">$s</span> -eq <span class="variable">$null</span>)&quot;</span></span><br><span class="line"></span><br><span class="line">BeforeAll &#123; . <span class="variable">$PSScriptRoot</span>/s.ps1 &#125;</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;s is 10: <span class="variable">$</span>(<span class="variable">$s</span> -eq 10)&quot;</span></span><br></pre></td></tr></table></figure>
 
-New-Module -Name p -ScriptBlock &#123; 
-    function BeforeAll ($ScriptBlock) &#123; 
-        . $ScriptBlock
-    &#125;
-&#125;
-
-$s = $null
-&quot;s is null: $($s -eq $null)&quot;
-
-BeforeAll &#123; . $PSScriptRoot/s.ps1 &#125;
-
-&quot;s is 10: $($s -eq 10)&quot;</code></pre>
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>The <code>. $here\$sut</code> approach to importing scripts is very outdated. Don’t use it. It won’t work in Pester 5, when you move it to <code>BeforeAll</code>.</p>
 
     </div>

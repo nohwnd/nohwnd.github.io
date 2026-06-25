@@ -85,9 +85,10 @@
 
     <div class="article-content">
         <p>Regular expressions with capturing groups are super useful for text replacements, and Visual Studio, VS Code, and notepad++ all support them. They can prevent you from doing a lot of boring work, such as:</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<pre><code class="csharp">public string Name &#123;get;set; &#125;</code></pre>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">string</span> Name &#123;<span class="keyword">get</span>;<span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>converting lists of items into classes</li>
 <li>writing the same copy code, just with the sides switched</li>
@@ -95,19 +96,19 @@
 <li>and so much more…</li>
 </ul>
 <h2 id="Simple-example"><a href="#Simple-example" class="headerlink" title="Simple example"></a>Simple example</h2><p>We have this CSV file header and want to make it a full C# class.</p>
-<pre><code class="shell">Id Name Value ...20 more properties...</code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Id Name Value ...20 more properties...</span><br></pre></td></tr></table></figure>
+
 <p>We could add a new line after every word, and then write in the property definition manually, which is boring, and hard when Visual Studio tries to make sense of your broken “code”.</p>
 <p>OR we can just replace every word with the correct definition, with the captured word in the middle. Something like this:</p>
-<pre><code class="shell">public string &lt;the word&gt; &#123; get; set; &#125;&lt;new line&gt;</code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">public string &lt;the word&gt; &#123; get; set; &#125;&lt;new line&gt;</span><br></pre></td></tr></table></figure>
+
 <p>Expressing this in regular expression replacement looks like this:</p>
-<pre><code class="shell">find:     (\w+)
-replace:  public string $1 &#123; get; set; &#125;\n`</code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">find:     (\w+)</span><br><span class="line">replace:  public string $1 &#123; get; set; &#125;\n`</span><br></pre></td></tr></table></figure>
+
 <p>Where <code>$1</code> is replaced with the first capturing group, and <code>\n</code> is expanded to a new line.</p>
 <p>After the replacement you get this:</p>
-<pre><code class="C#">public string Id &#123; get; set; &#125;
-public string Name &#123; get; set; &#125;
-public string Value &#123; get; set; &#125;
-//... 20 more properties</code></pre>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">string</span> Id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">string</span> Value &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"><span class="comment">//... 20 more properties</span></span><br></pre></td></tr></table></figure>
+
 <p>All we then need to do is sorround the properties with a class defintion.</p>
 <p>This is just a simple example, here is a full video showing other examples, and how exactly you do this: <a href="https://youtu.be/3rPKg97ru1E?t=29m20s">youtube 29:20</a> with some more hardcore example: <a href="https://youtu.be/3rPKg97ru1E?t=47m39s">youtube 47:39</a>.</p>
 

@@ -70,22 +70,8 @@
 <p>You don’t need to use <code>New-Object System.Xml.XmlNodeReader $xaml</code>, and you don’t need <code>[Windows.Markup.XamlReader]::Load($reader)</code>. Just use <code>Parse</code>.</p>
 <p>You also don’t need the <code>x</code> and <code>d</code> namespaces (most of the time) so you can remove them as well. </p>
 <p>Just make sure that the <code>$xaml</code> variable has type <code>[string]</code>, and you can get a working app in just few lines of code.</p>
-<pre><code class="powershell">Add-Type -AssemblyName PresentationFramework
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Add-Type</span> <span class="literal">-AssemblyName</span> PresentationFramework</span><br><span class="line"></span><br><span class="line">[<span class="built_in">String</span>]<span class="variable">$xaml</span> = <span class="string">@&quot;</span></span><br><span class="line"><span class="string">&lt;Window xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;&gt;</span></span><br><span class="line"><span class="string">    &lt;Grid&gt;</span></span><br><span class="line"><span class="string">        &lt;Label FontSize=&quot;100&quot; Name=&quot;Text&quot; /&gt; </span></span><br><span class="line"><span class="string">    &lt;/Grid&gt;</span></span><br><span class="line"><span class="string">&lt;/Window&gt;</span></span><br><span class="line"><span class="string">&quot;@</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$Window</span> = [<span class="type">Windows.Markup.XamlReader</span>]::Parse(<span class="variable">$xaml</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable">$Text</span> = <span class="variable">$Window</span>.Content.FindName(<span class="string">&quot;Text&quot;</span>)</span><br><span class="line"><span class="variable">$Text</span>.Content = <span class="string">&quot;👋, from WPF!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$Window</span>.ShowDialog()</span><br></pre></td></tr></table></figure>
 
-[String]$xaml = @&quot;
-&lt;Window xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;&gt;
-    &lt;Grid&gt;
-        &lt;Label FontSize=&quot;100&quot; Name=&quot;Text&quot; /&gt; 
-    &lt;/Grid&gt;
-&lt;/Window&gt;
-&quot;@
-
-$Window = [Windows.Markup.XamlReader]::Parse($xaml)
-
-$Text = $Window.Content.FindName(&quot;Text&quot;)
-$Text.Content = &quot;👋, from WPF!&quot;
-
-$Window.ShowDialog()</code></pre>
 </div>
 <footer>
     <time datetime="June 2019">

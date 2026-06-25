@@ -108,17 +108,7 @@
     </a>
 </header>
 <div class="article-content"><p>In <a href="https://github.com/pester/Pester/blob/v5.0/README.md#put-setup-in-beforeall">Pester 5</a> you should put your script setup inside of a <code>BeforeAll</code> block. If you are still using this historical approach, then it will no longer work: </p>
-<pre><code class="powershell">BeforeAll &#123;
-    $here = Split-Path -Parent $MyInvocation.MyCommand.Path
-    $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(&quot;.Tests.&quot;, &quot;.&quot;)
-    . &quot;$here\$sut&quot;
-&#125;
-
-Describe &quot;Get-Emoji&quot; &#123;
-    It &quot;Gets cactus&quot; &#123;
-        # your test code
-    &#125;
-&#125;</code></pre></div>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">BeforeAll &#123;</span><br><span class="line">    <span class="variable">$here</span> = <span class="built_in">Split-Path</span> <span class="literal">-Parent</span> <span class="variable">$MyInvocation</span>.MyCommand.Path</span><br><span class="line">    <span class="variable">$sut</span> = (<span class="built_in">Split-Path</span> <span class="literal">-Leaf</span> <span class="variable">$MyInvocation</span>.MyCommand.Path).Replace(<span class="string">&quot;.Tests.&quot;</span>, <span class="string">&quot;.&quot;</span>)</span><br><span class="line">    . <span class="string">&quot;<span class="variable">$here</span>\<span class="variable">$sut</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Get-Emoji&quot;</span> &#123;</span><br><span class="line">    It <span class="string">&quot;Gets cactus&quot;</span> &#123;</span><br><span class="line">        <span class="comment"># your test code</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 <footer>
     <time datetime="April 2020">
         April 2020

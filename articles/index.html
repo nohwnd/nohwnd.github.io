@@ -176,17 +176,7 @@
     </a>
 </header>
 <div class="article-content"><p>In <a href="https://github.com/pester/Pester/blob/v5.0/README.md#put-setup-in-beforeall">Pester 5</a> you should put your script setup inside of a <code>BeforeAll</code> block. If you are still using this historical approach, then it will no longer work: </p>
-<pre><code class="powershell">BeforeAll &#123;
-    $here = Split-Path -Parent $MyInvocation.MyCommand.Path
-    $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(&quot;.Tests.&quot;, &quot;.&quot;)
-    . &quot;$here\$sut&quot;
-&#125;
-
-Describe &quot;Get-Emoji&quot; &#123;
-    It &quot;Gets cactus&quot; &#123;
-        # your test code
-    &#125;
-&#125;</code></pre></div>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">BeforeAll &#123;</span><br><span class="line">    <span class="variable">$here</span> = <span class="built_in">Split-Path</span> <span class="literal">-Parent</span> <span class="variable">$MyInvocation</span>.MyCommand.Path</span><br><span class="line">    <span class="variable">$sut</span> = (<span class="built_in">Split-Path</span> <span class="literal">-Leaf</span> <span class="variable">$MyInvocation</span>.MyCommand.Path).Replace(<span class="string">&quot;.Tests.&quot;</span>, <span class="string">&quot;.&quot;</span>)</span><br><span class="line">    . <span class="string">&quot;<span class="variable">$here</span>\<span class="variable">$sut</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Describe <span class="string">&quot;Get-Emoji&quot;</span> &#123;</span><br><span class="line">    It <span class="string">&quot;Gets cactus&quot;</span> &#123;</span><br><span class="line">        <span class="comment"># your test code</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 <footer>
     <time datetime="April 2020">
         April 2020
@@ -226,22 +216,8 @@ Describe &quot;Get-Emoji&quot; &#123;
 <p>You don’t need to use <code>New-Object System.Xml.XmlNodeReader $xaml</code>, and you don’t need <code>[Windows.Markup.XamlReader]::Load($reader)</code>. Just use <code>Parse</code>.</p>
 <p>You also don’t need the <code>x</code> and <code>d</code> namespaces (most of the time) so you can remove them as well. </p>
 <p>Just make sure that the <code>$xaml</code> variable has type <code>[string]</code>, and you can get a working app in just few lines of code.</p>
-<pre><code class="powershell">Add-Type -AssemblyName PresentationFramework
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Add-Type</span> <span class="literal">-AssemblyName</span> PresentationFramework</span><br><span class="line"></span><br><span class="line">[<span class="built_in">String</span>]<span class="variable">$xaml</span> = <span class="string">@&quot;</span></span><br><span class="line"><span class="string">&lt;Window xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;&gt;</span></span><br><span class="line"><span class="string">    &lt;Grid&gt;</span></span><br><span class="line"><span class="string">        &lt;Label FontSize=&quot;100&quot; Name=&quot;Text&quot; /&gt; </span></span><br><span class="line"><span class="string">    &lt;/Grid&gt;</span></span><br><span class="line"><span class="string">&lt;/Window&gt;</span></span><br><span class="line"><span class="string">&quot;@</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$Window</span> = [<span class="type">Windows.Markup.XamlReader</span>]::Parse(<span class="variable">$xaml</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable">$Text</span> = <span class="variable">$Window</span>.Content.FindName(<span class="string">&quot;Text&quot;</span>)</span><br><span class="line"><span class="variable">$Text</span>.Content = <span class="string">&quot;👋, from WPF!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$Window</span>.ShowDialog()</span><br></pre></td></tr></table></figure>
 
-[String]$xaml = @&quot;
-&lt;Window xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;&gt;
-    &lt;Grid&gt;
-        &lt;Label FontSize=&quot;100&quot; Name=&quot;Text&quot; /&gt; 
-    &lt;/Grid&gt;
-&lt;/Window&gt;
-&quot;@
-
-$Window = [Windows.Markup.XamlReader]::Parse($xaml)
-
-$Text = $Window.Content.FindName(&quot;Text&quot;)
-$Text.Content = &quot;👋, from WPF!&quot;
-
-$Window.ShowDialog()</code></pre>
 </div>
 <footer>
     <time datetime="June 2019">
@@ -949,7 +925,8 @@ $Window.ShowDialog()</code></pre>
 <p>How do I search contents of all the files for given string, without killing the performance of the computer?</p>
 </blockquote>
 <p>This seemed like a simple question to answer: Just lower the priority of the PowerShell process to Idle.</p>
-<pre><code class="powershell">(Get-Process -Id $pid).PriorityClass = &#39;Idle&#39;</code></pre>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">(<span class="built_in">Get-Process</span> <span class="literal">-Id</span> <span class="variable">$pid</span>).PriorityClass = <span class="string">&#x27;Idle&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>The only problem is, that it does not work.</p></div>
 <footer>
     <time datetime="March 2015">

@@ -89,80 +89,25 @@
 <p>🔥 This feature is not released yet, get pre-release <a href="https://www.powershellgallery.com/packages/Pester/4.2.0-alpha3">version 4.2.0-alpha3</a> to use it.</p>
 </blockquote>
 <h2 id="Because-parameter"><a href="#Because-parameter" class="headerlink" title="Because parameter"></a>Because parameter</h2><p>The new feature adds an optional <code>-Because</code> parameter to all <code>Should</code> assertions. The parameter allows you to specify a reason that will be shown when assertion fails, like so:</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<pre><code class="powershell">Describe &#39;Health check&#39; &#123;
-    # mock is here only to make the example work
-    Mock Get-Service &#123; [PSCustomObject]@&#123; Status = &#39;Stopped&#39; &#125; &#125;
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&#x27;Health check&#x27;</span> &#123;</span><br><span class="line">    <span class="comment"># mock is here only to make the example work</span></span><br><span class="line">    Mock <span class="built_in">Get-Service</span> &#123; [<span class="type">PSCustomObject</span>]<span class="selector-tag">@</span>&#123; Status = <span class="string">&#x27;Stopped&#x27;</span> &#125; &#125;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&#x27;is protected by antivirus&#x27;</span> &#123;</span><br><span class="line">        <span class="variable">$service</span> = <span class="built_in">Get-Service</span> <span class="literal">-Name</span> AntivirusService</span><br><span class="line">        <span class="variable">$running</span> = [<span class="type">ServiceProcess.ServiceControllerStatus</span>]::Running</span><br><span class="line"></span><br><span class="line">        <span class="variable">$service</span>.Status |</span><br><span class="line">            Should <span class="literal">-Be</span> <span class="variable">$running</span> <span class="literal">-Because</span> <span class="string">&#x27;antivirus must be running to protect our computer&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># fails with</span></span><br><span class="line"><span class="comment"># Describing Health check</span></span><br><span class="line"><span class="comment">#   [-] is protected by antivirus 80ms</span></span><br><span class="line"><span class="comment">#     Expected &#123;Running&#125;, because antivirus must be running to protect our computer, but got &#123;Stopped&#125;.</span></span><br></pre></td></tr></table></figure>
 
-    It &#39;is protected by antivirus&#39; &#123;
-        $service = Get-Service -Name AntivirusService
-        $running = [ServiceProcess.ServiceControllerStatus]::Running
-
-        $service.Status |
-            Should -Be $running -Because &#39;antivirus must be running to protect our computer&#39;
-    &#125;
-&#125;
-
-# fails with
-# Describing Health check
-#   [-] is protected by antivirus 80ms
-#     Expected &#123;Running&#125;, because antivirus must be running to protect our computer, but got &#123;Stopped&#125;.</code></pre>
 <p>As you can see the reason is written in the assertion failure message, between the expectation and the <code>but</code>. This immediately reminds you why you’ve put the test in place, and requires less thinking when you have 10 failed tests and try to understand what is the reason they all started failing.</p>
 <blockquote>
 <p>Admittedly the previous example is a bit simplistic, you would probably do just fine without the additional reason, but it just reads soo well! 🙂</p>
 </blockquote>
 <h2 id="Reasons-force-you-think-more"><a href="#Reasons-force-you-think-more" class="headerlink" title="Reasons force you think more"></a>Reasons force you think more</h2><p>One reason to use <code>-Because</code> is to force yourself to think before writing any code. Writing tests before writing code is a great way of forcing yourself to think about the problem. Using <code>-Because</code> forces you even a bit more, because you have to form a sentence that describes what you are trying to do. When you have problems forming that sentence you are probably not sure what you are doing, so go back to the problem and revisit it.</p>
 <h2 id="Reasons-document-your-intent"><a href="#Reasons-document-your-intent" class="headerlink" title="Reasons document your intent"></a>Reasons document your intent</h2><p>Making your test code obvious is an important part of testing. You write the test code once, and then get back to it every time the test fails. The less thinking the code requires the better.</p>
-<pre><code class="powershell">Describe &#39;Get-User&#39; &#123;
-    Context &#39;Validate user object&#39; &#123;
-        # function is here only to make the example work
-        function Get-User &#123;&#125;
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&#x27;Get-User&#x27;</span> &#123;</span><br><span class="line">    Context <span class="string">&#x27;Validate user object&#x27;</span> &#123;</span><br><span class="line">        <span class="comment"># function is here only to make the example work</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">Get-User</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">        It <span class="string">&#x27;retrieved user has name&#x27;</span> &#123;</span><br><span class="line">            <span class="variable">$user</span> = <span class="built_in">Get-User</span> <span class="literal">-Name</span> <span class="string">&#x27;Jakub&#x27;</span></span><br><span class="line">            <span class="variable">$user</span> | Should <span class="operator">-Not</span> <span class="literal">-BeNullOrEmpty</span> `</span><br><span class="line">                           <span class="literal">-Because</span> <span class="string">&#x27;having a user is a pre-condition for our test&#x27;</span></span><br><span class="line"></span><br><span class="line">            <span class="variable">$user</span>.Name | Should <span class="literal">-Be</span> <span class="string">&#x27;Jakub&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        It &#39;retrieved user has name&#39; &#123;
-            $user = Get-User -Name &#39;Jakub&#39;
-            $user | Should -Not -BeNullOrEmpty `
-                           -Because &#39;having a user is a pre-condition for our test&#39;
-
-            $user.Name | Should -Be &#39;Jakub&#39;
-        &#125;
-    &#125;
-&#125;</code></pre>
 <p>In this example I am validating that an object is populated correctly, but to be able to validate it I first need to have it. So I better check that I have an object <em>before</em> doing the actual test. Adding the reason tells the guy who inherits my test base that the first assertion is a guard assertion. This again requires less guessing about what the code does.</p>
 <p>It also makes the build server failure obvious by telling that the test failed, because we did the setup incorrectly, not because our functionality is broken.</p>
-<pre><code class="text">Describing Get-User
-  Context Validate user object
-    [-] retrieved user has name 106ms
-      Expected a value, because having a user is a pre-condition for our test, but got $null or empty.</code></pre>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Describing Get-User</span><br><span class="line">  Context Validate user object</span><br><span class="line">    [-] retrieved user has name 106ms</span><br><span class="line">      Expected a value, because having a user is a pre-condition for our test, but got $null or empty.</span><br></pre></td></tr></table></figure>
+
 <h2 id="Reasons-make-your-TestCases-clearer"><a href="#Reasons-make-your-TestCases-clearer" class="headerlink" title="Reasons make your TestCases clearer"></a>Reasons make your TestCases clearer</h2><p>Using <code>-TestsCases</code> it is really simple to reuse the same test to test many different inputs, unfortunately this often makes it much harder to determine what we are testing as we need to mentally parse a big array of examples in our head. Adding a reason to each of the test cases tells us why we are testing that particular case, and makes it much easier to review the capabilities of our function.</p>
-<pre><code class="powershell">Describe &#39;Test-Anagram&#39; &#123;
-    # function is here only to make the example work
-    function Test-Anagram ($Original, $Anagram) &#123; $false &#125;
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&#x27;Test-Anagram&#x27;</span> &#123;</span><br><span class="line">    <span class="comment"># function is here only to make the example work</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Test-Anagram</span> <span class="params">(<span class="variable">$Original</span>, <span class="variable">$Anagram</span>)</span></span> &#123; <span class="variable">$false</span> &#125;</span><br><span class="line"></span><br><span class="line">    It <span class="string">&quot;Given &#x27;&lt;Original&gt;&#x27;&#x27; and &#x27;&lt;Anagram&gt;&#x27; it returns `$true&quot;</span> <span class="literal">-TestCases</span> <span class="selector-tag">@</span>(</span><br><span class="line">        <span class="selector-tag">@</span>&#123;  Original = <span class="string">&#x27;abcd&#x27;</span></span><br><span class="line">            Anagram  = <span class="string">&#x27;abdc&#x27;</span> </span><br><span class="line">            Because  = <span class="string">&quot;just the last two letters are switched&quot;</span> &#125;</span><br><span class="line"></span><br><span class="line">        <span class="selector-tag">@</span>&#123;  Original = <span class="string">&#x27;hello&#x27;</span></span><br><span class="line">            Anagram  = <span class="string">&#x27;olleh&#x27;</span> </span><br><span class="line">            Because  = <span class="string">&quot;it&#x27;s the same word backwards&quot;</span> &#125;</span><br><span class="line">    ) &#123;</span><br><span class="line">        <span class="keyword">param</span>(<span class="variable">$Original</span>, <span class="variable">$Anagram</span>, <span class="variable">$Because</span>)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">Test-Anagram</span> <span class="variable">$Original</span> <span class="variable">$Anagram</span> | </span><br><span class="line">            Should <span class="literal">-Be</span> <span class="variable">$true</span> <span class="literal">-Because</span> <span class="variable">$Because</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># outputs</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Describing Test-Anagram</span></span><br><span class="line"><span class="comment">#  [-] Given &#x27;abcd&#x27;&#x27; and &#x27;abdc&#x27; it returns $true 84ms</span></span><br><span class="line"><span class="comment">#     Expected &#123;True&#125;, because just the last two letters are switched, but got &#123;False&#125;.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  [-] Given &#x27;hello&#x27;&#x27; and &#x27;olleh&#x27; it returns $true 127ms</span></span><br><span class="line"><span class="comment">#     Expected &#123;True&#125;, because it&#x27;s the same word backwards, but got &#123;False&#125;.</span></span><br></pre></td></tr></table></figure>
 
-    It &quot;Given &#39;&lt;Original&gt;&#39;&#39; and &#39;&lt;Anagram&gt;&#39; it returns `$true&quot; -TestCases @(
-        @&#123;  Original = &#39;abcd&#39;
-            Anagram  = &#39;abdc&#39; 
-            Because  = &quot;just the last two letters are switched&quot; &#125;
-
-        @&#123;  Original = &#39;hello&#39;
-            Anagram  = &#39;olleh&#39; 
-            Because  = &quot;it&#39;s the same word backwards&quot; &#125;
-    ) &#123;
-        param($Original, $Anagram, $Because)
-
-        Test-Anagram $Original $Anagram | 
-            Should -Be $true -Because $Because
-    &#125;
-&#125;
-
-# outputs
-
-# Describing Test-Anagram
-#  [-] Given &#39;abcd&#39;&#39; and &#39;abdc&#39; it returns $true 84ms
-#     Expected &#123;True&#125;, because just the last two letters are switched, but got &#123;False&#125;.
-
-#  [-] Given &#39;hello&#39;&#39; and &#39;olleh&#39; it returns $true 127ms
-#     Expected &#123;True&#125;, because it&#39;s the same word backwards, but got &#123;False&#125;.</code></pre>
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Use <code>-Because</code> to make your tests easier to understand at a glance, and to document your intent so nobody has to guess what you meant.</p>
 
     </div>

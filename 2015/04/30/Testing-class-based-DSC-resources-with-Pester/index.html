@@ -86,39 +86,12 @@
 <p>Creating a Class based DSC Resource using PowerShell</p>
 <p>Class-defined DSC resources in Windows Management Framework 5.0 Preview</p>
 <p>Writing a custom DSC resource with PowerShell classes</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="Writing-the-first-test"><a href="#Writing-the-first-test" class="headerlink" title="Writing the first test"></a>Writing the first test</h3><p>I will be using the example code from the last article to go outside-in with Pester, and to pretend that I am actually writing the code myself.</p>
 <p>At the bottom of the Microsoft article you find an example of how the finished resource is used. This example is an ideal candidate for our first integration test. This integration test will describe the basic functionality of the resource</p>
 <p>The test looks like this:</p>
-<pre><code class="powershell">Describe &#39;Test resource&#39; &#123;
-    It &#39;Adds a file correctly&#39; &#123;
-        # -- Arrange
-        Configuration Test
-        &#123;
-            Import-DSCResource -module &#39;MyDscResource&#39;
-            FileResource file
-            &#123;
-                Path = &quot;TestDrive:\test.txt&quot;
-                Ensure = &quot;Present&quot;
-
-                SourcePath = &quot;TestDrive:\Source\test.txt&quot;
-            &#125;
-        &#125;
-
-        New-Item -ItemType Directory -Name Source -Path TestDrive:\
-        Set-Content -Path TestDrive:\Source\test.txt -Value &quot;some string&quot;
-
-        New-Item -ItemType Directory -Name Output -Path TestDrive:\
-
-        # -- Act
-        Test -OutputPath TestDrive:\Output
-        Start-DscConfiguration -Verbose -Wait TestDrive:\Output
-
-        # -- Assert
-        &quot;TestDrive:\test.txt&quot; | should Exist
-    &#125;
-&#125;</code></pre>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&#x27;Test resource&#x27;</span> &#123;</span><br><span class="line">    It <span class="string">&#x27;Adds a file correctly&#x27;</span> &#123;</span><br><span class="line">        <span class="comment"># -- Arrange</span></span><br><span class="line">        Configuration Test</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">Import-DSCResource</span> <span class="literal">-module</span> <span class="string">&#x27;MyDscResource&#x27;</span></span><br><span class="line">            FileResource file</span><br><span class="line">            &#123;</span><br><span class="line">                Path = <span class="string">&quot;TestDrive:\test.txt&quot;</span></span><br><span class="line">                Ensure = <span class="string">&quot;Present&quot;</span></span><br><span class="line"></span><br><span class="line">                SourcePath = <span class="string">&quot;TestDrive:\Source\test.txt&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">New-Item</span> <span class="literal">-ItemType</span> Directory <span class="literal">-Name</span> Source <span class="literal">-Path</span> TestDrive:\</span><br><span class="line">        <span class="built_in">Set-Content</span> <span class="literal">-Path</span> TestDrive:\Source\test.txt <span class="literal">-Value</span> <span class="string">&quot;some string&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">New-Item</span> <span class="literal">-ItemType</span> Directory <span class="literal">-Name</span> Output <span class="literal">-Path</span> TestDrive:\</span><br><span class="line"></span><br><span class="line">        <span class="comment"># -- Act</span></span><br><span class="line">        Test <span class="literal">-OutputPath</span> TestDrive:\Output</span><br><span class="line">        <span class="built_in">Start-DscConfiguration</span> <span class="literal">-Verbose</span> <span class="literal">-Wait</span> TestDrive:\Output</span><br><span class="line"></span><br><span class="line">        <span class="comment"># -- Assert</span></span><br><span class="line">        <span class="string">&quot;TestDrive:\test.txt&quot;</span> | should Exist</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>I had to slightly change the code shown in the article, but that’s expected because we are using preview version of the technology. The test has three parts: Arrange, Act and Assert.</p>
 <p>In the Arrange part I most importantly define the DSC configuration using the <code>FileResource</code> resource. The configuration defines that: “I desire the file TestDrive:\test.txt to be present”.</p>
 <p>The configuration also defines the <code>SourcePath</code>, which is where the original file is placed. For the test I just use the TestDrive to store the file.</p>
@@ -128,16 +101,8 @@
 <p>This should do for our first test. So let’s run it and see if it fails.</p>
 <h3 id="Running-the-first-test"><a href="#Running-the-first-test" class="headerlink" title="Running the first test"></a>Running the first test</h3><p>If you re-call the RED-GREEN-REFACTOR cycle of TDD, you know that now we should let the test run, and make sure it fails (RED). So let’s press F5 to do just that.</p>
 <p>And indeed the test fails horribly.</p>
-<pre><code class="shell">At C:\Projects\TestFileDscResources\MyDscResources\MyDscResource.Tests.ps1:6 char:13
-+             Import-DSCResource -module &#39;MyDscResource&#39;
-+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Unable to load module &#39;MyDscResource&#39;: module not found.
-At C:\Projects\TestFileDscResources\MyDscResources\MyDscResource.Tests.ps1:7 char:13
-+             FileResource file
-+             ~~~~~~~~~~~~
-Undefined DSC resource &#39;FileResource&#39;. Use Import-DSCResource to import the resource.
-    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
-    + FullyQualifiedErrorId : ModuleNotFoundDuringParse</code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">At C:\Projects\TestFileDscResources\MyDscResources\MyDscResource.Tests.ps1:6 char:13</span><br><span class="line">+             Import-DSCResource -module &#x27;MyDscResource&#x27;</span><br><span class="line">+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">Unable to load module &#x27;MyDscResource&#x27;: module not found.</span><br><span class="line">At C:\Projects\TestFileDscResources\MyDscResources\MyDscResource.Tests.ps1:7 char:13</span><br><span class="line">+             FileResource file</span><br><span class="line">+             ~~~~~~~~~~~~</span><br><span class="line">Undefined DSC resource &#x27;FileResource&#x27;. Use Import-DSCResource to import the resource.</span><br><span class="line">    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException</span><br><span class="line">    + FullyQualifiedErrorId : ModuleNotFoundDuringParse</span><br></pre></td></tr></table></figure>
+
 <p>If you now assume that we saw the test fail and we can proceed to implement the correct behavior, you should know that this is not the case. The test failed, but it did not fail in the correct way. It must fail in the assertion to count as a proper fail.</p>
 <p>To get to the point where the test fails correctly we can just follow the error messages, and oh boy there are many. The first few error messages suggested that there is no <code>FileResource</code> available in the module directory. There were also few Access Denied error messages. And the <code>TestDrive:\</code> also could not be found, because the configuration is done by a Windows service running as the SYSTEM account. I also had problems with remoting not being setup correctly.</p>
 <p>So in the end I ended doing this:</p>
@@ -149,142 +114,24 @@ Undefined DSC resource &#39;FileResource&#39;. Use Import-DSCResource to import 
 <li>Using $TestDrive (real path to the temporary folder) instead of the TestDrive PSDrive</li>
 </ul>
 <p>So the test ended up looking like this:</p>
-<pre><code class="powershell">Describe &#39;Test resource&#39; &#123;
-    It &#39;Adds a file correctly&#39; &#123;
-        # -- Arrange
-        Configuration Test
-        &#123;
-            Import-DSCResource -module &#39;MyDscResource&#39;
-            FileResource file
-            &#123;
-                Path = &quot;$testDrive\test.txt&quot;
-                Ensure = &quot;Present&quot;
-
-                SourcePath = &quot;$testDrive\Source\test.txt&quot;
-            &#125;
-        &#125;
-
-        New-Item -ItemType Directory -Name Source -Path $testDrive
-        Set-Content -Path &quot;$testDrive\Source\test.txt&quot; -Value &quot;some string&quot;
-
-        New-Item -ItemType Directory -Name Output -Path $testDrive
-
-        # -- Act
-        Test -OutputPath &quot;$testDrive\Output&quot;
-        Start-DscConfiguration -Verbose -Force -Wait &quot;$testDrive\Output&quot;
-
-        # -- Assert
-        &quot;$testDrive\test.txt&quot; | should Exist
-    &#125;
-&#125;</code></pre>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&#x27;Test resource&#x27;</span> &#123;</span><br><span class="line">    It <span class="string">&#x27;Adds a file correctly&#x27;</span> &#123;</span><br><span class="line">        <span class="comment"># -- Arrange</span></span><br><span class="line">        Configuration Test</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">Import-DSCResource</span> <span class="literal">-module</span> <span class="string">&#x27;MyDscResource&#x27;</span></span><br><span class="line">            FileResource file</span><br><span class="line">            &#123;</span><br><span class="line">                Path = <span class="string">&quot;<span class="variable">$testDrive</span>\test.txt&quot;</span></span><br><span class="line">                Ensure = <span class="string">&quot;Present&quot;</span></span><br><span class="line"></span><br><span class="line">                SourcePath = <span class="string">&quot;<span class="variable">$testDrive</span>\Source\test.txt&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">New-Item</span> <span class="literal">-ItemType</span> Directory <span class="literal">-Name</span> Source <span class="literal">-Path</span> <span class="variable">$testDrive</span></span><br><span class="line">        <span class="built_in">Set-Content</span> <span class="literal">-Path</span> <span class="string">&quot;<span class="variable">$testDrive</span>\Source\test.txt&quot;</span> <span class="literal">-Value</span> <span class="string">&quot;some string&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">New-Item</span> <span class="literal">-ItemType</span> Directory <span class="literal">-Name</span> Output <span class="literal">-Path</span> <span class="variable">$testDrive</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># -- Act</span></span><br><span class="line">        Test <span class="literal">-OutputPath</span> <span class="string">&quot;<span class="variable">$testDrive</span>\Output&quot;</span></span><br><span class="line">        <span class="built_in">Start-DscConfiguration</span> <span class="literal">-Verbose</span> <span class="literal">-Force</span> <span class="literal">-Wait</span> <span class="string">&quot;<span class="variable">$testDrive</span>\Output&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># -- Assert</span></span><br><span class="line">        <span class="string">&quot;<span class="variable">$testDrive</span>\test.txt&quot;</span> | should Exist</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>And the resource is implemented like this:</p>
-<pre><code class="powershell">#file MyDscResource.psd1
-@&#123;
-    RootModule = &#39;MyDscResource.psm1&#39;
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment">#file MyDscResource.psd1</span></span><br><span class="line"><span class="selector-tag">@</span>&#123;</span><br><span class="line">    RootModule = <span class="string">&#x27;MyDscResource.psm1&#x27;</span></span><br><span class="line"></span><br><span class="line">    DscResourcesToExport = <span class="string">&#x27;FileResource&#x27;</span></span><br><span class="line"></span><br><span class="line">    ModuleVersion = <span class="string">&#x27;1.0&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    DscResourcesToExport = &#39;FileResource&#39;
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment">#file: MyDscResource.psm1</span></span><br><span class="line">[<span class="type">DscResource</span>()]</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileResource</span></span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="type">DscProperty</span>(<span class="type">Key</span>)]</span><br><span class="line">    [<span class="built_in">string</span>]<span class="variable">$Path</span></span><br><span class="line"></span><br><span class="line">    [<span class="type">DscProperty</span>(<span class="type">Mandatory</span>)]</span><br><span class="line">    [<span class="built_in">string</span>]<span class="variable">$SourcePath</span></span><br><span class="line"></span><br><span class="line">    [<span class="type">DscProperty</span>(<span class="type">Mandatory</span>)]</span><br><span class="line">    [<span class="built_in">string</span>] <span class="variable">$Ensure</span> <span class="comment">#not using the Ensure type yet</span></span><br><span class="line"></span><br><span class="line">    <span class="function">[<span class="built_in">bool</span>] <span class="title">Test</span></span>() &#123; <span class="keyword">return</span> <span class="variable">$false</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">[<span class="type">FileResource</span>] <span class="title">Get</span></span>() &#123; <span class="keyword">return</span> <span class="variable">$null</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">[<span class="built_in">void</span>] <span class="title">Set</span></span>() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    ModuleVersion = &#39;1.0&#39;
-&#125;</code></pre>
-<pre><code class="powershell">#file: MyDscResource.psm1
-[DscResource()]
-class FileResource
-&#123;
-    [DscProperty(Key)]
-    [string]$Path
-
-    [DscProperty(Mandatory)]
-    [string]$SourcePath
-
-    [DscProperty(Mandatory)]
-    [string] $Ensure #not using the Ensure type yet
-
-    [bool] Test() &#123; return $false &#125;
-
-    [FileResource] Get() &#123; return $null &#125;
-
-    [void] Set() &#123;&#125;
-&#125;</code></pre>
-<pre><code class="shell">Describing Test resource
- [-] Adds a file correctly 454ms
-   Expected: &#123;C:\Users\nohwnd\AppData\[...]\test.txt&#125; to exist
-   at line: 26 in C:\Users\nohwnd\Desktop\MyDscResource.Tests.ps1
-   26:         &quot;$testDrive\test.txt&quot; | should Exist</code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Describing Test resource</span><br><span class="line"> [-] Adds a file correctly 454ms</span><br><span class="line">   Expected: &#123;C:\Users\nohwnd\AppData\[...]\test.txt&#125; to exist</span><br><span class="line">   at line: 26 in C:\Users\nohwnd\Desktop\MyDscResource.Tests.ps1</span><br><span class="line">   26:         &quot;$testDrive\test.txt&quot; | should Exist</span><br></pre></td></tr></table></figure>
 <p>Uff!</p>
 <h3 id="Making-the-first-test-green"><a href="#Making-the-first-test-green" class="headerlink" title="Making the first test green"></a>Making the first test green</h3><p>So now that we have all the infrastructure setup satisfying the test is really simple. All you need to do is to create the <code>$testDrive\test.txt</code> file. So let’s change the <code>Set()</code> method to do that.</p>
-<pre><code class="powershell">#file: MyDscResource.psm1[DscResource()]
-class FileResource
-&#123;
-    [DscProperty(Key)]
-    [string]$Path
-
-    [DscProperty(Mandatory)]
-    [string]$SourcePath
-
-    [DscProperty(Mandatory)]
-    [string] $Ensure
-
-    [bool] Test() &#123; return $false &#125;
-
-    [FileResource] Get() &#123; return $null &#125;
-
-    [void] Set() &#123;
-
-        New-Item -Force -ItemType File $this.Path # &lt;---
-
-    &#125;
-&#125;</code></pre>
-<p>Running the test now should, satisfy the assert condition. But depending on how fast you were to run the test, you did or did not get the same failure message as before. But if you keep running the tests it will fix itself and the test will become GREEN. So there must be some kind of timeout/threshold after which the module is reloaded… Uff again.</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment">#file: MyDscResource.psm1[DscResource()]</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileResource</span></span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="type">DscProperty</span>(<span class="type">Key</span>)]</span><br><span class="line">    [<span class="built_in">string</span>]<span class="variable">$Path</span></span><br><span class="line"></span><br><span class="line">    [<span class="type">DscProperty</span>(<span class="type">Mandatory</span>)]</span><br><span class="line">    [<span class="built_in">string</span>]<span class="variable">$SourcePath</span></span><br><span class="line"></span><br><span class="line">    [<span class="type">DscProperty</span>(<span class="type">Mandatory</span>)]</span><br><span class="line">    [<span class="built_in">string</span>] <span class="variable">$Ensure</span></span><br><span class="line"></span><br><span class="line">    <span class="function">[<span class="built_in">bool</span>] <span class="title">Test</span></span>() &#123; <span class="keyword">return</span> <span class="variable">$false</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">[<span class="type">FileResource</span>] <span class="title">Get</span></span>() &#123; <span class="keyword">return</span> <span class="variable">$null</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">[<span class="built_in">void</span>] <span class="title">Set</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">New-Item</span> <span class="literal">-Force</span> <span class="literal">-ItemType</span> File <span class="keyword">$this</span>.Path <span class="comment"># &lt;---</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Running the test now should, satisfy the assert condition. But depending on how fast you were to run the test, you did or did not get the same failure message as before. But if you keep running the tests it will fix itself and the test will become GREEN. So there must be some kind of timeout&#x2F;threshold after which the module is reloaded… Uff again.</p>
 <p>This does not look like a feasible path to test our DSC resources.</p>
 <h3 id="Giving-up"><a href="#Giving-up" class="headerlink" title="Giving up"></a>Giving up</h3><p>Giving up on actually running the resource I found there is this new cmdlet called <code>Invoke-DscResource</code> which does exactly what we need, it let’s us call the Set, Get and Test methods of the resource. But unfortunately I can’t get it to work with class based DSC resources. I always get “resource not found” exception.</p>
 <p>Another option would be to simply import the class, instantiate it and call the methods without using the <code>Invoke-DscResource</code> cmdlet. But for some reason that does not work also. Unless the class is defined in the same file (not even in a script block) I can’t instantiate it. All of this fails:</p>
-<pre><code class="powershell">Import-Module &quot;C:\Users\nohwnd\Documents\WindowsPowerShell\Modules\MyDscResource\MyDscResource.psd1&quot;
-[FileResource]::new()
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Import-Module</span> <span class="string">&quot;C:\Users\nohwnd\Documents\WindowsPowerShell\Modules\MyDscResource\MyDscResource.psd1&quot;</span></span><br><span class="line">[<span class="type">FileResource</span>]::new()</span><br><span class="line"></span><br><span class="line"><span class="variable">$sb</span> = [<span class="type">scriptblock</span>]::Create( <span class="string">&quot;class c &#123;&#125;&quot;</span>)</span><br><span class="line">&amp;<span class="variable">$sb</span></span><br><span class="line"></span><br><span class="line">[<span class="type">c</span>]::new()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">$code</span> = <span class="built_in">Get-Content</span> <span class="string">&quot;C:\Users\nohwnd\Documents\WindowsPowerShell\Modules\MyDscResource\MyDscResource.psm1&quot;</span> | <span class="built_in">Out-String</span></span><br><span class="line"><span class="variable">$sb</span> = [<span class="type">scriptblock</span>]::Create( <span class="variable">$code</span> )</span><br><span class="line">&amp;<span class="variable">$sb</span></span><br><span class="line"></span><br><span class="line">[<span class="type">FileResource</span>]::new()</span><br><span class="line"></span><br><span class="line"><span class="comment">#remember the old days? https://johanleino.wordpress.com/2013/09/25/pester-how-to-unit-test-your-powershell-modules/</span></span><br><span class="line"><span class="variable">$code</span> = <span class="built_in">Get-Content</span> <span class="string">&quot;C:\Users\nohwnd\Documents\WindowsPowerShell\Modules\MyDscResource\MyDscResource.psm1&quot;</span> | <span class="built_in">Out-String</span></span><br><span class="line"><span class="built_in">Invoke-Expression</span> <span class="variable">$code</span></span><br><span class="line">[<span class="type">FileResource</span>]::new()</span><br></pre></td></tr></table></figure>
 
-$sb = [scriptblock]::Create( &quot;class c &#123;&#125;&quot;)
-&amp;$sb
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Unable to find type [FileResource]. Make sure that the assembly that contains this type is loaded.</span><br><span class="line">At line:2 char:1</span><br><span class="line">+ [FileResource]::new()</span><br><span class="line">+ ~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">    + CategoryInfo          : InvalidOperation: (FileResource:TypeName) [], RuntimeException</span><br><span class="line">    + FullyQualifiedErrorId : TypeNotFound</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Unable to find type [c]. Make sure that the assembly that contains this type is loaded.</span><br><span class="line">At line:5 char:1</span><br><span class="line">+ [c]::new()</span><br><span class="line">+ ~~~~~~~~~~</span><br><span class="line">    + CategoryInfo          : InvalidOperation: (c:TypeName) [], RuntimeException</span><br><span class="line">    + FullyQualifiedErrorId : TypeNotFound</span><br><span class="line"></span><br><span class="line">Unable to find type [FileResource]. Make sure that the assembly that contains this type is loaded.</span><br><span class="line">At line:12 char:1</span><br><span class="line">+ [FileResource]::new()</span><br><span class="line">+ ~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">    + CategoryInfo          : InvalidOperation: (FileResource:TypeName) [], RuntimeException</span><br><span class="line">    + FullyQualifiedErrorId : TypeNotFound</span><br><span class="line"></span><br><span class="line">Unable to find type [FileResource]. Make sure that the assembly that contains this type is loaded.</span><br><span class="line">At line:17 char:1</span><br><span class="line">+ [FileResource]::new()</span><br><span class="line">+ ~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">    + CategoryInfo          : InvalidOperation: (FileResource:TypeName) [], RuntimeException</span><br><span class="line">    + FullyQualifiedErrorId : TypeNotFound</span><br></pre></td></tr></table></figure>
 
-[c]::new()
-
-
-$code = Get-Content &quot;C:\Users\nohwnd\Documents\WindowsPowerShell\Modules\MyDscResource\MyDscResource.psm1&quot; | Out-String
-$sb = [scriptblock]::Create( $code )
-&amp;$sb
-
-[FileResource]::new()
-
-#remember the old days? https://johanleino.wordpress.com/2013/09/25/pester-how-to-unit-test-your-powershell-modules/
-$code = Get-Content &quot;C:\Users\nohwnd\Documents\WindowsPowerShell\Modules\MyDscResource\MyDscResource.psm1&quot; | Out-String
-Invoke-Expression $code
-[FileResource]::new()</code></pre>
-<pre><code class="shell">Unable to find type [FileResource]. Make sure that the assembly that contains this type is loaded.
-At line:2 char:1
-+ [FileResource]::new()
-+ ~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : InvalidOperation: (FileResource:TypeName) [], RuntimeException
-    + FullyQualifiedErrorId : TypeNotFound
-
-
-Unable to find type [c]. Make sure that the assembly that contains this type is loaded.
-At line:5 char:1
-+ [c]::new()
-+ ~~~~~~~~~~
-    + CategoryInfo          : InvalidOperation: (c:TypeName) [], RuntimeException
-    + FullyQualifiedErrorId : TypeNotFound
-
-Unable to find type [FileResource]. Make sure that the assembly that contains this type is loaded.
-At line:12 char:1
-+ [FileResource]::new()
-+ ~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : InvalidOperation: (FileResource:TypeName) [], RuntimeException
-    + FullyQualifiedErrorId : TypeNotFound
-
-Unable to find type [FileResource]. Make sure that the assembly that contains this type is loaded.
-At line:17 char:1
-+ [FileResource]::new()
-+ ~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : InvalidOperation: (FileResource:TypeName) [], RuntimeException
-    + FullyQualifiedErrorId : TypeNotFound</code></pre>
 <p>So at the moment I don’t know how to test the class based resources, but there is new WMF preview published just few hours ago, so maybe this will change soon.</p>
 
     </div>

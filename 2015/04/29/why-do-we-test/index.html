@@ -82,27 +82,18 @@
     <div class="article-content">
         <p>Lately we are getting some great questions on our <a href="https://github.com/pester/Pester/issues">Pester issue page</a>, I am reposting soem of my answers as blog posts, because I hope they are worth reading. You can access the <a href="https://github.com/pester/Pester/issues/317">original question here</a>.</p>
 <p>We test because we need a simple set of boundaries that define a more complicated system. Coming up with simple tests and gradually refining them to define more complex systems is easy for us humans. Definitely easier than defining a complex system in a single swoop.</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>Saying that <code>1 + 1 = 2</code> is simple, we want it to be true because that is how we think the system should behave, and we can express what we want with a simple test:</p>
-<pre><code class="powershell">1 + 1 | Should Be 2</code></pre>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> + <span class="number">1</span> | Should Be <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
 <p>We can run the test and if it succeeds, then the system likely works as defined.</p>
 <p>In other tests we could also define that <code>3 + 5 = 8</code>, <code>10 + 3 = 13</code> and many more. We are using other test cases to further define the expected behavior of the + operator.</p>
 <p>Now notice one thing, every test is roughly as complex as the previous. Adding together three and five is pretty much as complicated, as adding one and one. The tests are not becoming more complex, but the system under test (in this case the + operator) is becoming more complex, because it needs to accommodate more use cases.</p>
 <h2 id="Complexity"><a href="#Complexity" class="headerlink" title="Complexity"></a>Complexity</h2><p>Why I am so sure that the one test case is not more complex than the other? Well, we technicians like to measure things, and so of course we can measure complexity as well, in this case we call it the cyclomatic complexity. In simple words, code has cyclomatic complexity of 1 if there is only single path through it. In such code there must not be any if or other constructs like loops or switches. Cyclomatic complexity of 1 is what we are aiming for in our test code. Such code is easy to understand, and easy to reason about because there are no <code>if</code> or <code>when</code> to distract us.</p>
 <h2 id="Failing-the-test"><a href="#Failing-the-test" class="headerlink" title="Failing the test"></a>Failing the test</h2><p>Another ingredient of reliable test suite is to make the tests fail. The so called RED, GREEN, REFACTOR cycle. But failing the test just willy nilly is not enough. To demonstrate that, let’s replace our example with this test, of a function that should return ‘1’ no matter what:</p>
-<pre><code class="powershell">Describe &quot;Write-One&quot; &#123;
-  It &#39;Outputs 1&#39; &#123;
-      # -- Arrange
-      $expected = 1
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&quot;Write-One&quot;</span> &#123;</span><br><span class="line">  It <span class="string">&#x27;Outputs 1&#x27;</span> &#123;</span><br><span class="line">      <span class="comment"># -- Arrange</span></span><br><span class="line">      <span class="variable">$expected</span> = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># -- Act</span></span><br><span class="line">      <span class="variable">$actual</span> = <span class="built_in">Get-One</span></span><br><span class="line">      </span><br><span class="line">      <span class="comment"># -- Assert</span></span><br><span class="line">      <span class="variable">$actual</span> | Should Be <span class="variable">$expected</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-      # -- Act
-      $actual = Get-One
-
-      # -- Assert
-      $actual | Should Be $expected
-  &#125;
-&#125;</code></pre>
 <p>Currently it fails with <code>CommandNotFoundException</code>. Does that count as failed? No it does not! The assertion did not fail, a prerequisite of the test failed. To make it fail correctly. Add the function, make it return 200 and run the test again. Now it fails in the assertion, and you can proceed to implement the function.</p>
 <h2 id="Passing-the-test"><a href="#Passing-the-test" class="headerlink" title="Passing the test"></a>Passing the test</h2><p>When the test finally succeeds, you might consider trying to alter the SUT code in a such way that makes the test fail again. If it does not fail you are probably not 100 % sure why it worked in the first place. Take some time to investigate and likely add more test.</p>
 <p>If you do that and you write a test that succeeded on first run don’t panic, you just created a so called characterization test. Just make sure that you go back to the code and you change that one line of code that make the test (the assertion in that test!) fail. Then change your code back and run the tests again. When you perform this check, notice if you knew exactly which line to change, and how. If you did not, and you constantly have to try few lines before making the test fail, your code or your test are probably too complicated and might need a bit of improvement.</p>

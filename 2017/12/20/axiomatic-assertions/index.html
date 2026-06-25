@@ -81,7 +81,7 @@
 
     <div class="article-content">
         <p>Writing a test framework is a lot of fun, and presents some unique challenges to overcome. One of them is testing your assertions. I am writing my own set of <a href="https://github.com/nohwnd/Assert">assertions for Pester</a> and I also used the same ideas to test some of the <code>Should</code> assertions in Pester.</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Axiom"><a href="#Axiom" class="headerlink" title="Axiom"></a>Axiom</h2><p>Proving that your assertions are correct, is a major stumbling point that you have to overcome right at the start of writing your assertion suite. To prove that your assertions are correct you need to write tests for them. To write those tests you need tested assertions. To prove that those assertions are correct you need to write tests for them. To write those tests you need tested assertions. To prove that those assertions are correct you need to write tests for them. To write those tests you need tested assertions. To prove that those assertions are correct you need to write tests for them…And so on, ad-infinitum.</p>
 <p>This is a typical recursive situation, and as with any such situation, we need a base condition to <em>break out</em> of the infinite recursion.</p>
@@ -102,57 +102,14 @@
 </blockquote>
 <p>In theory we only need a single axiomatic assertion to write all of our tests: <code>Verify-True</code>. I don’t have any proof for it, but I believe that any code that you write can be expressed as a condition, result of which is then compared to $true. In practice at least <code>Verify-True</code> and <code>Verify-Throw</code> are needed to avoid making the tests unbearably awkward to write. And about eight assertions to make the test code readable and easy to follow. All of which you can <a href="https://github.com/nohwnd/Assert/tree/master/Axiom/src">find here</a>.</p>
 <p>As an example let’s look at the source code of <code>Verify-True</code> and <code>Verify-Throw</code>:</p>
-<pre><code class="powershell">function Verify-True &#123;
-    param (
-        [Parameter(ValueFromPipeline=$true)]
-        $Actual
-    )
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Verify-True</span></span> &#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="type">Parameter</span>(<span class="type">ValueFromPipeline</span>=<span class="variable">$true</span>)]</span><br><span class="line">        <span class="variable">$Actual</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">-not</span> <span class="variable">$Actual</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> [<span class="type">Exception</span>]<span class="string">&quot;Expected `$true but got &#x27;<span class="variable">$Actual</span>&#x27;.&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$Actual</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    if (-not $Actual) &#123;
-        throw [Exception]&quot;Expected `$true but got &#39;$Actual&#39;.&quot;
-    &#125;
-
-    $Actual
-&#125;</code></pre>
 <p>There is nothing surprising or difficult to understand. There is a single condition that throws exception when the input is not $true or truthy value such as 1. All the other assertions follow along those lines. The most complicated of them being <code>Verify-Throw</code>, which is still very simple:</p>
-<pre><code class="powershell">function Verify-Throw
-&#123;
-    param (
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
-        [ScriptBlock]$ScriptBlock
-    )
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Verify-Throw</span></span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">param</span> (</span><br><span class="line">        [<span class="type">Parameter</span>(<span class="type">Mandatory</span>=<span class="variable">$true</span>, <span class="type">ValueFromPipeline</span>=<span class="variable">$true</span>)]</span><br><span class="line">        [<span class="type">ScriptBlock</span>]<span class="variable">$ScriptBlock</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="variable">$exceptionThrown</span> = <span class="variable">$false</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="variable">$null</span> = &amp; <span class="variable">$ScriptBlock</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable">$exceptionThrown</span> = <span class="variable">$true</span></span><br><span class="line">        <span class="variable">$_</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">-not</span> <span class="variable">$exceptionThrown</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> [<span class="type">Exception</span>]<span class="string">&quot;An exception was expected, but no exception was thrown!&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    $exceptionThrown = $false
-    try &#123;
-        $null = &amp; $ScriptBlock
-    &#125;
-    catch
-    &#123;
-        $exceptionThrown = $true
-        $_
-    &#125;
-
-    if (-not $exceptionThrown) &#123;
-        throw [Exception]&quot;An exception was expected, but no exception was thrown!&quot;
-    &#125;
-&#125;</code></pre>
 <p>Both are absolutely bare-bone implementation of the assertion. Yet they still allow to write expressive tests, that work well for our purpose, such as this one:</p>
-<pre><code class="powershell">Describe &quot;Compare-ObjectEquivalent&quot; &#123;
-    It &quot;Given expected &#39;&lt;expected&gt;&#39; that is not an object
-        it throws ArgumentException&quot; -TestCases @(
-        @&#123; Expected = &quot;a&quot; &#125;,
-        @&#123; Expected = &quot;1&quot; &#125;,
-        @&#123; Expected = &#123; abc &#125; &#125;,
-        @&#123; Expected = (1,2,3) &#125;
-    ) &#123;
-        param($Expected)
-        $err = &#123; Compare-ObjectEquivalent `
-                    -Actual &quot;dummy&quot; `
-                    -Expected $Expected
-               &#125; | Verify-Throw
-        $err.Exception -is [ArgumentException] | Verify-True
-    &#125;
-&#125;</code></pre>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">Describe <span class="string">&quot;Compare-ObjectEquivalent&quot;</span> &#123;</span><br><span class="line">    It <span class="string">&quot;Given expected &#x27;&lt;expected&gt;&#x27; that is not an object</span></span><br><span class="line"><span class="string">        it throws ArgumentException&quot;</span> <span class="literal">-TestCases</span> <span class="selector-tag">@</span>(</span><br><span class="line">        <span class="selector-tag">@</span>&#123; Expected = <span class="string">&quot;a&quot;</span> &#125;,</span><br><span class="line">        <span class="selector-tag">@</span>&#123; Expected = <span class="string">&quot;1&quot;</span> &#125;,</span><br><span class="line">        <span class="selector-tag">@</span>&#123; Expected = &#123; abc &#125; &#125;,</span><br><span class="line">        <span class="selector-tag">@</span>&#123; Expected = (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>) &#125;</span><br><span class="line">    ) &#123;</span><br><span class="line">        <span class="keyword">param</span>(<span class="variable">$Expected</span>)</span><br><span class="line">        <span class="variable">$err</span> = &#123; <span class="built_in">Compare-ObjectEquivalent</span> `</span><br><span class="line">                    <span class="literal">-Actual</span> <span class="string">&quot;dummy&quot;</span> `</span><br><span class="line">                    <span class="literal">-Expected</span> <span class="variable">$Expected</span></span><br><span class="line">               &#125; | Verify<span class="literal">-Throw</span></span><br><span class="line">        <span class="variable">$err</span>.Exception <span class="operator">-is</span> [<span class="type">ArgumentException</span>] | Verify<span class="literal">-True</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Testing assertions is simple if you have the right tools. Writing a second set of minimal assertions is better than not testing the assertions at all, or testing them using complicated tools that you don’t control.</p>
 
     </div>
