@@ -462,3 +462,82 @@ a:hover {
   left: 0;
   z-index: -1;
 }
+
+// --- Mobile / narrow screens ---------------------------------------------
+// The theme was built for an 800px desktop column and shipped without a
+// viewport tag, so on phones the content sat against the screen edges, the
+// menu links ran together, and the large titles were clipped. Add side
+// spacing and let things wrap. The full-bleed header/footer backgrounds come
+// from absolutely positioned *-filler elements, so padding the body leaves
+// them edge-to-edge.
+
+@media (max-width: 800px) {
+  body {
+    box-sizing: border-box;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2.2rem;
+    letter-spacing: 0.15rem;
+    overflow-wrap: break-word;
+  }
+
+  // Never break the logo wordmark ("Jakub Jareš") mid-word.
+  .main-page-header > a h1,
+  .article-header > div.menu h1 {
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  // The post header packs the logo and menu in one row; give the logo less
+  // bulk so the wordmark fits next to the links.
+  .article-header > div.menu > a > div {
+    svg {
+      height: 50px;
+      width: 50px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-left: 10px;
+    }
+  }
+
+  // Home/list menu: keep the three links from colliding.
+  .main-page-header > nav a {
+    font-size: 1.6rem;
+    letter-spacing: 0.1rem;
+  }
+
+  // Post-page menu.
+  .article-header > div.menu nav a {
+    font-size: 1.4rem;
+    letter-spacing: 0.1rem;
+    margin-left: 12px;
+  }
+
+  // The list excerpt title sits in an overflow:hidden flex row; let it shrink
+  // and wrap instead of being cut off by the black edge bar.
+  .article header > a > div {
+    min-width: 0;
+
+    > h1 {
+      min-width: 0;
+    }
+  }
+
+  // Stack the post title and its tags instead of squeezing them side by side.
+  .article-header > div.title {
+    flex-direction: column;
+    align-items: flex-start;
+
+    > div {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+}
